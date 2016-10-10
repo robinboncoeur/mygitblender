@@ -29,15 +29,15 @@ This script currently should work for the Victoria4, Dawn and Mariko figures, bu
 # Instructions for Use
 * If you haven't already done so, install Blender.
 
-* Download the psrFigureShader-master.zip file (click the green Download button, then select DOWNLOAD ZIP), and unzip it. Keep the zip file, as you will be installing the script in Blender from the zip file.
+* Download the psrFigureShader-master.zip file (click the green [Clone or download] button, then select Download ZIP), and unzip it. Keep the zip file, as you will be installing the script in Blender from the zip file.
 
-* Find the .csv files: image_list.csv and path_list.csv will be in your unzip folder. Copy the image_list.csv to your images folder. Open it in either text editor or - preferably - in a spreadsheet program such as Excel or LibreOffice Calc (free).
+* Find the .csv files: image_list.csv and path_list.csv will be in your unzip folder. Copy the image_list.csv to your images folder. Open it in either text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free).
 
-   * The two columns represent the region (FieldName) the image is going to be assigned to, and the name (ImageName) of the image itself. You only ever edit the names of the images (the second column): the field-names are used by the script. If you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes: they need to exist for every image and field name. If you are using a spreadsheet program to edit this csv, be sure to save it out as type .csv, and not as .xls or .ods.
+   * The two columns represent the region (FieldName) the image is going to be assigned to, and the name (ImageName) of the image file itself. You only ever edit the names of the images (the second column): the field-names are used by the script and so must not be changed. If you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes: they need to exist for every image and field name. If you are using a spreadsheet program to edit this csv, be sure to save it out as type .csv, and not as .xls or .ods.
 
-* Copy the path_list.csv file to the folder containing your .blend file. If you are creating a new .blend file and don't know where it is going to end up, you can install Shaders-Addon anyway, but the script will not run until you've saved the file somewhere. You will need to copy the path_list.csv to that folder and editing it prior to running the script.
+* Copy the path_list.csv file to the folder containing your .blend file. If you are creating a new .blend file and don't know where it is going to end up, you can install psrFigureShader anyway, but the script will not run until you've saved the file somewhere. You will need to copy the path_list.csv to that folder and edit it prior to running the script.
 
-   * Open the path_list.csv file in either a text editor or - preferably - in a spreadsheet program such as Excel or Calc. The two columns represent the path key ('key': this first column has names used by the script which are not to be changed), and the fully-qualified path (value) to your images folder. Note: I tend to keep my textures files together in a sub-folder called "AllSkin" in my "AllTextures" folder in the main "Projects" folder that has all my Blender projects in it. This cuts down on redundant files everywhere and makes it easy for scripts (and Blender itself) to find stuff. The "path_list.csv" file assumes this sort of structure: of course, you can always just replace the existing path -- which is definitely not valid, since it is unlikely your name is Robyn and your computer is set up exactly like mine -- with a fully-qualified path to your image texture files. An example of a fully-qualified path for Linux or Mac would be:
+   * Open the path_list.csv file in either a text editor or - preferably - in a spreadsheet program such as Excel or Calc. The two columns represent the path key ('key': this first column has names used by the script, so they must not be changed), and the fully-qualified path (value) to your images folder. Note: I tend to keep my textures files together in a sub-folder called "AllSkin" in my "AllTextures" folder in the main "Projects" folder that has all my Blender projects in it. This cuts down on redundant files everywhere and makes it easy for scripts (and Blender itself) to find stuff. The "path_list.csv" file assumes this sort of structure: of course, you can always just replace the existing path entry in path_list.csv -- which is definitely not valid, since it is unlikely your name is Robyn and your computer is set up exactly like mine -- with a fully-qualified path to your image texture files. An example of a fully-qualified path for Linux or Mac would be:
 
 __"/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/V4/"__
 
@@ -51,13 +51,13 @@ Note the closing foward slash [ / ] for Linux-Mac and back-slash [ \ ] for Windo
 
 * Open Blender
 
-* Install the Shaders-Addon script:
+* Install the psrFigureShader script:
 
    * File -> User Preferences... -> Add-Ons tab
 
    * At the bottom of this dialogue, click on Install From File...
 
-   * Navigate to where you downloaded the zip file and select the zip file (not the unzipped folder). Click 'Install from File...'
+   * Navigate to where you downloaded the zip file and select the **zip file** (not the unzipped folder). Click 'Install from File...'
 
    * Browse your add-ons - click on 'User' under 'Categories' - and find the add-on. It is called 'Material: Shaders-Poser Figures'. Tick the box on the right to activate it.
 
@@ -75,7 +75,7 @@ Note the closing foward slash [ / ] for Linux-Mac and back-slash [ \ ] for Windo
 
 * Click on the figure in the scene, press [S] (for scale), and type 10
 
-Until you save your .blend file -- giving it a name -- you will notice the 'Apply Shaders' button is greyed out (disabled). The other reason the button could be disabled is if your figure - the target for the shaders - has not been selected. So, save your .blend. Make sure the 'path_list.csv' file is with your saved .blend, and that it contains valid information about the location of your image files.
+Until you save your .blend file -- giving it a name -- you will notice the 'Apply Shaders' button is greyed out (disabled). The button will also be disabled if your figure - the target for the shaders - is not selected. Save your .blend. Make sure the 'path_list.csv' file is with your saved .blend, and that it contains valid information about the location of your image files.
 
 The next step is to give your object file (the figure you are trying to apply a shader to) a prefix, using one of these core figure names:
 
@@ -85,7 +85,7 @@ The next step is to give your object file (the figure you are trying to apply a 
    
    3. Mariko
 
-Any figure in the scene without the appropriate prefix will be ignored. You can rename the figure to an appropriate name in the box provided in the panel: select your figure, then enter the correct figure prefix in front of the name. For example, if you have a V4-based figure named Katie, rename your figure to 'V4Katie'. 
+Any figure in the scene without the appropriate prefix will be ignored. You can rename the figure to an appropriate name in the box provided in the panel: select your figure, then enter the correct figure prefix in front of the name. For example, if you have a V4-based figure named **Katie**, rename your figure to '**V4Katie**'. 
 
 Also, ensure that the 'image_list.csv' file is in your images folder and contains the correct information about which image files correspond to which regions, also making sure there are no missing double-quote marks. Note: you will need the following .png files for the eyelashes:
 
@@ -97,10 +97,11 @@ For Dawn: __http://www.tightbytes.com/Blender/dev/4_DawnLashes.png__
 Simply download them to your images folder: they will not over-write anything. The 'Make Shaders' button should now be enabled. Click it to run the script.
 
 # Caveat
-This script has currently been tested in Linux (Mint Cinnamon 17.2) and Windows 7 Professional. Although I recently purchased a decent (used) Macbook Pro, I haven't had a chance to test this on the Mac yet. The script is still in fairly rudimentary form and does only minimal error-handling. For instance, if an image file is referred to in the image_list.csv file which doesn't exist in the folder, Blender will throw a rather inelegant error into the console. For now, please read the error message and fix your .csv.
+-- This script has currently been tested in Linux (Mint Cinnamon 17.2) and Windows 7 Professional. Although I recently purchased a decent (used) Macbook Pro, I haven't had a chance to test this on the Mac yet. 
+-- The script is still in fairly rudimentary form and does only minimal error-handling. For instance, if an image file is referred to in the image_list.csv file which doesn't exist in the folder, Blender may throw a rather inelegant error into the console. For now, please read the error message in the console and fix your .csv.
 
-Update 11-Oct-2016: up to version 0.3.9, which checks for and compensates for Blender sometimes tacking on a ":1" to a material name for the V4 series. I've solved some issues (material names) and created others. Back to the drawing board. :-/
+Update 11-Oct-2016: up to version 0.4.0, which checks for and compensates for Blender sometimes tacking on a :1 (or a .001, or even a :1.002) to a material name for the V4 series. I've solved some of those issues (material names), hopefully without creating others. Please do let me know if you run into dramas.
 
-Remember, this is open-source software: if you break it, you get to keep both pieces. :D  
+-- Remember, this is open-source software: if you break it, you get to keep both pieces. :D  
 
-Please do contact me if you run into any dramas at robinseahahn at gmail. This is very much a work in progress and will only improve with time. Cheers...
+-- Please do contact me if you run into any dramas at robinseahahn at gmail. This is very much a work in progress and will only improve with time. Cheers...
