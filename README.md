@@ -29,7 +29,7 @@ This script currently should work for the Victoria4, Dawn and Mariko figures, bu
 # Instructions for Use
 * If you haven't already done so, install Blender.
 
-* Download the Shaders-Addon-master.zip file (click Download ZIP), and unzip it. Keep the zip file, as you will be installing the script in Blender from the zip file.
+* Download the psrFigureShader-master.zip file (click the green Download button, then select DOWNLOAD ZIP), and unzip it. Keep the zip file, as you will be installing the script in Blender from the zip file.
 
 * Find the .csv files: image_list.csv and path_list.csv will be in your unzip folder. Copy the image_list.csv to your images folder. Open it in either text editor or - preferably - in a spreadsheet program such as Excel or LibreOffice Calc (free).
 
