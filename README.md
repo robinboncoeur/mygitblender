@@ -1,8 +1,9 @@
 # Poser Figure Shader
 
 **A bit of a preface**: I realise this README.md is a bit long... unfortunately, it does contain key information necessary for the script to run correctly. **Please take the time to read this carefully.** I hope to eventually make the script more error-friendly and user-friendly, but at the moment it is what it is.
+Also, this was previously called "Shaders-Addon", which wasn't particularly descriptive or even accurate, so if you're looking for that script, this is it (the newer version, that is).
 
-Shaders-Addon is a script to give Poser figures imported into Blender: skin, eyes and mouth shaders using an image set. These image sets are usually provided by the figure or character maker. The script runs in a panel [ T ] in the context of the the 3D Viewport window.
+**Poser Figure Shader** is a script to give Poser figures imported into Blender: skin, eyes and mouth shaders using an image set. These image sets are usually provided by the figure or character maker. The script runs in a panel [ T ] in the context of the the 3D Viewport window.
 
 Shaders-Addon requires Blender 2.76 **or greater** to run. Download the current version of Blender at:
 
@@ -60,7 +61,7 @@ Note the closing foward slash [ / ] for Linux-Mac and back-slash [ \ ] for Windo
 
    * Browse your add-ons - click on 'User' under 'Categories' - and find the add-on. It is called 'Material: Shaders-Poser Figures'. Tick the box on the right to activate it.
 
-* Find the panel with the script. Currently, this will show up in the Tools Panel section, at the bottom under 'Misc'.
+* Find the panel with the script. Currently, this will show up in the Tools Panel section, at the bottom under '**Misc**'.
 
 * If this is a new blender file with only the default cube, delete the cube and import your figure.
 
@@ -84,7 +85,7 @@ The next step is to give your object file (the figure you are trying to apply a 
    
    3. Mariko
 
-Any figure without the appropriate prefix will be ignored. You can rename the figure to the appropriate name in the box provided in the panel: select your figure, then enter the correct figure prefix in front of the name. For example, if you have a V4-based figure named Katie, rename your figure to 'V4Katie'. 
+Any figure in the scene without the appropriate prefix will be ignored. You can rename the figure to an appropriate name in the box provided in the panel: select your figure, then enter the correct figure prefix in front of the name. For example, if you have a V4-based figure named Katie, rename your figure to 'V4Katie'. 
 
 Also, ensure that the 'image_list.csv' file is in your images folder and contains the correct information about which image files correspond to which regions, also making sure there are no missing double-quote marks. Note: you will need the following .png files for the eyelashes:
 
