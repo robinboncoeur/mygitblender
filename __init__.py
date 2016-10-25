@@ -1,9 +1,9 @@
 # ---------------------------------------------------------------------
-# File: __init__.py (for make_shaders)
+# File: __init__.py (for figure_shaders)
 # ---------------------------------------------------------------------
 #
 # Copyright (c) 16-Nov-2015, Robyn Hahn
-# Revision: 12-Oct-2016
+# Revision: 25-Oct-2016
 #
 # ***** BEGIN GPL LICENSE BLOCK *****
 #
@@ -24,13 +24,13 @@
 # ***** END GPL LICENCE BLOCK *****
 
 bl_info = {
-    "name": "Shaders for Poser Figures",
+    "name": "Shaders for Imported Figures",
     "author": "Robyn Hahn",
-    "version": (0, 4, 0),
+    "version": (0, 4, 20161025),
     "blender": (2, 77, 0),
     "location": "View3D",
-    "description": "Generates simple Cycles shaders for select Poser Figures",
-    "warning": "minimally tested in Linux and Windows, not Mac. Spartan error-handling ...",
+    "description": "Generates simple Cycles shaders for imported OBJ Figures",
+    "warning": "Tested-working in Linux and Windows. Issues on the Mac ...",
     "wiki_url": "",
     "category": "Material"}
 
@@ -40,12 +40,14 @@ if "bpy" in locals():
 
     imp.reload(figure_defs)
     imp.reload(make_shaders)
-    print("make_shaders: Reloaded multifiles")
+    print("Reloaded multiple files")
 else:
     from . import figure_defs
     from . import make_shaders
-    print("make_shaders: Imported multifiles")
-
+    print("Imported multiple files")
+# NOTE: ===> make_shaders before . is the folder
+#            make_shaders after . is the file
+#            so, from folder_name.file_name import... etc
 from make_shaders.make_shaders import buildShader
 from make_shaders.figure_defs import matZones
 import csv
@@ -58,33 +60,31 @@ from bpy.types import (Panel,
 from bpy.props import (StringProperty,
                        EnumProperty,)
 
-figur_name = ''
-"""Convert type:dictionary figure list from matZones to type:list -
-Need to sort a few issues, here:
-[Error] AttributeError: 'matZones' object has no attribute 'items'
-
-fig_dict = matZones('list_figs')
-fig_list = [(v,k) for k, v in fig_dict.items()]"""
+thisOS_name = os.name
+sMsg = ""
 
 class MatShaderPanel(bpy.types.Panel):
-    """Create shaders for your Poser figure: Panel"""
-    bl_label = "Figure Files Util"
-    bl_idname = "MATERIALS_PT_shaders"
+    """Create shaders for imported figures: Panel"""
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
+    bl_label = "Figure Shader"
+    bl_context = "objectmode"
+    bl_idname = "MATERIALS_PT_shaders"
+    bl_category = "FigureShader"
 
     def draw(self, context):
         layout = self.layout
         
         if context.object:
             obj = context.object
-            figur_name = obj.name
+
+            #row = layout.row()
+            #row.label(text='Select your figure:')
 
             row = layout.row()
-            row.label(text='Apply shaders to:')
-
+            row.label(text="Active object is: ")
             row = layout.row()
-            row.label(text="Active object is: " + obj.name)
+            row.label(obj.name)
             row = layout.row()
             # dropdown will go here
             row.prop(obj, "name")
@@ -108,27 +108,28 @@ class runScript(bpy.types.Operator):
       2) context.active_object is a Poser figure
       3) context.active_object has the correct name 
     ================================================
+     the bpy.path.basename() returns the name of the currently active .blend, if un-named,
+     return .F. - button does not activate until file is saved with a name
     """
     @classmethod
     def poll(cls, context):
-        # object must be active
-        if bpy.path.basename(bpy.context.blend_data.filepath):
-            return context.active_object is not None
-        # if the file has not been saved, basename will be None
-        else:
-            return bpy.path.basename(bpy.context.blend_data.filepath)
+        def allCondsMet():
+            bAllMet = False
+            if bpy.path.basename(bpy.context.blend_data.filepath):
+                xPath = bpy.path.basename(bpy.context.blend_data.filepath)
+                bAllMet = True
+            return bAllMet
+
+        return allCondsMet()
 
     def execute(self, context):
-        # possibly check here that a known figure-name has been assigned to the object
-        # if bpy.context.scene.objects.active.name in fig_list:
         shadersSetup()
         return {'FINISHED'}
         
 
 def shadersSetup():
-    lExit = False
-    sMesg = 'N'
-
+    sMissingFile = ""
+    blend_name = ""
     """ ================================================================
          Returns the name of the figure if it matches the short list.
          Will need to develop a more flexible, dict-based solution.
@@ -167,8 +168,6 @@ def shadersSetup():
         return sStr
     
     
-    
-    """ Keep from running this next section if issues with name"""
     def paintShaders():
         # defined in figure_defs.py
         dict_mats = matZones(figure)
@@ -193,12 +192,9 @@ def shadersSetup():
             else:
                 return mtlType
     
-
         if bpy.context.scene.render.engine == 'BLENDER_RENDER':
             bpy.context.scene.render.engine = 'CYCLES'
         
-        """ Fully-qualified path to the currently open .blend. 
-        'path_list.csv' lives here. """ 
         blend_path = bpy.data.filepath
         blend_dir = os.path.dirname(blend_path)
         csv_listpath = os.path.join(blend_dir, "path_list.csv")
@@ -208,7 +204,10 @@ def shadersSetup():
         pathlist = dict(csv_list)
             
         # get the path to the images - [ WILL NEED ERROR CHECKING ]
-        path_str = pathlist.get('img_path')
+        if thisOS_name == 'posix':
+            path_str = pathlist.get('img_pathP')
+        if thisOS_name == 'nt':
+            path_str = pathlist.get('img_pathN')
         path_str = cleanStr(path_str)
         imag_dir = os.path.dirname(path_str)
         img_list = os.path.join(imag_dir, "image_list.csv")
@@ -243,9 +242,6 @@ def shadersSetup():
         bmp_Face = None if '0' else bmp_Face
         spc_Face = None if '0' else spc_Face
         bmpMouth = None if '0' else bmpMouth
-        
-        # makes sure your figure is selected and nothing else
-        # bpy.ops.object.select_all(action='DESELECT')
         
         # makes the current figure active
         bpy.context.scene.objects.active = bpy.data.objects[figure]
@@ -339,28 +335,81 @@ def shadersSetup():
                   print ("Unable to assign shaders at this time.")
     
     
-    
+    """ =====================================================================================
+        Error handling: [1] missing csv files
+        ================================================================================== """
+    def check4Files():
+        sRet = "FOUND"
+        # blend_name: name-only of the currently open .blend file
+        # blend_dir: fully-qualified path to [blend_name] - 'path_list.csv' lives here
+        # blend_path: fully-qualified path with [blend_name]
+        blend_name = bpy.path.basename(bpy.context.blend_data.filepath)
+        # print(blend_name)    
+        blend_path = bpy.context.blend_data.filepath
+        # print(blend_path)
+        blend_dir = os.path.dirname(blend_path)
+        # print(blend_dir)
+        # readlist() attempts to create list from csv file, if this fails, exit the process
+        #  with a .F., which the if() then returns a msg 
+        """ First, check for path_list"""
+        try:
+            csv_listpath = os.path.join(blend_dir, "path_list.csv")
+            csv_list = readList(csv_listpath)
+        except:
+            sRet = "PATH"
+        
+        if sRet == "FOUND":
+            try:
+                csv_listpath = os.path.join(blend_dir, "path_list.csv")
+                csv_list = readList(csv_listpath)
+                pathlist = dict(csv_list)
+                if thisOS_name == 'posix':
+                    path_str = pathlist.get('img_pathP')
+                if thisOS_name == 'nt':
+                    path_str = pathlist.get('img_pathN')
+                path_str = cleanStr(path_str)
+                print(path_str)
+                imag_dir = os.path.dirname(path_str)
+                print(imag_dir)
+                img_list = os.path.join(imag_dir, "image_list.csv")
+                pic_list = readList(img_list)
+            except:
+                sRet = "IMG"
+                
+        return sRet
+
+
     """ =====================================================================================
          Iterate through the objects in the scene, run paintShader only for valid objects
         ================================================================================== """
     sScen = bpy.context.scene
     figName = bpy.context.scene.objects.active.name
     
-    for obj in sScen.objects:
-        if obj.type == 'MESH':
-            #figName = bpy.context.scene.objects.active.name
-            oName = obj.name
-            newName = getFigName(oName)
-            if newName == 'NF':
-                obj.select = False
-            else:
-                obj.select = True
-                obj.name = newName
-                figure = newName
-                paintShaders()
-                obj.name = oName
-                obj.select = False
-    
+    sMsg = check4Files()
+    if sMsg == "FOUND":
+        for obj in sScen.objects:
+            if obj.type == 'MESH':
+                #figName = bpy.context.scene.objects.active.name
+                oName = obj.name
+                newName = getFigName(oName)
+                if newName == 'NF':
+                    obj.select = False
+                else:
+                    obj.select = True
+                    obj.name = newName
+                    figure = newName
+                    paintShaders()
+                    obj.name = oName
+                    obj.select = False
+    else:
+        print(sMsg)
+        if sMsg == "PATH":
+            sMsg = "Missing path_list.csv. Copy this file to the folder containing your .blend and edit it."
+        if sMsg == "IMG":
+            sMsg = "Your path_list.csv points to a folder missing the image_list.csv file."
+        if len(sMsg) < 1:
+            sMsg = "Another problem occurred."
+        print(sMsg)
 
 
 
