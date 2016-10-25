@@ -59,7 +59,7 @@ Note the closing foward slash [ / ] for Linux-Mac and back-slash [ \ ] for Windo
 
    * Navigate to where you downloaded the zip file and select the **zip file** (not the unzipped folder). Click 'Install from File...'
 
-   * Browse your add-ons - click on 'User' under 'Categories' - and find the add-on. It is called 'Material: Shaders-Poser Figures'. Tick the box on the right to activate it.
+   * Browse your add-ons - click on 'User' under 'Categories' - and find the add-on. It is called 'Material: Shaders-Poser Figures'. Tick the box on the right to activate it. **(If this does not appear, check in the scripts/addons/ folder for the existence of a make_shaders folder, and that all these files are within that folder... this is still showing itself to be an issue, which needs to be addressed ASAP).**
 
 * Find the panel with the script. Currently, this will show up in the Tools Panel section, at the bottom under '**Misc**'.
 
