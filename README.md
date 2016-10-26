@@ -1,27 +1,29 @@
-# Figure Shader
+# Figure Shaders
 
-**A bit of a preface**: I realise this README.md is a bit long... unfortunately, it does contain key information necessary for the script to run correctly. **Please take the time to read this carefully.** I hope to eventually make the script more error-friendly and user-friendly, but at the moment it is what it is.
-Also, this was previously called "Shaders-Addon", which wasn't particularly descriptive or even accurate, so if you're looking for that script, this is it (the newer version, that is).
+**A bit of a preface**: I realise this README.md is a bit long... unfortunately. However, it does contain key information on how to set things up in order for the script to run correctly. **Please take the time to read this carefully.** I hope to eventually make the script more error-friendly and user-friendly, but at the moment it is what it is.
 
-**Figure Shader** is a script to give humanoid figures imported into Blender: skin, eyes and mouth shaders using an image set. These image sets are usually provided by the figure or character maker. The script runs in a panel [ T ] in the context of the the 3D Viewport window.
+This script was previously called "Shaders-Addon", a name which which wasn't particularly descriptive or even accurate, so if you're looking for that script, this is it (the newer version, that is).
+
+**Figure Shaders** is a script to give humanoid figures imported into Blender: skin, eyes and mouth shaders using an image set. These image sets are usually provided by the figure or character maker. The script runs in a panel [ T ] in the context of the the 3D Viewport window.
+Currently - as of this writing - the name of the file is **FgrShaders41c.zip**.
 
 Shaders-Addon requires Blender 2.77 **or greater** to run. Download the current version of Blender at:
 
 http://www.blender.org/download/
 
-The current testing version of this add-on is 0.4.20161025, which is comprised of four files:
+The current version of this script is 0.4.20161026, which is comprised of four files:
 
 * \__init__.py: contains the panel code and stuff to create the shaders
 
 * figure_defs.py: dictionary object containing material slot names and material types (skin / eyes / etc)
 
-These reside in your scripts folder: Blender will install them there from the zip. Additionally, you will need:
+These reside in your scripts/addons folder in its own folder called **make_shaders**: Blender will install the folder and files from the zip. Additionally, the zip contains these files:
 
 * image_list.csv: **must be copied to the image folder for your figure, and edited**.
 
-* path_list.csv: **must be copied to your .blend file folder, and edited**.
+* path_list.csv: **must be copied to the folder your currently open .blend file is in, and edited**.
  
-These files can be found in the zip file, but they need to be copied to their respective final folders **(and edited)** for the script to work. A copy of the csv files will be copied to the scripts folder, but will not be read by the script.
+They need to be copied to their respective final folders **(and edited)** for the script to work. A copy of the csv files will be copied to the scripts folder, but will not be read by the script.
 
 Note: this script currently should work for the Victoria4, Dawn and Mariko figures, but has only been tested on the V4 figure so far.
 
@@ -29,7 +31,7 @@ Note: this script currently should work for the Victoria4, Dawn and Mariko figur
 # Instructions for Use
 * If you haven't already done so, install Blender.
 
-* Download the zip file (click the green [Clone or download] button, then select Download ZIP), and unzip it. Keep the zip file, as you will be installing the script in Blender from the zip file. Currently - as of this writing - the name of the file is **FgrShaders41b.zip**.
+* Download the zip file (click the green [Clone or download] button, then select Download ZIP), and unzip it. Keep the zip file, as you will be installing the script in Blender from the zip file.
 
 * Find the .csv files: image_list.csv and path_list.csv will be in your unzip folder. Copy the image_list.csv to your images folder. Open it in either text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free).
 
@@ -89,7 +91,7 @@ The next step is to give your object file (the figure you are trying to apply a 
    
    3. Mariko
 
-Any figure in the scene without the appropriate prefix will be ignored. You can rename the figure to an appropriate name in the box provided in the panel: select your figure, then enter the correct figure prefix in front of the name. For example, if you have a V4-based figure named **Katie**, rename your figure to '**V4Katie**'. 
+Any figure in the scene without the appropriate prefix will be ignored. You can rename the figure to an appropriate name in the box provided in the panel: select your figure, then enter the correct figure prefix in front of the name. For example, if you have a V4-based figure named **Katie**, rename your figure to '**V4Katie**'. The script will not apply shaders to a figure unless this is done.
 
 Also, ensure that the 'image_list.csv' file is in your images folder and contains the correct information about which image files correspond to which regions, also making sure there are no missing double-quote marks. Note: you will need the following .png files for the eyelashes:
 
@@ -98,7 +100,7 @@ For V4: __http://www.tightbytes.com/Blender/dev/V4Lashes05.png__
 For Dawn: __http://www.tightbytes.com/Blender/dev/4_DawnLashes.png__
 
 
-Simply download them to your images folder: they will not over-write anything. The 'Make Shaders' button should now be enabled. Click it to run the script.
+Simply download them to your images folder.
 
 # Caveat
 -- This script has currently been tested in Linux (Mint Cinnamon 18), on a Macbook Pro running MacOS Sierra and on Windows 7 Professional. The script loads and runs successfully on all these OSes. 
