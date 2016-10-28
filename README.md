@@ -25,7 +25,7 @@ These reside in your scripts/addons folder in its own folder called **make_shade
  
 They need to be copied to their respective final folders **(and edited)** for the script to work. A copy of the csv files will be copied to the scripts folder, but will not be read by the script.
 
-Note: this script currently should work for the Victoria4, Dawn and Mariko figures, but has only been tested on the V4 figure so far.
+Note: this script has been designed and should work for the Victoria4, Dawn and Mariko figures, but has only been tested on the V4 figure so far.
 
 
 # Instructions for Use
@@ -36,6 +36,7 @@ Note: this script currently should work for the Victoria4, Dawn and Mariko figur
 * Find the .csv files: image_list.csv and path_list.csv will be in your unzip folder. Copy the image_list.csv to your images folder. Open it in either text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free).
 
    * The two columns represent the region (FieldName) the image is going to be assigned to, and the name (ImageName) of the image file itself. You only ever edit the names of the images (the second column): the field-names are used by the script and so must not be changed. If you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes: they need to exist for every image and field name. If you are using a spreadsheet program to edit this csv, be sure to save it out as type .csv, and not as .xls or .ods.
+   (An observation: editing .csv files on the Mac using TextEdit.app can corrupt your .csv, messing in particular with the double-quotes. Microsoft Excel appears to create the same mess, if not worse - no surprise there. However, LibreOffice will save your .csv correctly **if** you do a Save As... and tick the "Edit Filter Settings" tickbox. Save over your file when prompted (Replace), then in the next dialogue, make sure the Text Delimiter is a double-quote, and -- **very important** -- the Quote all text cells is ticked. Blender and the FigureShaders script will now read the file correctly.)
 
 * Copy the path_list.csv file to the folder containing your .blend file. If you are creating a new .blend file and don't know where it is going to end up, you can install FigureShader anyway, but the script will not run until you've saved the file somewhere. You will need to copy the path_list.csv to that folder and edit it prior to running the script.
 
@@ -110,7 +111,9 @@ __http://blender.stackexchange.com/questions/6173/where-does-console-output-go__
 
 For now, please read the error message in the console.
 
-Update 25-Oct-2016: up to version 0.4.1, which checks for and compensates for Blender sometimes tacking on a :1 (or a .001, or even a :1.002) to a material name for the V4 series. I've solved some of those issues (material names), hopefully without creating others. Please do let me know if you run into dramas. Also checks for the presence of the .csv files. Invalid edits are as yet not trapped.
+Update 28-Oct-2016: version 0.4.2. Checks path statement in path_list.csv that the path is correct for the folder holding the image files. Checks for the existence of the image_list.csv file. Checks that all entries in image_list.csv are correct (as in: correspond to a file in that folder). **Unfortunately, currently all errors are printed to console at this time.**
+
+Update 25-Oct-2016: version 0.4.1. Checks for and compensates for Blender sometimes tacking on a :1 (or a .001, or even a :1.002) to a material name for the V4 series. I've solved some of those issues (material names), hopefully without creating others. Please do let me know if you run into dramas. Also checks for the presence of the .csv files. Invalid edits are as yet not trapped.
 
 -- Remember, this is open-source software: if you break it, you get to keep both pieces. :D  
 
