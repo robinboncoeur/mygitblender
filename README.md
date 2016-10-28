@@ -7,7 +7,7 @@ This script was previously called "Shaders-Addon", a name which which wasn't par
 **Figure Shaders** is a script to give humanoid figures imported into Blender: skin, eyes and mouth shaders using an image set. These image sets are usually provided by the figure or character maker. The script runs in a panel [ T ] in the context of the the 3D Viewport window.
 Currently - as of this writing - the name of the file is **FgrShaders42.zip**.
 
-FigureShaders requires Blender 2.77 **or greater** to run. Download the current version of Blender at:
+**Figure Shaders** requires Blender 2.77 or greater to run. Download the current version of Blender at:
 
 http://www.blender.org/download/
 
@@ -23,24 +23,24 @@ These reside in your scripts/addons folder in its own folder called **make_shade
  
 * image_list.csv: **must be copied to the image folder for your figure, and edited**.
 
-They need to be copied to their respective final folders **(and edited)** for the script to work. A copy of the csv files will be copied to the scripts folder, but will not be read by the script.
+They need to be copied to their respective final folders **(and edited)** for the script to work. *Note: A copy of the csv files will be copied to the scripts folder, but will not be read by the script.*
 
-Note: this script has been designed and should work for the Victoria4, Dawn and Mariko figures, but has only been tested on the V4 figure so far.
+This script has been designed and should work for the Victoria4, Dawn and Mariko figures, but has only been tested on the V4 figure so far.
 
 
 # Instructions for Use
 * If you haven't already done so, install Blender.
 
-* Download the zip file (click the green [Clone or download] button, then select Download ZIP), and unzip it. Keep the zip file, as you will be installing the script in Blender from the zip file.
+* Download the current zip file: if you click the green [Clone or download] button and select Download ZIP, you will get all versions. You might want to just download the current version, however: click the FgrShadersxx.zip file, then on the right side (next to the History button) click Download. Extract the zip to a folder but keep the zip file, as you will be installing the script in Blender from that zip file.
 
-* Find the .csv files: image_list.csv and path_list.csv will be in your unzip folder. Copy the image_list.csv to your images folder. Open it in either text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free).
+* Find the .csv files: **image_list.csv** and **path_list.csv** will be in your unzip folder. Copy the image_list.csv to your images folder. You can edit this in Windows and Linux in either a plain text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free), or on the Mac in LibreOffice. See notes below on how and why LibreOffice is recommended for the Mac. 
 
-   * The two columns represent the region (FieldName) the image is going to be assigned to, and the name (ImageName) of the image file itself. You only ever edit the names of the images (the second column): the field-names are used by the script and so must not be changed. If you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes: they need to exist for every image and field name. If you are using a spreadsheet program to edit this csv, be sure to save it out as type .csv, and not as .xls or .ods.
-   (An observation: editing .csv files on the Mac using TextEdit.app can corrupt your .csv, messing in particular with the double-quotes. Microsoft Excel appears to create the same mess, if not worse - no surprise there. However, LibreOffice will save your .csv correctly **if** you do a Save As... and tick the "Edit Filter Settings" tickbox. Save over your file when prompted (Replace), then in the next dialogue, make sure the Text Delimiter is a double-quote, and -- **very important** -- the Quote all text cells is ticked. Blender and the FigureShaders script will now read the file correctly.)
+   * The two columns represent the region (i.e., the Field Name) the image is going to be assigned to, and the name of the image file itself. You only ever edit the names of the images (the second column): the field names are used by the script and so must not be changed. If you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes: they need to exist for every image and field name. If you are using a spreadsheet program to edit this csv, be sure to save it out as type .csv, and not as .xls or .ods.
+   (An observation: editing .csv files on the Mac using TextEdit.app can/probably-will corrupt your .csv, messing in particular with the double-quotes. Microsoft Excel for the Mac appears to create the same mess, if not worse - no surprise there. However, LibreOffice will save your .csv correctly **if** you do a Save As... and tick the "Edit Filter Settings" tickbox. Save over your file when prompted (Replace), then in the next dialogue, make sure the Text Delimiter is a double-quote, and -- **very important** -- the Quote all text cells is ticked. Blender and the FigureShaders script will now read the file correctly.)
 
-* Copy the path_list.csv file to the folder containing your .blend file. If you are creating a new .blend file and don't know where it is going to end up, you can install FigureShader anyway, but the script will not run until you've saved the file somewhere. You will need to copy the path_list.csv to that folder and edit it prior to running the script.
+* Copy the path_list.csv file to the folder containing your .blend file. If you are creating a new .blend file and don't know where it is going to end up, you can install **Figure Shader** anyway, but the script will not run until you've saved the file somewhere. You will need to copy the path_list.csv to that folder and edit it prior to running the script.
 
-   * Open the path_list.csv file in either a text editor or - preferably - in a spreadsheet program such as Excel or Calc. The two columns represent the path key ('key': this first column has names used by the script, so they must not be changed), and the fully-qualified path (value) to your images folder. Note: I tend to keep my textures files together in a sub-folder called "AllSkin" in my "AllTextures" folder in the main "Projects" folder that has all my Blender projects in it. This cuts down on redundant files everywhere and makes it easy for scripts (and Blender itself) to find stuff. The "path_list.csv" file assumes this sort of structure: of course, you can always just replace the existing path entry in path_list.csv -- which is definitely not valid, since it is unlikely your name is Robyn and your computer is set up exactly like mine -- with a fully-qualified path to your image texture files. An example of a fully-qualified path for Linux would be:
+   * Open the path_list.csv file. The two columns represent the path key ('key': this first column has names used by the script, so they must not be changed), and the fully-qualified path (value) to your images folder. Note: I tend to keep my textures files together in a sub-folder called "AllSkin" in my "AllTextures" folder in the main "Projects" folder that has all my Blender projects in it. This cuts down on redundant files everywhere and makes it easy for scripts (and Blender itself) to find stuff. The "path_list.csv" file assumes this sort of structure: of course, you can always just replace the existing images folder path in path_list.csv. The current entry is just an example and is almost definitely not a valid path to your files, since it is unlikely your name is Robyn and your computer is set up exactly like mine. Replace this with a fully-qualified path to your image texture files. An example of a fully-qualified path for Linux would be:
 
 __"/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/V4/"__
 
@@ -105,16 +105,16 @@ Simply download them to your images folder.
 
 # Caveat
 -- This script has currently been tested in Linux (Mint Cinnamon 18), on a Macbook Pro running MacOS Sierra and on Windows 7 Professional. The script loads and runs successfully on all these OSes. 
--- Although some error-checking work has been accomplished, the script is still in fairly rudimentary form. I am trying to get errors to be displayed somewhere on the interface: however, for now, **error messages only show up on the System Console.** 
+-- Whilst I am trying to get errors to be displayed somewhere on the interface, for now **error messages only show up on the System Console.** 
 I tend to run Blender from a Terminal window in Linux, so I check there for error messages. In Windows, you can toggle the System Console under: (Menu) Window > Toggle System Console. Mac users, please refer to this page:
 __http://blender.stackexchange.com/questions/6173/where-does-console-output-go__
 
 For now, please read the error message in the console.
 
-Update 28-Oct-2016: version 0.4.2. Checks path statement in path_list.csv that the path is correct for the folder holding the image files. Checks for the existence of the image_list.csv file. Checks that all entries in image_list.csv are correct (as in: correspond to a file in that folder). **Unfortunately, currently all errors are printed to console at this time.**
+Update 28-Oct-2016: version 0.4.2. Checks path statement in path_list.csv that the path is correct for the folder holding the image files. Checks for the existence of the image_list.csv file. Checks that all entries in image_list.csv are correct (as in: correspond to a file in that folder).
 
 Update 25-Oct-2016: version 0.4.1. Checks for and compensates for Blender sometimes tacking on a :1 (or a .001, or even a :1.002) to a material name for the V4 series. I've solved some of those issues (material names), hopefully without creating others. Please do let me know if you run into dramas. Also checks for the presence of the .csv files. Invalid edits are as yet not trapped.
 
 -- Remember, this is open-source software: if you break it, you get to keep both pieces. :D  
 
--- Please do contact me if you run into any dramas at robinseahahn at gmail. This is very much a work in progress and will only improve with time. Cheers...
+-- Please contact me if you run into any dramas at robinseahahn at gmail dot com.
