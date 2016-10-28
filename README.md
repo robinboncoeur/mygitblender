@@ -5,13 +5,13 @@
 This script was previously called "Shaders-Addon", a name which which wasn't particularly descriptive or even accurate, so if you're looking for that script, this is it (the newer version, that is).
 
 **Figure Shaders** is a script to give humanoid figures imported into Blender: skin, eyes and mouth shaders using an image set. These image sets are usually provided by the figure or character maker. The script runs in a panel [ T ] in the context of the the 3D Viewport window.
-Currently - as of this writing - the name of the file is **FgrShaders41c.zip**.
+Currently - as of this writing - the name of the file is **FgrShaders42.zip**.
 
-Shaders-Addon requires Blender 2.77 **or greater** to run. Download the current version of Blender at:
+FigureShaders requires Blender 2.77 **or greater** to run. Download the current version of Blender at:
 
 http://www.blender.org/download/
 
-The current version of this script is 0.4.20161026, which is comprised of four files:
+The current version of this script is 0.4.2, which is comprised of four files:
 
 * \__init__.py: contains the panel code and stuff to create the shaders
 
@@ -19,10 +19,10 @@ The current version of this script is 0.4.20161026, which is comprised of four f
 
 These reside in your scripts/addons folder in its own folder called **make_shaders**: Blender will install the folder and files from the zip. Additionally, the zip contains these files:
 
-* image_list.csv: **must be copied to the image folder for your figure, and edited**.
-
 * path_list.csv: **must be copied to the folder your currently open .blend file is in, and edited**.
  
+* image_list.csv: **must be copied to the image folder for your figure, and edited**.
+
 They need to be copied to their respective final folders **(and edited)** for the script to work. A copy of the csv files will be copied to the scripts folder, but will not be read by the script.
 
 Note: this script has been designed and should work for the Victoria4, Dawn and Mariko figures, but has only been tested on the V4 figure so far.
