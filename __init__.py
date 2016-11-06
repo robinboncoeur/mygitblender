@@ -450,7 +450,7 @@ def shadersSetup():
     else:
         # print(sMsg)
         if sMsg == "PATH":
-            longMsg = "Missing path_list.csv. Copy this file to the folder containing your .blend and edit it."
+            longMsg = "Missing path_list.csv. Copy this file to the folder with .blend and edit it."
         if sMsg == "IMGLIST":
             longMsg = "Your path_list.csv points to a folder missing the image_list.csv file."
         if sMsg == "IMAGE":
@@ -464,16 +464,14 @@ def shadersSetup():
 
 
 
-# Note2Self: first in, best dressed -> last out
+# Note-2-Self: first in, best dressed -> last out
 def register():
     bpy.utils.register_module(__name__)
     bpy.utils.register_class(RunMsScript)
-    bpy.types.Scene.figur_obj = bpy.props.StringProperty
-    (
-      name="Figure Type",
-      default="",
-      description="Defines the base mesh name of your figure"
-    )
+    bpy.types.Scene.figur_obj = bpy.props.StringProperty(
+      name = "Figure Type",
+      default = "",
+      description = "Defines the base mesh name of your figure")
 
 def unregister():
     del bpy.types.Scene.figur_obj
