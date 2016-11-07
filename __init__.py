@@ -467,7 +467,7 @@ def shadersSetup():
 # Note-2-Self: first in, best dressed -> last out
 def register():
     bpy.utils.register_module(__name__)
-    bpy.utils.register_class(RunMsScript)
+    # bpy.utils.register_class(RunMsScript)
     bpy.types.Scene.figur_obj = bpy.props.StringProperty(
       name = "Figure Type",
       default = "",
@@ -475,7 +475,7 @@ def register():
 
 def unregister():
     del bpy.types.Scene.figur_obj
-    bpy.utils.unregister_class(RunMsScript)
+    # bpy.utils.unregister_class(RunMsScript)
     bpy.utils.unregister_module(__name__)
 
 if __name__ == "__main__":
