@@ -109,7 +109,7 @@ Simply download them to your images folder.
 I tend to run Blender from a Terminal window in Linux (Blenderites know this as the console), so I check there for error messages. In Windows, you can toggle the System Console under: (Menu) Window > Toggle System Console. Mac users, please refer to this page:
 __http://blender.stackexchange.com/questions/6173/where-does-console-output-go__
 
-Update 07-Nov-2016: version 0.4.3. Messages successfully sent to the Info panel in the Linnux version. Need more extensive testing, however, on the Mac and in Windows.
+Update 07-Nov-2016: version 0.4.3. Messages successfully sent to the Info panel in the Linux version. Need more extensive testing, however, on the Mac and in Windows.
 
 Update 28-Oct-2016: version 0.4.2. Checks path statement in path_list.csv that the path is correct for the folder holding the image files. Checks for the existence of the image_list.csv file. Checks that all entries in image_list.csv are correct (as in: correspond to a file in that folder).
 
