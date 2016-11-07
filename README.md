@@ -117,4 +117,4 @@ Update 25-Oct-2016: version 0.4.1. Checks for and compensates for Blender someti
 
 -- Remember, this is open-source software: if you break it, you get to keep both pieces. :D  
 
--- Please contact me if you run into any dramas at robinseahahn at gmail dot com, or (preferably) raise an issue under https://github.com/robinboncoeur/FigureShaders/issues .
+-- Please contact me if you run into any dramas at robinseahahn at gmail dot com, or (preferably) raise an issue under __https://github.com/robinboncoeur/FigureShaders/issues__.
