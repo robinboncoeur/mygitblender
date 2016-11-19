@@ -70,19 +70,19 @@ Note the closing foward slash [ / ] for Linux-Mac and back-slash [ \ ] for Windo
    
    * Tick the box on the right to activate it. **(If this does not appear, check in the scripts/addons/ folder for the existence of a make_shaders folder, and that all these files are within that folder).**
 
- * Find the panel with the script. Currently, this will show up in the Tools Panel section, at the bottom labeled '**FigureShader**'.
+* Find the panel with the script. Currently, this will show up in the Tools Panel section, at the bottom labeled '**FigureShader**'.
 
- * If this is a new blender file with only the default cube, delete the cube and import your figure.
+* If this is a new blender file with only the default cube, delete the cube and import your figure.
 
- * File -> Import -> Wavefront (obj) ... navigate to your figure, select the OBJ (not the MTL) and chose the following Import settings:
+* File -> Import -> Wavefront (obj) ... navigate to your figure, select the OBJ (not the MTL) and chose the following Import settings:
 
- * Untick Smooth Groups and untick Lines and everything in 'Split By'
+* Untick Smooth Groups and untick Lines and everything in 'Split By'
 
- * Tick 'Keep Vert Order' and tick 'Poly Groups'
+* Tick 'Keep Vert Order' and tick 'Poly Groups'
 
- * Import OBJ
+* Import OBJ
 
- * Click on the figure in the scene, press [S] (for scale), and type 10
+* Click on the figure in the scene, press [S] (for scale), and type 10
 
 Until you save your .blend file -- giving it a name -- you will notice the 'Apply Shaders' button is greyed out (disabled). The button will also be disabled if your figure - the target for the shaders - is not selected. Save your .blend. Make sure the 'path_list.csv' file is with your saved .blend, and that it contains valid path information about the location of your image files.
 
