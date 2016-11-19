@@ -31,7 +31,7 @@ This script has been designed and should work for the Victoria4, Dawn and Mariko
 # Instructions for Use
 * If you haven't already done so, install Blender.
 
-* Download **FigureShaders-Master.zip**: click the green [Clone or download] button and select Download ZIP. Extract the zip to a folder but keep the zip file, as you will be installing the script in Blender from that zip file.
+* Download **FigureShaders-Master.zip**: click the green [Clone or download] button and select Download ZIP. Extract the zip to a folder that you can find easily. Within this file is the **make_shaders.zip** file: this is what you will install in Blender.
 
 * Find the .csv files: **image_list.csv** and **path_list.csv** will be in your unzip folder. Copy the image_list.csv to your images folder. You can edit this in Windows and Linux in either a plain text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free), or on the Mac in LibreOffice. See notes below on how and why LibreOffice is recommended for the Mac. 
 
@@ -64,13 +64,15 @@ Note the closing foward slash [ / ] for Linux-Mac and back-slash [ \ ] for Windo
 
    * At the bottom of this dialogue, click on Install From File...
 
-   * Navigate to where you downloaded the zip file and select the **zip file** (not the unzipped folder). Click 'Install from File...'
+   * Navigate to where you downloaded the zip file and select the **make_shaders.zip** file. Click 'Install from File...'
+   
+   * The add-on **Material: shaders for imported figures** should be visible in the add-ons tab. If not, browse your add-ons - click on 'User' under 'Categories' - and find the add-on. It is called **'Material: shaders for imported figures'**.
+   
+   * Tick the box on the right to activate it. **(If this does not appear, check in the scripts/addons/ folder for the existence of a make_shaders folder, and that all these files are within that folder).**
 
-   * Browse your add-ons - click on 'User' under 'Categories' - and find the add-on. It is called 'Material: Shaders-Poser Figures'. Tick the box on the right to activate it. **(If this does not appear, check in the scripts/addons/ folder for the existence of a make_shaders folder, and that all these files are within that folder).**
+   * Find the panel with the script. Currently, this will show up in the Tools Panel section, at the bottom labeled '**FigureShader**'.
 
-* Find the panel with the script. Currently, this will show up in the Tools Panel section, at the bottom labeled '**FigureShader**'.
-
-* If this is a new blender file with only the default cube, delete the cube and import your figure.
+   * If this is a new blender file with only the default cube, delete the cube and import your figure.
 
    * File -> Import -> Wavefront (obj) ... navigate to your figure, select the OBJ (not the MTL) and chose the following Import settings:
 
@@ -78,9 +80,9 @@ Note the closing foward slash [ / ] for Linux-Mac and back-slash [ \ ] for Windo
 
    * Tick 'Keep Vert Order' and tick 'Poly Groups'
 
-* Import OBJ
+   * Import OBJ
 
-* Click on the figure in the scene, press [S] (for scale), and type 10
+   * Click on the figure in the scene, press [S] (for scale), and type 10
 
 Until you save your .blend file -- giving it a name -- you will notice the 'Apply Shaders' button is greyed out (disabled). The button will also be disabled if your figure - the target for the shaders - is not selected. Save your .blend. Make sure the 'path_list.csv' file is with your saved .blend, and that it contains valid path information about the location of your image files.
 
