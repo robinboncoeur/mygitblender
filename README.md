@@ -21,7 +21,7 @@ These reside in your scripts/addons folder in its own folder called **make_shade
  
 * image_list.csv: **must be copied to the image folder for your figure, and edited**.
 
-They need to be copied to their respective final folders **(and edited)** for the script to work. *Note: A copy of the csv files will be copied to the scripts folder, but will not be read by the script.*
+They need to be copied to their respective final folders **(and edited)** for the script to work. *Note: A copy of the csv files will be copied to the scripts folder, but those .csv files in that scripts folder will not be read by the script.*
 
 This script has been designed and should work for the Victoria4, Dawn and Mariko figures, but has only been tested on the V4 figure so far.
 
