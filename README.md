@@ -1,8 +1,6 @@
 # Figure Shaders
 
-**A bit of a preface**: I realise this README.md is a bit long... unfortunately. However, it does contain key information on how to set things up in order for the script to run correctly. **Please take the time to read this carefully.** I hope to eventually make the script more error-friendly and user-friendly, but at the moment it is what it is.
-
-This script was previously called "Shaders-Addon", a name which which wasn't particularly descriptive or even accurate, so if you're looking for that script, this is it (the newer version, that is).
+**A bit of a preface**: I realise this README is a bit long... unfortunately. However, it does contain key information on how to set things up in order for the script to run correctly. **Please take the time to read this carefully.** I hope to eventually make the script more error-friendly and user-friendly, but at the moment it is what it is. *Note: This script was previously called "Shaders-Addon", a name which which wasn't particularly descriptive or even accurate, so if you're looking for that script, this is it (the newer version, that is).*
 
 **Figure Shaders** is a script to give humanoid figures imported into Blender: skin, eyes and mouth shaders using an image set. These image sets are usually provided by the figure or character maker. The script runs in a panel [ T ] in the context of the the 3D Viewport window.
 As of 07-Nov-2016, the most recent version is **0.43**. The file you will download is **FigureShaders-Master.zip**.
@@ -64,13 +62,13 @@ Note the closing foward slash [ / ] for Linux-Mac and back-slash [ \ ] for Windo
 
    * At the bottom of this dialogue, click on Install From File...
 
-   * Navigate to where you downloaded the zip file and select the **make_shaders.zip** file. Click 'Install from File...'
+   * Navigate to where you downloaded the zip file and extracted it. It should be in its own folder, likely called FigureShaders-master or something like that. *Note: be sure to select the **make_shaders.zip** file and not the FigureShaders-master.zip file.* Click 'Install from File...'
    
    * The add-on **Material: shaders for imported figures** should be visible in the add-ons tab. If not, browse your add-ons - click on 'User' under 'Categories' - and find the add-on. It is called **'Material: shaders for imported figures'**.
    
    * Tick the box on the right to activate it. **(If this does not appear, check in the scripts/addons/ folder for the existence of a make_shaders folder, and that all these files are within that folder).**
 
-* Find the panel with the script. Currently, this will show up in the Tools Panel section, at the bottom labeled '**FigureShader**'.
+* Find the panel with the script. Currently, this will show up in the Tools Panel section - the one on the left, toggled with [T] - usually the bottom tab labeled '**FigureShader**'.
 
 * If this is a new blender file with only the default cube, delete the cube and import your figure.
 
@@ -94,7 +92,7 @@ The next step is to give your object file (the figure you are trying to apply a 
    
    3. Mariko
 
-Any figure in the scene without the appropriate prefix will be ignored. You can rename the figure to an appropriate name in the box provided in the panel: select your figure, then enter the correct figure prefix in front of the name. For example, if you have a V4-based figure named **Katie**, rename your figure to '**V4Katie**'. The script will not apply shaders to a figure unless this is done.
+Any figure in the scene without the appropriate prefix will be ignored. You can rename the figure to an appropriate name in the box provided in the panel: select your figure, then enter the correct figure prefix in front of the name. For example, if you have a V4-based figure named **Katie**, rename your figure to '**V4Katie**'. The script will not apply shaders to a figure unless the name is prefaced by figure type.
 
 Also, ensure that the 'image_list.csv' file is in your images folder and contains the correct information about which image files correspond to which regions, also making sure there are no missing double-quote marks. Note: you will need the following .png files for the eyelashes:
 
@@ -107,7 +105,7 @@ Simply download them to your images folder.
 
 # Caveat
 -- This script has currently been tested in Linux (Mint Cinnamon 18), on a Macbook Pro running MacOS Sierra and on Windows 7 Professional. The script loads and runs successfully on all these OSes.
--- Some FigureShader messages are displayed on the Info panel, between the Render Engine dropdown and the Blender Logo now. **Most error messages will still show up on the System Console or in a popup, however.** I'm hoping these will become less with time as I do better error-trapping.
+-- Some FigureShader messages are displayed on the Info panel, between the Render Engine dropdown and the Blender Logo now. **Most error messages will still show up on the System Console or in a popup, however.** I'm hoping these will become less with time as I do better error-handling.
 I tend to run Blender from a Terminal window in Linux (Blenderites know this as the console), so I check there for error messages. In Windows, you can toggle the System Console under: (Menu) Window > Toggle System Console. Mac users, please refer to this page:
 __http://blender.stackexchange.com/questions/6173/where-does-console-output-go__
 
