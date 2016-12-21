@@ -9,19 +9,21 @@ As of 07-Nov-2016, the most recent version is **0.43**. The file you will downlo
 
 http://www.blender.org/download/
 
-**Figure Shaders** is comprised of four files:
+**Figure Shaders** is comprised of five files:
 
-* \__init__.py: contains the panel code and stuff to create the shaders
+* \__init\__.py: contains the panel code and sets up stuff to run make_shaders.py
+
+* make_shaders.py: actually creates the node sets for the materials
 
 * figure_defs.py: dictionary object containing material slot names and material types (skin / eyes / etc)
 
-These reside in your scripts/addons folder in its own folder called **make_shaders**: Blender will install the folder and files from the zip. Additionally, the zip contains these files:
+These files reside in your scripts/addons folder in its own folder called **make_shaders**: Blender will install the folder and files from the zip. Additionally, the zip contains these files:
 
-* path_list.csv: **must be copied to the folder your currently open .blend file is in, and edited**.
+* path_list.csv: **cannot be used as-is--must be copied to your currently open .blend file's folder, and edited**.
  
-* image_list.csv: **must be copied to the image folder for your figure, and edited**.
+* image_list.csv: **cannot be used as-is--must be copied to the images folder for your figure, and edited**.
 
-They need to be copied to their respective final folders **(and edited)** for the script to work. *Note: A copy of the csv files will be copied to the scripts folder, but those .csv files in that scripts folder will not be read by the script.*
+It is essential these files are copied to their respective folders **(and edited)** for the script to work. *Note: A copy of the csv files will be extracted to the scripts folder during the unarchiving, but those .csv files in that scripts folder will not be read by the script.*
 
 This script has been designed and should work for the Victoria4, Dawn and Mariko figures, but has only been tested on the V4 figure so far.
 
@@ -33,12 +35,12 @@ This script has been designed and should work for the Victoria4, Dawn and Mariko
 
 * Find the .csv files: **image_list.csv** and **path_list.csv** will be in your unzip folder. Copy the image_list.csv to your images folder. You can edit this in Windows and Linux in either a plain text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free), or on the Mac in LibreOffice. See notes below on how and why LibreOffice is recommended for the Mac. 
 
-   * The two columns in image_list.csv represent the region (i.e., the Field Name) the image is going to be assigned to, and the name of the image file itself. You only ever edit the **names** of the images (the second column): the field names are used by the script and so must not be changed. If you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes: they need to exist for every image and field name. If you are using a spreadsheet program to edit this csv, be sure to save it out as type .csv, and not as .xls or .ods.
-   (An observation: editing .csv files on the Mac using TextEdit.app can/probably-will corrupt your .csv, messing in particular with the double-quotes. Microsoft Excel for the Mac appears to create the same mess, if not worse - no surprise there. However, LibreOffice will save your .csv correctly **if** you do a Save As... and tick the "Edit Filter Settings" tickbox. Save over your file when prompted (Replace), then in the next dialogue, make sure the Text Delimiter is a double-quote, and -- **very important** -- the Quote all text cells is ticked. Blender and the FigureShaders script will now read the file correctly.)
+   * The two columns in image_list.csv represent the material region group (i.e., the Field Name) the image is going to be assigned to, and the name of the image file itself. You only ever edit the **names** of the images (the second column): the field names are used by the script and so must not be changed. If you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes: they need to exist for every image and field name. If you are using a spreadsheet program to edit this csv, be sure to save it out as type .csv when you have finished your edits, and not as an .xls or .ods file.
+   (An observation: editing .csv files on the Mac using TextEdit.app can/probably-will corrupt your .csv, messing in particular with the double-quotes. Microsoft Excel for the Mac appears to create the same mess, if not worse - no surprise there. However, LibreOffice will save your .csv correctly **if** you do a Save As... and tick the "Edit Filter Settings" tickbox. Save over your file when prompted (Replace), then in the next dialogue, make sure the Text Delimiter is a double-quote, and -- **very important** -- the "Quote all text cells" box is ticked. Blender and the FigureShaders script will now read the file correctly.)
 
-* Copy the path_list.csv file to the folder containing your .blend file. If you are creating a new .blend file and don't know where it is going to end up, you can install **Figure Shader** anyway, but the script will not run until you've saved the file somewhere. You will need to copy the path_list.csv to that folder and edit it prior to running the script.
+* Copy the path_list.csv file to the folder containing your .blend file. If you are creating a new .blend file and don't know where it is going to end up, you can install **Figure Shader** anyway, but the script will not run until you've saved the file somewhere. You will need to copy the path_list.csv to the same folder as your .blend file and edit the .csv file so that the entry for the path to the images is correct for your system prior to running the script.
 
-   * Open the path_list.csv file. The two columns represent the path key ('key': this first column has names used by the script, so they must not be changed), and the fully-qualified path (value) to your images folder. Note: I tend to keep my textures files together in a sub-folder called "AllSkin" in my "AllTextures" folder in the main "Projects" folder that has all my Blender projects in it. This cuts down on redundant files everywhere and makes it easy for scripts (and Blender itself) to find stuff. The "path_list.csv" file assumes this sort of structure: of course, you can always just replace the existing images folder path in path_list.csv. The current entry is just an example and is almost definitely not a valid path to your files, since it is unlikely your name is Robyn and your computer is set up exactly like mine. Replace this with a fully-qualified path to your image texture files. An example of a fully-qualified path for Linux would be:
+   * Open the path_list.csv file. The two columns represent the path key ('key': this first column has names used by the script, so they must not be changed), and the fully-qualified path (value) to your images folder. Note: I tend to keep my textures files together in a sub-folder called "AllSkin" in my "AllTextures" folder in the main "Projects" folder that has all my Blender projects in it. This cuts down on redundant files eating up hard disk space and makes it easy for scripts (and Blender itself) to find stuff. The "path_list.csv" file assumes this sort of structure: of course, you can always just replace the existing images folder path in path_list.csv. The current entry is just an example and is almost definitely not a valid path to your files, since it is unlikely your name is Robyn and your computer is set up exactly like mine. Replace this with a fully-qualified path to your image texture files. An example of a fully-qualified path for Linux would be:
 
 __"/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/V4/"__
 
@@ -105,7 +107,7 @@ Simply download them to your images folder.
 
 # Caveat
 -- This script has currently been tested in Linux (Mint Cinnamon 18), on a Macbook Pro running MacOS Sierra and on Windows 7 Professional. The script loads and runs successfully on all these OSes.
--- Some FigureShader messages are displayed on the Info panel, between the Render Engine dropdown and the Blender Logo now. **Most error messages will still show up on the System Console or in a popup, however.** I'm hoping these will become less with time as I do better error-handling.
+-- Some FigureShader messages now display on the Info panel, between the Render Engine dropdown and the Blender Logo. **Most error messages--particularly those I haven't developed an error-handler for yet--will still show up on the System Console or in a popup, however.** I'm hoping these will become less with time as I do better error-handling.
 I tend to run Blender from a Terminal window in Linux (Blenderites know this as the console), so I check there for error messages. In Windows, you can toggle the System Console under: (Menu) Window > Toggle System Console. Mac users, please refer to this page:
 __http://blender.stackexchange.com/questions/6173/where-does-console-output-go__
 
