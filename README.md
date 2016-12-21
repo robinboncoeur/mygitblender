@@ -1,6 +1,8 @@
 # Figure Shaders
 
-**A bit of a preface**: I realise this README is a bit long... unfortunately. However, it does contain key information on how to set things up in order for the script to run correctly. **Please take the time to read this carefully.** I hope to eventually make the script more error-friendly and user-friendly, but at the moment it is what it is. *Note: This script was previously called "Shaders-Addon", a name which which wasn't particularly descriptive or even accurate, so if you're looking for that script, this is it (the newer version, that is).*
+**A bit of a preface**: I realise this README is a bit long... unfortunately. However, it does contain key information on how to set things up in order for the script to run correctly. **Therfor, please take the time to read it carefully.** I hope to eventually make the script more error-friendly and user-friendly, but at the moment it is what it is. 
+
+*Note: This script was previously called "Shaders-Addon", a name which which wasn't particularly descriptive or even accurate, so if you're looking for that script, this is it (the newer version, that is).*
 
 **Figure Shaders** is a script to give humanoid figures imported into Blender: skin, eyes and mouth shaders using an image set. These image sets are usually provided by the figure or character maker. The script runs in a panel [ T ] in the context of the the 3D Viewport window.
 As of 07-Nov-2016, the most recent version is **0.43**. The file you will download is **FigureShaders-Master.zip**.
