@@ -19,9 +19,9 @@ http://www.blender.org/download/
 
 These files reside in your scripts/addons folder in its own folder called **make_shaders**: Blender will install the folder and files from the zip. Additionally, the zip contains these files:
 
-* path_list.csv: **cannot be used as-is--must be copied to your currently open .blend file's folder, and edited**.
+* path_list.csv: **cannot be used as-is - must be copied to your currently open .blend file's folder, and edited**.
  
-* image_list.csv: **cannot be used as-is--must be copied to the images folder for your figure, and edited**.
+* image_list.csv: **cannot be used as-is - must be copied to the images folder for your figure, and edited**.
 
 It is essential these files are copied to their respective folders **(and edited)** for the script to work. *Note: A copy of the csv files will be extracted to the scripts folder during the unarchiving, but those .csv files in that scripts folder will not be read by the script.*
 
@@ -36,7 +36,7 @@ This script has been designed and should work for the Victoria4, Dawn and Mariko
 * Find the .csv files: **image_list.csv** and **path_list.csv** will be in your unzip folder. Copy the image_list.csv to your images folder. You can edit this in Windows and Linux in either a plain text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free), or on the Mac in LibreOffice. See notes below on how and why LibreOffice is recommended for the Mac. 
 
    * The two columns in image_list.csv represent the material region group (i.e., the Field Name) the image is going to be assigned to, and the name of the image file itself. You only ever edit the **names** of the images (the second column): the field names are used by the script and so must not be changed. If you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes: they need to exist for every image and field name. If you are using a spreadsheet program to edit this csv, be sure to save it out as type .csv when you have finished your edits, and not as an .xls or .ods file.
-   (An observation: editing .csv files on the Mac using TextEdit.app can/probably-will corrupt your .csv, messing in particular with the double-quotes. Microsoft Excel for the Mac appears to create the same mess, if not worse - no surprise there. However, LibreOffice will save your .csv correctly **if** you do a Save As... and tick the "Edit Filter Settings" tickbox. Save over your file when prompted (Replace), then in the next dialogue, make sure the Text Delimiter is a double-quote, and -- **very important** -- the "Quote all text cells" box is ticked. Blender and the FigureShaders script will now read the file correctly.)
+   (An observation: editing .csv files on the Mac using TextEdit.app can/probably_will corrupt your .csv, messing in particular with the double-quotes. Microsoft Excel for the Mac appears to create the same mess, if not worse - no surprise there. However, LibreOffice will save your .csv correctly **if** you do a Save As... and tick the "Edit Filter Settings" tickbox. Save over your file when prompted (Replace), then in the next dialogue, make sure the Text Delimiter is a double-quote, and - **very important** - the "Quote all text cells" box is ticked. Blender and the FigureShaders script will now read the file correctly.)
 
 * Copy the path_list.csv file to the folder containing your .blend file. If you are creating a new .blend file and don't know where it is going to end up, you can install **Figure Shader** anyway, but the script will not run until you've saved the file somewhere. You will need to copy the path_list.csv to the same folder as your .blend file and edit the .csv file so that the entry for the path to the images is correct for your system prior to running the script.
 
@@ -84,7 +84,7 @@ Note the closing foward slash [ / ] for Linux-Mac and back-slash [ \ ] for Windo
 
 * Click on the figure in the scene, press [S] (for scale), and type 10
 
-Until you save your .blend file -- giving it a name -- you will notice the 'Apply Shaders' button is greyed out (disabled). The button will also be disabled if your figure - the target for the shaders - is not selected. Save your .blend. Make sure the 'path_list.csv' file is with your saved .blend, and that it contains valid path information about the location of your image files.
+Until you save your .blend file - giving it a name - you will notice the 'Apply Shaders' button is greyed out (disabled). The button will also be disabled if your figure - the target for the shaders - is not selected. Save your .blend. Make sure the 'path_list.csv' file is with your saved .blend, and that it contains valid path information about the location of your image files.
 
 The next step is to give your object file (the figure you are trying to apply a shader to) a prefix, using one of these core figure names:
 
