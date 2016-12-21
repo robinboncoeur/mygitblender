@@ -11,7 +11,7 @@ http://www.blender.org/download/
 
 **Figure Shaders** is comprised of five files:
 
-* \__init\__.py: contains the panel code and sets up stuff to run make_shaders.py
+* \___init\___.py: contains the panel code and sets up stuff to run make_shaders.py
 
 * make_shaders.py: actually creates the node sets for the materials
 
