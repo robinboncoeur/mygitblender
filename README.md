@@ -1,6 +1,6 @@
 # Figure Shaders
 
-**A bit of a preface**: I realise this README is a bit long... unfortunately. However, it does contain key information on how to set things up in order for the script to run correctly. **Therfor, please take the time to read it carefully.** I hope to eventually make the script more error-friendly and user-friendly, but at the moment it is what it is. 
+**A bit of a preface**: I realise this README is a bit long... unfortunately. However, it does contain key information on how to set things up in order for the script to run correctly. **Therefore, please take the time to read it carefully.** I hope to eventually make the script more error-friendly and user-friendly, but at the moment it is what it is. 
 
 *Note: This script was previously called "Shaders-Addon", a name which which wasn't particularly descriptive or even accurate, so if you're looking for that script, this is it (the newer version, that is).*
 
