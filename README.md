@@ -4,7 +4,7 @@
 
 *Note: This script was previously called "Shaders-Addon", a name which which wasn't particularly descriptive or even accurate, so if you're looking for that script, this is it (the newer version, that is).*
 
-**Figure Shaders** is a script for humanoid figures that were originally designed for Smith-Micro's Poser. These figures, once exported from Poser and imported into Blender have no textures as such: this script uses the image files associated with these figures to paint skin, eyes and mouth shaders. The image sets are usually provided by the figure or character maker aND are typically in a folder in the textures directory in the main runtime folder.
+**Figure Shaders** is a script for humanoid figures that were originally designed for Smith-Micro's Poser. These figures, once exported from Poser and imported into Blender have no textures as such: this script uses the image files associated with these figures to paint skin, eyes and mouth shaders. The image sets are usually provided by the figure or character maker and are typically in a folder in the textures directory in the main runtime folder.
 
 The script runs in a panel [ T ] in the context of the the 3D Viewport window.
 As of 07-Nov-2016, the most recent version is **0.43**. The file you will download is **FigureShaders-Master.zip**.
