@@ -115,6 +115,8 @@ Simply download them to your images folder.
 I tend to run Blender from a Terminal window in Linux (Blenderites know this as the console), so I check there for error messages. In Windows, you can toggle the System Console under: (Menu) Window > Toggle System Console. Mac users, please refer to this page:
 __http://blender.stackexchange.com/questions/6173/where-does-console-output-go__
 
+Update 26-Jun-2017: version 0.4.4. Empty spaces were not being stripped off path strings, which led to erroneous message that file couldn't be found. Was using python's strip() function incorrectly.
+
 Update 10-Nov-2016: version 0.4.3. Messages successfully sent to the Info panel in the Linux version. Need more extensive testing, however, on the Mac and in Windows. Changed the file structure in github to match what's required in Blender, so files are now in the make_shaders folder, which is where they need to be once installed. Removed previous versions as zips since they were buggy anyway.
 
 Update 28-Oct-2016: version 0.4.2. Checks path statement in path_list.csv that the path is correct for the folder holding the image files. Checks for the existence of the image_list.csv file. Checks that all entries in image_list.csv are correct (as in: correspond to a file in that folder).
