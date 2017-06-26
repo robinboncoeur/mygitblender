@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------------
 #
 # Copyright (c) 16-Nov-2015, Robyn Hahn
-# Revision: 06-Nov-2016
+# Revision: 26-Jun-2017
 #
 # ***** BEGIN GPL LICENSE BLOCK *****
 #
@@ -26,11 +26,11 @@
 bl_info = {
     "name": "Shaders for Imported Figures",
     "author": "Robyn Hahn",
-    "version": (0, 4, 3),
-    "blender": (2, 77, 0),
+    "version": (0, 4, 4),
+    "blender": (2, 78, 0),
     "location": "View3D",
     "description": "Generates simple Cycles shaders for imported OBJ Figures",
-    "warning": "Tested-working in Linux and Windows. Issues on the Mac ...",
+    "warning": "Tested-working in Linux, Windows and on the Mac ...",
     "wiki_url": "",
     "category": "Material"}
 
@@ -40,11 +40,11 @@ if "bpy" in locals():
 
     imp.reload(figure_defs)
     imp.reload(make_shaders)
-    print("Reloaded multiple files")
+    # print("Reloaded multiple files")
 else:
     from . import figure_defs
     from . import make_shaders
-    print("Imported multiple files")
+    # print("Imported multiple files")
 # NOTE: ===> make_shaders before . is the folder
 #            make_shaders after . is the file
 #            so, from folder_name.file_name import... etc
@@ -74,7 +74,7 @@ class MatShaderPanel(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        
+
         if context.object:
             obj = context.object
 
@@ -89,23 +89,27 @@ class MatShaderPanel(bpy.types.Panel):
             # dropdown will go here
             row.prop(obj, "name")
             row = layout.row()
-            row.operator("object.run_ms_script", text='Apply Shaders')
+            row.operator("object.run_script", text='Apply Shaders')
         else:
             row = layout.row()
             row.label(text='No Object in Scene')
-            
 
-class RunMsScript(bpy.types.Operator):
+
+class runScript(bpy.types.Operator):
     """ Conditionally runs Make Shaders """
-    bl_idname = "object.run_ms_script"
+    bl_idname = "object.run_script"
     bl_label = "Invokes Shader Script"
 
-    """ 
-    ==================================================
-     the bpy.path.basename() returns the name of the 
-     currently active .blend, if un-named, button does 
-     not activate until file is saved with a name
+    """
     ================================================
+    This is still not fully functional. Ideally, it
+    would check if (appears in order of priority):
+      1) context.active_object is not None
+      2) context.active_object is a Poser figure
+      3) context.active_object has the correct name
+    ================================================
+     the bpy.path.basename() returns the name of the currently active .blend, if un-named,
+     return .F. - button does not activate until file is saved with a name
     """
     @classmethod
     def poll(cls, context):
@@ -119,116 +123,9 @@ class RunMsScript(bpy.types.Operator):
         return allCondsMet()
 
     def execute(self, context):
-        sStr = check4Files() 
-        if sStr == "FILEEXISTS":
-            sStr = "Applying Shaders"
-            shadersSetup()
-        else:
-            if sStr == "PATH":
-                sStr = "path_list.csv"
-            if sStr == "IMGLIST":
-                sStr = "image_list.csv"
-            sStr = sStr + " is missing"
-        self.report({'INFO'}, sStr)
+        shadersSetup()
         return {'FINISHED'}
-        
 
-def readList(fname):
-    rval = []
-    with open(fname, 'r') as csvfile:
-        r = csv.reader(csvfile, delimiter=',')
-        for row in r:
-            if not len(row) == 0:
-                rval.append(row)
-    return rval
-    
-    
-def cleanStr(sStr):
-    sStr = sStr.strip()
-    if sStr.startswith('"') and sStr.endswith('"'):
-        sStr = sStr[1:-1]
-    return sStr
-    
-""" 
-==================================================================================
- Error handling: [1] missing csv files
- ..............: [2] missing image files (incl incorrect spelling of file)
-==================================================================================
--- blend_name: name-only of the currently open .blend file
--- blend_dir: fully-qualified path to [blend_name] - 'path_list.csv' lives here
--- blend_path: fully-qualified path with [blend_name]                                    
-"""
-
-
-def check4Files():
-    sRet = "FILEEXISTS"
-    blend_name = bpy.path.basename(bpy.context.blend_data.filepath)
-    # print(blend_name)    
-    blend_path = bpy.context.blend_data.filepath
-    # print(blend_path)
-    blend_dir = os.path.dirname(blend_path)
-    # print(blend_dir)
-
-    # readlist() attempts to create list from csv file, if this fails, exit 
-    # the process via an except IOError:
-    """ First, check for path_list"""
-    try:
-        csv_listpath = os.path.join(blend_dir, "path_list.csv")
-        with open(csv_listpath) as file:
-            pass
-    except IOError as e:
-        sRet = "PATH"
-        
-    if sRet == "FILEEXISTS":
-        # check if image_list.csv is in the right place (or exists)
-        csv_listpath = os.path.join(blend_dir, "path_list.csv")
-        csv_list = readList(csv_listpath)
-        pathlist = dict(csv_list)
-        if thisOS_name == 'posix':
-            path_str = pathlist.get('img_pathP')
-        if thisOS_name == 'nt':
-            path_str = pathlist.get('img_pathN')
-        path_str = cleanStr(path_str)
-        # print(path_str)
-        imag_dir = os.path.dirname(path_str)
-        # print(imag_dir)
-        img_list = os.path.join(imag_dir, "image_list.csv")
-        # print(img_list)
-        try:
-            with open(img_list) as file:
-                pass
-        except IOError as e:
-            print("could not open: " + img_list)
-            sRet = "IMGLIST"
-
-        if sRet == "FILEEXISTS":
-            # step through the image_list.csv to check for invalid file references
-            # print("Positive: " + sRet)
-            imgFile = ""
-            pathFile = ""
-            retImgName = ""
-            pic_list = readList(img_list)
-            nVal = len(pic_list)
-            nInt = 0
-            imgDict = dict(pic_list)
-            for attr, val in imgDict.items():
-                # print("attr: " + attr + ", val: " + val)
-                val = imgDict.get(attr, val)
-                imgFile = cleanStr(val)
-                # print("imgFile: " + imgFile)
-                if len(imgFile) < 1:
-                    # print("val-IN: " + val)
-                    pass
-                else:
-                    pathFile = os.path.join(imag_dir, imgFile)
-                    # print("pathFile: " + pathFile)
-                    try:
-                        with open(pathFile) as file:
-                            pass
-                    except IOError as e:
-                        # print("could not open: " + val)
-                        sRet = val
-    return sRet
 
 def shadersSetup():
     sMissingFile = ""
@@ -236,7 +133,7 @@ def shadersSetup():
     """ ================================================================
          Returns the name of the figure if it matches the short list.
          Will need to develop a more flexible, dict-based solution.
-         This is admittedly an awkward and poorly-scalable approach.    
+         This is admittedly an awkward and poorly-scalable approach.
         ============================================================="""
     def getFigName(sName):
         bFound = False
@@ -254,14 +151,36 @@ def shadersSetup():
         return sName
 
 
-    
+    def readList(fname):
+        rval = []
+        with open(fname, 'r') as csvfile:
+            r = csv.reader(csvfile, delimiter=',')
+            for row in r:
+                if not len(row) == 0:
+                    rval.append(row)
+        return rval
+
+
+    def cleanStr(sStr):
+        if not sStr is None:
+            # print("CleanStr()...pre-cleaning, sStr is: " + sStr)
+            # Clean off empty string before or after
+            sStr = sStr.strip()
+            if sStr.startswith('"'):
+                sStr = sStr[1:]
+            if sStr.endswith('"'):
+                sStr = sStr[:-1]
+            # print("CleanStr()...post-cleaning, sStr is: " + sStr)
+        return sStr
+
+
     def paintShaders():
         # defined in figure_defs.py
         dict_mats = matZones(figure)
 
         """ =============================================================
             Truncates strings like 3_SkinLeg:1 to 3_SkinLeg by detecting
-            an extra chars in name, trapping curently for   . and :     
+            an extra chars in name, trapping curently for   . and :
             ========================================================"""
         def getMatName(mtlName):
             sep = 'NF'
@@ -278,18 +197,18 @@ def shadersSetup():
                 return sep
             else:
                 return mtlType
-    
+
         if bpy.context.scene.render.engine == 'BLENDER_RENDER':
             bpy.context.scene.render.engine = 'CYCLES'
-        
+
         blend_path = bpy.data.filepath
         blend_dir = os.path.dirname(blend_path)
-        csv_listpath = os.path.join(blend_dir, "path_list.csv")
-        
+        csv_listpath = os.path.join(blend_dir, 'path_list.csv')
+
         # currently has 3 entries: list those, weed out empties
         csv_list = readList(csv_listpath)
         pathlist = dict(csv_list)
-            
+
         # get the path to the images
         if thisOS_name == 'posix':
             path_str = pathlist.get('img_pathP')
@@ -297,10 +216,10 @@ def shadersSetup():
             path_str = pathlist.get('img_pathN')
         path_str = cleanStr(path_str)
         imag_dir = os.path.dirname(path_str)
-        img_list = os.path.join(imag_dir, "image_list.csv")
+        img_list = os.path.join(imag_dir, 'image_list.csv')
         pic_list = readList(img_list)
         imaglist = dict(pic_list)
-        
+
         clrALimb = cleanStr(imaglist.get('clrALimb'))
         clrLLimb = cleanStr(imaglist.get('clrLLimb'))
         bmpALimb = cleanStr(imaglist.get('bmpALimb'))
@@ -316,7 +235,7 @@ def shadersSetup():
         clr_Eyes = cleanStr(imaglist.get('clr_Eyes'))
         clrMouth = cleanStr(imaglist.get('clrMouth'))
         bmpMouth = cleanStr(imaglist.get('bmpMouth'))
-        clr_Lash = cleanStr(imaglist.get('clr_Lash'))   
+        clr_Lash = cleanStr(imaglist.get('clr_Lash'))
 
         """ Not all figures have a bump or spec map. The bump maps can be replaced
         by procedural bump, the spec maps may need another solution, as yet undefined."""
@@ -329,33 +248,33 @@ def shadersSetup():
         bmp_Face = None if '0' else bmp_Face
         spc_Face = None if '0' else spc_Face
         bmpMouth = None if '0' else bmpMouth
-        
+
         # makes the current figure active
         bpy.context.scene.objects.active = bpy.data.objects[figure]
         curr_obj = bpy.data.objects[figure]
         bpy.context.object.active_material_index = 0
         all_slots = bpy.context.object.material_slots
-        
+
         # iterate through the material slots...
         for i in range(len(all_slots)):
             img_Bmp = None
             img_Clr = None
             img_Spc = None
-            
+
             # Passed parms
             ImgColr = None
             ImgBump = None
             ImgSpec = None
-            
+
             bpy.context.object.active_material_index = i
-            
+
             """ On occasion empty material slots are created during import from Poser.
             These empty slots will be ignored. """
             if not curr_obj.active_material == None:
                 mat = curr_obj.active_material
                 matName = curr_obj.active_material.name
                 mat.use_nodes = True
-                nodes = mat.node_tree.nodes 
+                nodes = mat.node_tree.nodes
                 """ Added 11-10-2016: checks for valid material name """
                 matType = getMatName(matName)
                 if not matType == "NF":
@@ -367,7 +286,7 @@ def shadersSetup():
                             img_Clr = clr_Eyes
                         if matType[5:] == 'Trn':
                             img_Clr = None
-                  
+
                     if matType[0:4] == 'Skin':
                         if matType[5:] == 'Body':
                             img_Clr = clr_Body
@@ -387,7 +306,7 @@ def shadersSetup():
                                 if not bmpALimb == None:
                                     img_Bmp = bmpALimb
                                 if not spcALimb == None:
-                                    img_Spc = spcALimb 
+                                    img_Spc = spcALimb
                             else:
                                 if matType[5:] == 'Arms':
                                     img_Clr = clrALimb
@@ -420,18 +339,94 @@ def shadersSetup():
                     new_mat = buildShader(curr_obj, matType, ImgColr, ImgBump, ImgSpec)
                 else:
                   print ("Unable to assign shaders at this time.")
-    
-    
+
+
+    """ =====================================================================================
+        Error handling: [1] missing csv files
+        ..............: [2] missing image files (incl incorrect spelling of file)
+        ==================================================================================
+    -- blend_name: name-only of the currently open .blend file
+    -- blend_dir: fully-qualified path to [blend_name] - 'path_list.csv' lives here
+    -- blend_path: fully-qualified path with [blend_name]                                      """
+    def check4Files():
+        sRet = "FILEEXISTS"
+        blend_name = bpy.path.basename(bpy.context.blend_data.filepath)
+        # print(blend_name)
+        blend_path = bpy.context.blend_data.filepath
+        # print(blend_path)
+        blend_dir = os.path.dirname(blend_path)
+        # print(blend_dir)
+
+        # readlist() attempts to create list from csv file, if this fails, exit the process
+        #  with a .F., which the if() then returns a msg
+        """ First, check for path_list"""
+        try:
+            csv_listpath = os.path.join(blend_dir, "path_list.csv")
+            with open(csv_listpath) as file:
+                pass
+        except IOError as e:
+            sRet = "PATH"
+
+        if sRet == "FILEEXISTS":
+            # check if image_list.csv is in the right place (or exists)
+            csv_listpath = os.path.join(blend_dir, "path_list.csv")
+            csv_list = readList(csv_listpath)
+            pathlist = dict(csv_list)
+            if thisOS_name == 'posix':
+                path_str = pathlist.get('img_pathP')
+            if thisOS_name == 'nt':
+                path_str = pathlist.get('img_pathN')
+            path_str = cleanStr(path_str)
+            # print("Cleaned path string: " + path_str)
+            imag_dir = os.path.dirname(path_str)
+            # print("The os path is: " + imag_dir)
+            img_list = os.path.join(imag_dir, "image_list.csv")
+            # print("The whole path is: " + img_list)
+            try:
+                with open(img_list) as file:
+                    pass
+            except IOError as e:
+                print("could not open: " + img_list)
+                sRet = "IMGLIST"
+
+            if sRet == "FILEEXISTS":
+                # step through the image_list.csv to check for invalid file references
+                # print("Positive: " + sRet)
+                imgFile = ""
+                pathFile = ""
+                retImgName = ""
+                pic_list = readList(img_list)
+                nVal = len(pic_list)
+                nInt = 0
+                imgDict = dict(pic_list)
+                for attr, val in imgDict.items():
+                    # print("attr: " + attr + ", val: " + val)
+                    val = imgDict.get(attr, val)
+                    imgFile = cleanStr(val)
+                    # print("the current imgFile is: " + imgFile)
+                    if len(imgFile) < 1:
+                        # print("val-IN: " + val)
+                        pass
+                    else:
+                        pathFile = os.path.join(imag_dir, imgFile)
+                        # print("the current pathFile is: " + pathFile)
+                        try:
+                            with open(pathFile) as file:
+                                pass
+                        except IOError as e:
+                            # print("could not open: " + val)
+                            sRet = val
+        return sRet
+
+
     """ =====================================================================================
          Iterate through the objects in the scene, run paintShader only for valid objects
-        =====================================================================================
-    """
+        ================================================================================== """
     sScen = bpy.context.scene
     figName = bpy.context.scene.objects.active.name
-    
+
     sMsg = check4Files()
     longMsg = ""
-    # TODO: this now happens in the execute(), revamp
     if sMsg == "FILEEXISTS":
         for obj in sScen.objects:
             if obj.type == 'MESH':
@@ -450,7 +445,7 @@ def shadersSetup():
     else:
         # print(sMsg)
         if sMsg == "PATH":
-            longMsg = "Missing path_list.csv. Copy this file to the folder with .blend and edit it."
+            longMsg = "Missing path_list.csv. Copy this file to the folder containing your .blend and edit it."
         if sMsg == "IMGLIST":
             longMsg = "Your path_list.csv points to a folder missing the image_list.csv file."
         if sMsg == "IMAGE":
@@ -464,18 +459,24 @@ def shadersSetup():
 
 
 
-# Note-2-Self: first in, best dressed -> last out
+# Note2Self: first in, best dressed -> last out
 def register():
     bpy.utils.register_module(__name__)
-    # bpy.utils.register_class(RunMsScript)
-    bpy.types.Scene.figur_obj = bpy.props.StringProperty(
-      name = "Figure Type",
-      default = "",
-      description = "Defines the base mesh name of your figure")
+    bpy.types.Scene.figur_obj = bpy.props.StringProperty(name="Figure Type",
+      default="",
+      description="Defines the base mesh name of your figure")
+    """
+    bpy.types.Scene.fig_enum = bpy.props.EnumProperty(
+        items=fig_list,
+        name="Figure List",
+        default="identi_2",
+        update=fig_list_enum
+    )
+    """
 
 def unregister():
+    # del bpy.types.Scene.my_enum
     del bpy.types.Scene.figur_obj
-    # bpy.utils.unregister_class(RunMsScript)
     bpy.utils.unregister_module(__name__)
 
 if __name__ == "__main__":
