@@ -2,12 +2,10 @@
 
 **A bit of a preface**: I realise this README is a bit long... unfortunately. However, it does contain key information on how to set things up in order for the script to run correctly. **Therefore, please take the time to read it carefully.** I hope to eventually make the script more error-friendly and user-friendly, but at the moment it is what it is. 
 
-*Note: This script was previously called "Shaders-Addon", a name which which wasn't particularly descriptive or even accurate, so if you're looking for that script, this is it (the newer version, that is).*
-
 **Figure Shaders** is a script for humanoid figures that were originally designed for Smith-Micro's Poser. These figures, once exported from Poser and imported into Blender have no textures as such: this script uses the image files associated with these figures to paint skin, eyes and mouth shaders. The image sets are usually provided by the figure or character maker and are typically in a folder in the textures directory in the main runtime folder.
 
 The script runs in a panel [ T ] in the context of the the 3D Viewport window.
-As of 07-Nov-2016, the most recent version is **0.43**. The file you will download is **FigureShaders-Master.zip**.
+As of 25-Jun-2017, the most recent version is **0.4**. The file you will download is **FigureShaders-Master.zip**.
 
 **Figure Shaders** requires Blender 2.77 or greater to run. Download the current version of Blender at:
 
@@ -35,9 +33,9 @@ This script has been designed and should work for the Victoria4, Dawn and Mariko
 # Instructions for Use
 * If you haven't already done so, install Blender.
 
-* Download **FigureShaders-Master.zip**: click the green [Clone or download] button and select Download ZIP. Extract the zip to a folder that you can find easily. Within this file is the **make_shaders.zip** file: this is what you will install in Blender.
+* Download **FigureShaders-Master.zip**: click the green [Clone or download] button and select Download ZIP. Then, be sure to **extract the zip** to a folder that you can find easily. Within this file is the **make_shaders.zip** file: this is what you will install in Blender using the "Install From File..." button at the bottom of "System Preferences".
 
-* Find the .csv files: **image_list.csv** and **path_list.csv** will be in your unzip folder. Copy the image_list.csv to your images folder. You can edit this in Windows and Linux in either a plain text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free), or on the Mac in LibreOffice. See notes below on how and why LibreOffice is recommended for the Mac. 
+* The .csv files: **image_list.csv** and **path_list.csv** will be in your unzip folder. Copy the image_list.csv to your images folder. You can edit this in Windows and Linux in either a plain text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free), or on the Mac in LibreOffice. See notes below on how and why LibreOffice is recommended for the Mac. 
 
    * The two columns in image_list.csv represent the material region group (i.e., the Field Name) the image is going to be assigned to, and the name of the image file itself. You only ever edit the **names** of the images (the second column): the field names are used by the script and so must not be changed. If you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes: they need to exist for every image and field name. If you are using a spreadsheet program to edit this csv, be sure to save it out as type .csv when you have finished your edits, and not as an .xls or .ods file.
    (An observation: editing .csv files on the Mac using TextEdit.app can/probably_will corrupt your .csv, messing in particular with the double-quotes. Microsoft Excel for the Mac appears to create the same mess, if not worse - no surprise there. However, LibreOffice will save your .csv correctly **if** you do a Save As... and tick the "Edit Filter Settings" tickbox. Save over your file when prompted (Replace), then in the next dialogue, make sure the Text Delimiter is a double-quote, and - **very important** - the "Quote all text cells" box is ticked. Blender and the FigureShaders script will now read the file correctly.)
@@ -111,10 +109,14 @@ Simply download them to your images folder.
 
 # Caveat
 -- This script has currently been tested in Linux (Mint Cinnamon 18), on a Macbook Pro running MacOS Sierra and on Windows 7 Professional. The script loads and runs successfully on all these OSes.
--- Some FigureShader messages now display on the Info panel, between the Render Engine dropdown and the Blender Logo. **Most error messages--particularly those I haven't developed an error-handler for yet--will still show up on the System Console or in a popup, however.** I'm hoping these will become less with time as I do better error-handling.
+-- Some FigureShader messages now display on the Info panel, between the Render Engine dropdown and the Blender Logo.
+
+**Most error messages--particularly those I haven't developed an error-handler for yet--will still show up on the System Console or in a popup, however.** I'm hoping these will become less with time as I do better error-handling.
+
 I tend to run Blender from a Terminal window in Linux (Blenderites know this as the console), so I check there for error messages. In Windows, you can toggle the System Console under: (Menu) Window > Toggle System Console. Mac users, please refer to this page:
 __http://blender.stackexchange.com/questions/6173/where-does-console-output-go__
 
+# Update Notes
 Update 26-Jun-2017: version 0.4.4. Empty spaces were not being stripped off path strings, which led to erroneous message that file couldn't be found. Was using python's strip() function incorrectly.
 
 Update 10-Nov-2016: version 0.4.3. Messages successfully sent to the Info panel in the Linux version. Need more extensive testing, however, on the Mac and in Windows. Changed the file structure in github to match what's required in Blender, so files are now in the make_shaders folder, which is where they need to be once installed. Removed previous versions as zips since they were buggy anyway.
@@ -123,6 +125,6 @@ Update 28-Oct-2016: version 0.4.2. Checks path statement in path_list.csv that t
 
 Update 25-Oct-2016: version 0.4.1. Checks for and compensates for Blender sometimes tacking on a :1 (or a .001, or even a :1.002) to a material name for the V4 series. I've solved some of those issues (material names), hopefully without creating others. Please do let me know if you run into dramas. Also checks for the presence of the .csv files. Invalid edits are as yet not trapped.
 
--- Remember, this is open-source software: if you break it, you get to keep both pieces. :D  
+-- Remember, this is open-source software: if you break it, you get to keep both pieces. :D If someone were to find this script -- or even just the idea -- useful, and had ideas or suggestions on how to improve it, I would be thoroughly delighted to hear them.
 
 -- Please contact me if you run into any dramas at robinseahahn at gmail dot com, or (preferably) raise an issue under __https://github.com/robinboncoeur/FigureShaders/issues__.
