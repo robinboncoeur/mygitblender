@@ -1,23 +1,19 @@
 # Figure Shaders
 
-**A bit of a preface**: Please note: this is the older, quite pedestrian version of FigureShader. The new version is for any release of Blender featuring the PrincipledShader (generally from 2.79 onward). If you have a much older version of Blender, you'll want this version, not the new one.
-
-I realise this README.md is a bit long... unfortunately. However, it does contain key information on how to set things up in order for the script to run correctly. **Please take the time to read this carefully.** I hope to eventually make the script more error-friendly and user-friendly, but at the moment it is what it is.
-
-This script was previously called "Shaders-Addon", a name which which wasn't particularly descriptive or even accurate, so if you're looking for that script, this is it (the newer version, that is).
-
 **Figure Shaders** is a script to give humanoid figures imported into Blender: skin, eyes and mouth shaders using an image set. These image sets are usually provided by the figure or character maker. The script runs in a panel [ T ] in the context of the the 3D Viewport window.
-Currently - as of 07-Nov-2016 - the most recent version is **FgrShaders43.zip**.
+Currently - as of 08-Feb-2018 - the most recent version is **FgrShaders50.zip**.
 
-**Figure Shaders** requires Blender 2.77 or greater to run. Download the current version of Blender at:
+**Figure Shaders** requires Blender 2.779 or greater to work properly, largely because it takes advantage of a new shader called PrincipledShader. Download the current version of Blender at:
 
-http://www.blender.org/download/
+https://www.blender.org/download/
 
-The current version of this script is 0.4.3, which is comprised of four files:
+The current version of this script is 0.5.0, which is comprised of five files:
 
 * \__init__.py: contains the panel code and stuff to create the shaders
 
 * figure_defs.py: dictionary object containing material slot names and material types (skin / eyes / etc)
+
+* make_shader.py: creates the node sets to populate the material zones with
 
 These reside in your scripts/addons folder in its own folder called **make_shaders**: Blender will install the folder and files from the zip. Additionally, the zip contains these files:
 
@@ -27,7 +23,7 @@ These reside in your scripts/addons folder in its own folder called **make_shade
 
 They need to be copied to their respective final folders **(and edited)** for the script to work. *Note: A copy of the csv files will be copied to the scripts folder, but will not be read by the script.*
 
-This script has been designed and should work for the Victoria4, Dawn and Mariko figures, but has only been tested on the V4 figure so far.
+This script has been designed and should work for the Antonia, Victoria4, Dawn and Mariko figures, but has been extensively tested on the V4 and Antonia figures so far.
 
 
 # Instructions for Use
@@ -55,7 +51,7 @@ or, for Windows:
 __"E:\MyRuntime\runtime\textures\VendorName\ImagesFolder\Character\"__
 
 
-Note the closing foward slash [ / ] for Linux-Mac and back-slash [ \ ] for Windows: these are important and need to be appropriate for your system as well as at the end of the path statement. Also, if you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes and commas: they need to exist for every image and field name. If you are using a spreadsheet program to edit this .csv file, be sure to save it out as type .csv, and not as .xls or .ods.
+Note the closing forward slash [ / ] for Linux-Mac and back-slash [ \ ] for Windows: these are important and need to be appropriate for your system as well as at the end of the path statement. Also, if you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes and commas: they need to exist for every image and field name. If you are using a spreadsheet program to edit this .csv file, be sure to save it out as type .csv, and not as .xls or .ods.
 
 
 * Open Blender
@@ -86,7 +82,7 @@ Note the closing foward slash [ / ] for Linux-Mac and back-slash [ \ ] for Windo
 
 Until you save your .blend file -- giving it a name -- you will notice the 'Apply Shaders' button is greyed out (disabled). The button will also be disabled if your figure - the target for the shaders - is not selected. Save your .blend. Make sure the 'path_list.csv' file is with your saved .blend, and that it contains valid path information about the location of your image files.
 
-The next step is to give your object file (the figure you are trying to apply a shader to) a prefix, using one of these core figure names:
+The next step is to change the name of your target object file (the figure you are trying to apply a shader to) to one of these core figure names:
 
    1. V4
 
@@ -94,22 +90,34 @@ The next step is to give your object file (the figure you are trying to apply a 
 
    3. Mariko
 
-Any figure in the scene without the appropriate prefix will be ignored. You can rename the figure to an appropriate name in the box provided in the panel: select your figure, then enter the correct figure prefix in front of the name. For example, if you have a V4-based figure named **Katie**, rename your figure to '**V4Katie**'. The script will not apply shaders to a figure unless this is done.
+   4. Antonia
 
-Also, ensure that the 'image_list.csv' file is in your images folder and contains the correct information about which image files correspond to which regions, also making sure there are no missing double-quote marks. Note: you will need the following .png files for the eyelashes:
+Any figure in the scene without the appropriate prefix will be ignored. You can rename the figure to an appropriate name in the box provided in the panel: select your figure, then enter the correct figure prefix in front of the name. For example, if you have a V4-based figure named **Katie**, rename your figure to '**V4**'. The script will not apply shaders to a figure unless this is done.
 
-For V4: __http://www.tightbytes.com/Blender/dev/V4Lashes05.png__
+Also, ensure that the 'image_list.csv' file is in your images folder and contains the correct information about which image files correspond to which regions, also making sure there are no missing double-quote marks.
 
-For Dawn: __http://www.tightbytes.com/Blender/dev/4_DawnLashes.png__
+Blender makes use of the alpha channel (transparency) of .png files. This is a far superior solution to lashes and hair to the one Poser uses, where black is interpreted as alpha. For this reason, you will need to convert your lashes jpgs to .png. This is trivial to accomplish in GIMP, a free download -- apparently not so easy to accomplish in PS. Anyway, a quick howto:
 
+   1. If you haven't done so, install GIMP
 
-Simply download them to your images folder.
+   2. Open the lashes .jpg in GIMP
+
+   3. Under Image -> Mode, confirm that the image is set to RGB, not greyscale
+
+   4. Under Colors, select Colour to Alpha... and click OK  
+
+   5. Under File, select Export As...  and click Export
+
+   6. If you wish, you can save the XCF file or discard it.
+
 
 # Caveat
 -- This script has currently been tested in Linux (Mint Cinnamon 18), on a Macbook Pro running MacOS Sierra and on Windows 7 Professional. The script loads and runs successfully on all these OSes.
--- Some FigureShader messages are displayed on the Info panel, between the Render Engine dropdown and the Blender Logo now. **Most error messages will still show up on the System Console or in a popup, however.** I'm hoping these will become less with time as I do better error-trapping.
+-- Some FigureShader messages are displayed on the Info panel, between the Render Engine dropdown and the Blender Logo now. **However, most error messages will still show up on the System Console or in a popup.**
 I tend to run Blender from a Terminal window in Linux (Blenderites know this as the console), so I check there for error messages. In Windows, you can toggle the System Console under: (Menu) Window > Toggle System Console. Mac users, please refer to this page:
 __http://blender.stackexchange.com/questions/6173/where-does-console-output-go__
+
+Update 08-Jan-2018: branched to PrinceShader to take advantage of the Principled Shader. Restructured a lot of the code, basing it on what I learned from reading JScuptis' fine example.
 
 Update 07-Nov-2016: version 0.4.3. Messages successfully sent to the Info panel in the Linux version. Need more extensive testing, however, on the Mac and in Windows.
 
