@@ -148,7 +148,7 @@ __http://blender.stackexchange.com/questions/6173/where-does-console-output-go__
 
 # Update Log
 
-Update 08-Jan-2018: branched to PrinceShader to take advantage of the Principled Shader. Restructured a lot of the code, basing it on what I learned from reading JScuptis' fine example.
+Update 08-Jan-2018: branched to PrinceShader to take advantage of the Principled Shader. Restructured a lot of the code, basing it on what I learned from reading JSulpis' fine example: __https://github.com/jsulpis/blender-addons__
 
 Update 07-Nov-2016: version 0.4.3. Messages successfully sent to the Info panel in the Linux version. Need more extensive testing, however, on the Mac and in Windows.
 
