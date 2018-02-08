@@ -5,7 +5,7 @@ class matZones():
         self.fig = fig
         self.figMat = {}
         self.listMats()
-        
+
     def listMats(self):
         if self.fig == 'list_figs':
             self.figMat = {
@@ -14,6 +14,34 @@ class matZones():
                 'DTG Mariko': 'Mariko',
                 'Victoria4': 'V4',
                 }
+
+        if self.fig == 'Antonia':
+            self.figMat = {
+                'brows': 'Skin_Face',
+                'lips': 'Skin_Face',
+                'skin_HEAD': 'Skin_Face',
+                'skin_BODY': 'Skin_Body',
+                'skin_ARMS': 'Skin_Arms',
+                'skin_LEGS': 'Skin_Legs',
+                'nailsFingers': 'Skin_Arms',
+                'nailsToes': 'Skin_Legs',
+                'mouthinner': 'Mouth',
+                'tongue': 'Mouth',
+                'teeth': 'Mouth',
+                'scleraLeft': 'Eyes_Clr',
+                'scleraRight': 'Eyes_Clr',
+                'irisLeft': 'Eyes_Clr',
+                'irisRight': 'Eyes_Clr',
+                'corneaLeft': 'Eyes_Trn',
+                'corneaRight': 'Eyes_Trn',
+                'pupilLeft': 'Eyes_Clr',
+                'pupilRight': 'Eyes_Clr',
+                'lacrimals': 'Eyes_Trn',
+                'lashes': 'Eyes_Lash',
+                'invisible': 'Eyes_Trn',
+                'toeCap': 'Eyes_Trn',
+                }
+
         if self.fig == 'V4':
             self.figMat = {
                 '1_SkinFace': 'Skin_Face',
@@ -117,4 +145,3 @@ class matZones():
                 'Inside_Cheek': 'Mouth',
                 'Inside_Mouth_Roof': 'Mouth',
                 }
-

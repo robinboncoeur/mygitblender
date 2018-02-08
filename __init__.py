@@ -26,11 +26,11 @@
 bl_info = {
     "name": "Shaders for Imported Figures",
     "author": "Robyn Hahn",
-    "version": (0, 4, 4),
-    "blender": (2, 78, 0),
+    "version": (0, 5, 0),
+    "blender": (2, 79, 0),
     "location": "View3D",
     "description": "Generates simple Cycles shaders for imported OBJ Figures",
-    "warning": "Tested-working in Linux, Windows and on the Mac ...",
+    "warning": "Adding support for Antonia ...",
     "wiki_url": "",
     "category": "Material"}
 
@@ -39,16 +39,16 @@ if "bpy" in locals():
     import imp
 
     imp.reload(figure_defs)
-    imp.reload(make_shaders)
+    imp.reload(make_shader)
     # print("Reloaded multiple files")
 else:
     from . import figure_defs
-    from . import make_shaders
+    from . import make_shader
     # print("Imported multiple files")
 # NOTE: ===> make_shaders before . is the folder
 #            make_shaders after . is the file
 #            so, from folder_name.file_name import... etc
-from make_shaders.make_shaders import buildShader
+from make_shaders.make_shader import buildShader
 from make_shaders.figure_defs import matZones
 import csv
 import sys
@@ -59,6 +59,14 @@ from bpy.types import (Panel,
                        AddonPreferences,)
 from bpy.props import (StringProperty,
                        EnumProperty,)
+
+# Developer tools - comment out on GoLive
+"""
+import code
+namespace = globals().copy()
+namespace.update(locals())
+code.interact(local=namespace)
+"""
 
 thisOS_name = os.name
 sMsg = ""
@@ -128,6 +136,7 @@ class runScript(bpy.types.Operator):
 
 
 def shadersSetup():
+    print ("Starting shadersSetup function...")
     sMissingFile = ""
     blend_name = ""
     """ ================================================================
@@ -146,6 +155,10 @@ def shadersSetup():
         if  sName.startswith('Dawn'):
             sName = sName[:4]
             bFound = True
+        if  sName.startswith('Antonia'):
+            sName = sName[:7]
+            print ("Shaders Setup for Antonia...")
+            bFound = True
         if not bFound:
             sName = 'NF'
         return sName
@@ -162,8 +175,8 @@ def shadersSetup():
 
 
     def cleanStr(sStr):
+        # print("CleanStr()...pre-cleaning, sStr is: " + sStr)
         if not sStr is None:
-            # print("CleanStr()...pre-cleaning, sStr is: " + sStr)
             # Clean off empty string before or after
             sStr = sStr.strip()
             if sStr.startswith('"'):
@@ -175,7 +188,13 @@ def shadersSetup():
 
 
     def paintShaders():
-        # defined in figure_defs.py
+        """ =============================================================
+            These are defined in figure_defs.py. Cuurently defined for:
+             V4
+             Dawn
+             Mariko
+             and now, Antonia
+            ========================================================"""
         dict_mats = matZones(figure)
 
         """ =============================================================
@@ -184,6 +203,7 @@ def shadersSetup():
             ========================================================"""
         def getMatName(mtlName):
             sep = 'NF'
+            # Blender has added a .001 or .002
             if '.' in mtlName:
                 sep = ('.')
             if ':' in mtlName:
@@ -191,7 +211,7 @@ def shadersSetup():
             # truncate only if a . or : is found
             if not sep == 'NF':
                 mtlName = mtlName.split(sep, 1)[0]
-            # get the actual material type
+            # get the actual material type from the material dictionary
             mtlType = dict_mats.figMat.get(mtlName)
             if mtlType is None:
                 return sep
@@ -257,14 +277,15 @@ def shadersSetup():
 
         # iterate through the material slots...
         for i in range(len(all_slots)):
-            img_Bmp = None
+            print ("identified the figure... " + figure)
+            #img_Bmp = None
             img_Clr = None
-            img_Spc = None
+            #img_Spc = None
 
             # Passed parms
             ImgColr = None
-            ImgBump = None
-            ImgSpec = None
+            dblBump = 0.00
+            dblSpec = 0.00
 
             bpy.context.object.active_material_index = i
 
@@ -273,13 +294,16 @@ def shadersSetup():
             if not curr_obj.active_material == None:
                 mat = curr_obj.active_material
                 matName = curr_obj.active_material.name
+                print ("matName = " + matName)
                 mat.use_nodes = True
                 nodes = mat.node_tree.nodes
                 """ Added 11-10-2016: checks for valid material name """
                 matType = getMatName(matName)
+                print ("matType = " + matType)
                 if not matType == "NF":
+                    print ("matType = " + matType)
                     if matType[0:4] == 'Eyes':
-                        ImgBump == None
+                        #ImgBump == None
                         if matType[5:] == 'Lash':
                             img_Clr = clr_Lash
                         if matType[5:] == 'Clr':
@@ -290,53 +314,53 @@ def shadersSetup():
                     if matType[0:4] == 'Skin':
                         if matType[5:] == 'Body':
                             img_Clr = clr_Body
-                            if not bmp_Body == None:
-                                img_Bmp = bmp_Body
-                            if not spc_Body == None:
-                                img_Spc = spc_Body
+                            #if not bmp_Body == None:
+                            #    img_Bmp = bmp_Body
+                            #if not spc_Body == None:
+                            #    img_Spc = spc_Body
                         if matType[5:] == 'Face':
                             img_Clr = clr_Face
-                            if not bmp_Face == None:
-                                img_Bmp = bmp_Face
-                            if not spc_Face == None:
-                                img_Spc = spc_Face
+                            #if not bmp_Face == None:
+                            #    img_Bmp = bmp_Face
+                            #if not spc_Face == None:
+                            #    img_Spc = spc_Face
                         if matType[5:] == 'Arms' or matType[5:] == 'Legs':
                             if clrALimb == clrLLimb:
                                 img_Clr = clrALimb
-                                if not bmpALimb == None:
-                                    img_Bmp = bmpALimb
-                                if not spcALimb == None:
-                                    img_Spc = spcALimb
+                                #if not bmpALimb == None:
+                                #    img_Bmp = bmpALimb
+                                #if not spcALimb == None:
+                                #    img_Spc = spcALimb
                             else:
                                 if matType[5:] == 'Arms':
                                     img_Clr = clrALimb
-                                    if not bmpALimb == None:
-                                        img_Bmp = bmpALimb
-                                    if not spcALimb == None:
-                                        img_Spc = spcALimb
+                                    #if not bmpALimb == None:
+                                    #    img_Bmp = bmpALimb
+                                    #if not spcALimb == None:
+                                    #    img_Spc = spcALimb
                                 else:
                                     img_Clr = clrLLimb
-                                    if not bmpLLimb == None:
-                                        img_Bmp = bmpLLimb
-                                    if not spcALimb == None:
-                                        img_Spc = spcLLimb
+                                    #if not bmpLLimb == None:
+                                    #    img_Bmp = bmpLLimb
+                                    #if not spcALimb == None:
+                                    #    img_Spc = spcLLimb
                     if matType == 'Mouth':
                         img_Clr = clrMouth
-                        if not bmpMouth == None:
-                            img_Bmp = bmpMouth
+                        #if not bmpMouth == None:
+                        #    img_Bmp = bmpMouth
                     # fully qualified path added
                     if img_Clr is not None:
                         ImgColr = path_str + img_Clr
                         ImgColr = bpy.data.images.load(filepath=ImgColr)
-                    if img_Bmp is not None:
-                        ImgBump = path_str + img_Bmp
-                        ImgBump = bpy.data.images.load(filepath=ImgBump)
-                    if img_Spc is not None:
-                        ImgSpec = path_str + img_Spc
-                        ImgSpec = bpy.data.images.load(filepath=ImgSpec)
+                    #if img_Bmp is not None:
+                    #    ImgBump = path_str + img_Bmp
+                    #    ImgBump = bpy.data.images.load(filepath=ImgBump)
+                    #if img_Spc is not None:
+                    #    ImgSpec = path_str + img_Spc
+                    #    ImgSpec = bpy.data.images.load(filepath=ImgSpec)
                     """ Sending:      figure (obj), material, colour, bump map, spec map
                                       (last two can be None)"""
-                    new_mat = buildShader(curr_obj, matType, ImgColr, ImgBump, ImgSpec)
+                    new_mat = buildShader(curr_obj, matType, ImgColr, dblBump, dblSpec)
                 else:
                   print ("Unable to assign shaders at this time.")
 
@@ -370,14 +394,17 @@ def shadersSetup():
         if sRet == "FILEEXISTS":
             # check if image_list.csv is in the right place (or exists)
             csv_listpath = os.path.join(blend_dir, "path_list.csv")
+            # print("csv_listpath is: " + csv_listpath)
             csv_list = readList(csv_listpath)
             pathlist = dict(csv_list)
             if thisOS_name == 'posix':
+                # print("A-thisOS_Name is: " + thisOS_name)
                 path_str = pathlist.get('img_pathP')
             if thisOS_name == 'nt':
                 path_str = pathlist.get('img_pathN')
+                # print("B-thisOS_Name is: " + thisOS_name)
             path_str = cleanStr(path_str)
-            # print("Cleaned path string: " + path_str)
+            print("Cleaned path string: " + path_str)
             imag_dir = os.path.dirname(path_str)
             # print("The os path is: " + imag_dir)
             img_list = os.path.join(imag_dir, "image_list.csv")
