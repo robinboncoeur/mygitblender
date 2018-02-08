@@ -1,41 +1,59 @@
 # Figure Shaders
 
 **Please Note:**
-In order to install the files easily into Blender, please click on the green Clone or Download button. The download will contain a zip file: **make_shaders.zip**. You will need to unzip the **Figureshaders-master.zip** file to a folder, which will contain that  **make_shaders.zip** file. You will select this zip file within Blender:
+In order to install the files easily into Blender, please click on the green Clone or Download button. The download will contain a zip file: **make_shaders.zip**. You will need to unzip the **Figureshaders-master.zip** file to a folder, which will contain that  **make_shaders.zip** file. You will select this **make_shaders.zip** zip file within Blender:
 File -> User Preferences... -> then click on the "Install From File..." at the bottom of the dialogue box.
 
 **Figure Shaders** is a script to give humanoid figures imported into Blender: skin, eyes and mouth shaders using an image set. These image sets are usually provided by the figure or character maker. The script runs in a panel [ T ] in the context of the the 3D Viewport window.
-Currently - as of 08-Feb-2018 - the most recent version is **FgrShaders50.zip**.
+Currently - as of 08-Feb-2018 - the most recent version is 0.5.0**.
 
-**Figure Shaders** requires Blender 2.779 or greater to work properly, largely because it takes advantage of a new shader called PrincipledShader. Download the current version of Blender at:
+**Figure Shaders** requires Blender 2.79 or greater to work properly, largely because it takes advantage of a new shader called PrincipledShader. Download the current version of Blender at:
 
 https://www.blender.org/download/
 
-The current version of this script is 0.5.0, which is comprised of five files:
+The current version of this script is comprised of five files:
 
 * \__init__.py: contains the panel code and stuff to create the shaders
 
 * figure_defs.py: dictionary object containing material slot names and material types (skin / eyes / etc)
 
-* make_shader.py: creates the node sets to populate the material zones with
+* make_shader.py: creates the node sets to populate the material zones
 
-These reside in your scripts/addons folder in its own folder called **make_shaders**: Blender will install the folder and files from the zip. Additionally, the zip contains these files:
+These files will reside in your scripts/addons folder after installation in its own folder called **make_shaders**: Blender will install the folder and files from the make_shader.zip file, as noted above. Additionally, the zip contains these files:
 
 * path_list.csv: **must be copied to the folder your currently open .blend file is in, and edited**.
 
 * image_list.csv: **must be copied to the image folder for your figure, and edited**.
 
-They need to be copied to their respective final folders **(and edited)** for the script to work. *Note: A copy of the csv files will be copied to the scripts folder, but will not be read by the script.*
+They need to be copied to their respective final folders **(and edited)** for the script to work. *Note: A copy of the csv files will end up in that /scripts/addons/make_shaders folder, but neither will be read by the script.*
 
-This script has been designed and should work for the Antonia, Victoria4, Dawn and Mariko figures, but has been extensively tested on the V4 and Antonia figures so far.
+This script has been designed and should work for the Antonia, Victoria4, Dawn and Mariko figures. Extensive testing has been limited to the V4 and Antonia figures so far. If you want other figures adding, please drop me a line (under **Issues**, above) and if I have the figure I'll try to add it to the **figure_defs.py** file. Or, feel free to edit this file. Be keen to see if you can get it working on another figure!
 
 
 # Instructions for Use
 * If you haven't already done so, install Blender.
 
-* Download the current zip file: if you click the green [Clone or download] button and select Download ZIP, you will get all versions. You might want to just download the current version, however: click the FgrShadersxx.zip file, then on the right side (next to the History button) click Download. Extract the zip to a folder but keep the zip file, as you will be installing the script in Blender from that zip file.
+* Download the current zip file: if you click the green [Clone or download] button and select Download ZIP, you will get all the files in the folder above, including the make_shaders.zip file. Extract the zip to a folder but leave the **make_shaders.zip** file zipped, as you will be installing the script in Blender from that zip file.
 
 * Find the .csv files: **image_list.csv** and **path_list.csv** will be in your unzip folder. Copy the image_list.csv to your images folder. You can edit this in Windows and Linux in either a plain text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free), or on the Mac in LibreOffice. See notes below on how and why LibreOffice is recommended for the Mac.
+
+The file will look something like this:
+    "clrALimb","ToniPArms.jpg"
+    "clrLLimb","ToniPLegs.jpg"
+    "bmpALimb","ToniPArmsBUMP.jpg"
+    "bmpLLimb","ToniPLegsBUMP.jpg"
+    "spcALimb","ToniPArmsSPEC.jpg"
+    "spclLimb","ToniPLegsSPEC.jpg"
+    "clr_Body","ToniPBody.jpg"
+    "bmp_Body","ToniPBodyBUMP.jpg"
+    "spc_Body","ToniPBodySPEC.jpg"
+    "clr_Face","ToniPHead.jpg"
+    "bmp_Face","ToniPHeadBUMP.jpg"
+    "spc_Face","ToniPHeadSPEC.jpg"
+    "clr_Eyes","ToniPEyesAmber.jpg"
+    "clrMouth","ToniPMouthparts.jpg"
+    "bmpMouth","ToniPMouthpartsBUMP.jpg"
+    "clr_Lash","ToniPLashFakeTRANS.png"
 
    * The two columns represent the region (i.e., the Field Name) the image is going to be assigned to, and the name of the image file itself. You only ever edit the names of the images (the second column): the field names are used by the script and so must not be changed. If you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes: they need to exist for every image and field name. If you are using a spreadsheet program to edit this csv, be sure to save it out as type .csv, and not as .xls or .ods.
    (An observation: editing .csv files on the Mac using TextEdit.app can/probably-will corrupt your .csv, messing in particular with the double-quotes. Microsoft Excel for the Mac appears to create the same mess, if not worse - no surprise there. However, LibreOffice will save your .csv correctly **if** you do a Save As... and tick the "Edit Filter Settings" tickbox. Save over your file when prompted (Replace), then in the next dialogue, make sure the Text Delimiter is a double-quote, and -- **very important** -- the Quote all text cells is ticked. Blender and the FigureShaders script will now read the file correctly.)
