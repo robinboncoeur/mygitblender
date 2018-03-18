@@ -1,3 +1,4 @@
+![Skin shaders on V4 - lighting by Greg Zaal's Gaffer](https://www.tightbytes.com/Blender/FigShader01.png)
 # Figure Shaders
 
 **tl;dr:**
