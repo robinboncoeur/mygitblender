@@ -1,4 +1,4 @@
-<img src="http://www.tightbytes.com/Blender/FigShaders01.png" alt="Skin shaders on V4 - lighting by Greg Zaal's Gaffer" style="width: 200px;"/>
+![Skin shaders on V4 - lighting by Greg Zaal's Gaffer](http://www.tightbytes.com/Blender/FigShaders01.png =150x)
 
 # Figure Shaders
 
