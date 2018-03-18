@@ -1,8 +1,11 @@
 # Figure Shaders
 
-**Please Note:**
-In order to install the files easily into Blender, please click on the green Clone or Download button. The download file (**Figureshaders-master.zip**) will contain a zip file: **make_shaders.zip**. You will need to unzip the **Figureshaders-master.zip** file to a folder, which will contain that **make_shaders.zip** file. You will select this **make_shaders.zip** zip file within Blender to install this script:
-File -> User Preferences... -> then click on the "Install From File..." at the bottom of the dialogue box.
+**tl;dr:**
+-- to install the script in Blender, please click on the green Clone or Download button above. The download file (**Figureshaders-master.zip**) will contain a zip file: **make_shaders.zip**. You will need to unzip the **Figureshaders-master.zip** file to a folder, which will contain that **make_shaders.zip** file. Select this **make_shaders.zip** zip file in the Preference page in Blender to install this script:
+File -> User Preferences... -> then click on "Install From File..." at the bottom of the dialogue box.
+
+
+# Description
 
 **Figure Shaders** is a script to give humanoid figures imported into Blender: skin, eyes and mouth shaders using an image set. These image sets are usually provided by the figure or character maker. The script runs in a panel [ T ] in the context of the the 3D Viewport window.
 Currently - as of 08-Feb-2018 - the most recent version is 0.5.5**.
