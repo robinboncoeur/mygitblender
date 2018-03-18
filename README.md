@@ -121,7 +121,11 @@ Note the closing forward slash [ / ] for Linux-Mac and back-slash [ \ ] for Wind
 
 * Click on the figure in the scene, press [S] (for scale), and type 10 (Poser's scale is woefully tiny!)
 
-* OPen the FigureShader pane if it is not already open. You should see two dropdowns and an 'Apply Shaders' button. Select the name of your target object file (the figure you are trying to apply a shader to) from the first dropdown under "Select the figure for SkinShaders:"
+* Press T to open the panel, then find the FigureShader section. You should see two dropdowns and an 'Apply Shaders' button:
+
+<img src="http://www.tightbytes.com/Blender/FigShTute00.png" alt="FigureShader"/>
+
+Select the name of your target object file (the figure you are trying to apply a shader to) from the first dropdown under "Select the figure for SkinShaders:"
 
 <img src="http://www.tightbytes.com/Blender/FigShTute01.png" alt="Select figure to shade"/>
 
