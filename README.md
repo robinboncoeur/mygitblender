@@ -121,7 +121,11 @@ Note the closing forward slash [ / ] for Linux-Mac and back-slash [ \ ] for Wind
 
 * Click on the figure in the scene, press [S] (for scale), and type 10 (Poser's scale is woefully tiny!)
 
-* OPen the FigureShader pane if it is not already open. You should see two dropdowns and an 'Apply Shaders' button. Select the name of your target object file (the figure you are trying to apply a shader to) from the first dropdown under "Select the figure for SkinShaders:" -- in this dropdown you will see a list of all objects in your Blender scene. Select the figure you wish to apply skin and other materials to. Currently, FigureShaders supports these core figures:
+* OPen the FigureShader pane if it is not already open. You should see two dropdowns and an 'Apply Shaders' button. Select the name of your target object file (the figure you are trying to apply a shader to) from the first dropdown under "Select the figure for SkinShaders:"
+
+<img src="http://www.tightbytes.com/Blender/FigShTute01.png" alt="Select figure to shade"/>
+
+... in this dropdown you will see a list of all objects in your Blender scene. Select the figure you wish to apply skin and other materials to. Currently, FigureShaders supports these core figures:
 
    1. Victoria4
    2. Dawn
@@ -129,6 +133,8 @@ Note the closing forward slash [ / ] for Linux-Mac and back-slash [ \ ] for Wind
    4. Antonia
 
 * To identify which figure that object is based on, select the figure type name from the second dropdown.
+
+<img src="http://www.tightbytes.com/Blender/FigShTute02.png" alt="Select base figure"/>
 
 * Finally, click on Apply Shaders.
 Remember: *until you save your .blend file -- giving it a name -- the 'Apply Shaders' button will remain disabled*.
