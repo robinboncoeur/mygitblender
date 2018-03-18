@@ -2,7 +2,7 @@
 # File: __init__.py (for figure_shaders)
 # ---------------------------------------------------------------------
 # Copyright (c) 16-Nov-2015, Robyn Hahn
-# Revision: 24-Feb-2018
+# Revision: 18-Mar-2018
 #
 # ***** BEGIN GPL LICENSE BLOCK *****
 # This program is free software; you can redistribute it and/or modify it under
