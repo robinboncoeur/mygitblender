@@ -170,9 +170,9 @@ Blender makes use of the alpha channel (transparency) of .png files. This is a f
 
 
 # Caveat
--- This script has currently been tested in Linux (Mint Cinnamon 18), on a Macbook Pro running MacOS Sierra and on Windows 7 Professional. The script loads and runs successfully on all these OSes.
+This script has currently been tested in Linux (Mint Cinnamon 18), on a Macbook Pro running MacOS High Sierra and on Windows 7 Professional. The script loads and runs successfully on all these OSes.
 
--- Errors; currently working on a means to display FigureShader error messages on a dialogue instead of displaying them on the Info panel, between the Render Engine dropdown and the Blender Logo and on the console. 
+Errors: I'm currently working on displaying FigureShader error messages in a dialogue instead of displaying them on the Info panel, between the Render Engine dropdown and the Blender Logo and on the console. 
 
 **Currently, however, most error messages will still show up on the System Console and probably in a temporary popup, and will be Python-esque and seemingly unfriendly.** 
 
@@ -180,7 +180,7 @@ I have endeavoured to trap for most known errors: however, some will probably st
 
 __http://blender.stackexchange.com/questions/6173/where-does-console-output-go__
 
-Remember, this is open-source software: if you break it, you get to keep both pieces. :D  
+Remember, this is open-source software: if you break it, you get to keep both pieces. 😁 
 
 Please contact me if you run into any dramas at robinseahahn at gmail dot com, or (preferably) raise an issue under __https://github.com/robinboncoeur/FigureShaders/issues__.
 
