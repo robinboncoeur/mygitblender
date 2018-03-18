@@ -74,7 +74,7 @@ Be sure to edit this file prior to running the script. An edited file will look 
 	"csv_pathN", "E:\Blender\Projects\AllTextures\AllSkin\Antonia\"
 	"csv_name", "image_list.csv"
 
-   * To edit the **path_list.csv** file, open it in a pure-text editor or spreadsheet programme, as explained above. The two columns represent the path key: this first column has names used by the script, so they must not be changed, and the fully-qualified path (value) to your images folder. Note: I tend to keep my textures files together in a sub-folder called "AllSkin" in my "AllTextures" folder in the main "Projects" folder that has all my Blender projects in it. This cuts down on redundant files everywhere and makes it easy for scripts (and Blender itself) to find stuff. The **path_list.csv** file assumes this sort of structure: of course, you can always just replace the existing images folder path to the path location of your images. The current entry is just an example and is almost definitely not a valid path to your files, since it is unlikely your name is Robyn, nor would your computer be set up exactly like mine. Thus, you will need to replace the existing path statement with a fully-qualified path designating your image texture files' location. As you can see from the example, an example of a fully-qualified path for Linux would be:
+* To edit the **path_list.csv** file, open it in a pure-text editor or spreadsheet programme, as explained above. The two columns represent the path key: this first column has names used by the script, so they must not be changed, and the fully-qualified path (value) to your images folder. Note: I tend to keep my textures files together in a sub-folder called "AllSkin" in my "AllTextures" folder in the main "Projects" folder that has all my Blender projects in it. This cuts down on redundant files everywhere and makes it easy for scripts (and Blender itself) to find stuff. The **path_list.csv** file assumes this sort of structure: of course, you can always just replace the existing images folder path to the path location of your images. The current entry is just an example and is almost definitely not a valid path to your files, since it is unlikely your name is Robyn, nor would your computer be set up exactly like mine. Thus, you will need to replace the existing path statement with a fully-qualified path designating your image texture files' location. As you can see from the example, an example of a fully-qualified path for Linux would be:
 
 __"/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/Antonia/"__
 
@@ -102,34 +102,45 @@ Note the closing forward slash [ / ] for Linux-Mac and back-slash [ \ ] for Wind
 
    * Navigate to where you downloaded the zip file and select the **make_shaders.zip file**, within the unzipped folder FigureShaders folder. Click 'Install from File...'
 
-   * Browse your add-ons - click on 'User' under 'Categories' - and find the add-on. It is called 'Material: Shaders-Poser Figures'. Tick the box on the right to activate it. **(If this does not appear, check in the scripts/addons/ folder for the existence of a make_shaders folder, and that all these files are within that folder).**
+   * Browse your add-ons - click on 'User' under 'Categories' - and find the add-on. It is called 'Material: Shaders for Imported Figures'. Tick the box on the right to activate it. **(If this does not appear, check in the scripts/addons/ folder for the existence of a make_shaders folder, and that all these files are within that folder).**
 
 * Find the panel with the script. Currently, this will show up in the Tools Panel section, labeled '**FigureShader**'.
 
-* If this is a new blender file with only the default cube, delete the cube and import your figure.
+* If this is a new blender file with only the default cube, delete the cube and import your figure. To do so, I suggest the following approach:
 
    * File -> Import -> Wavefront (obj) ... navigate to your figure, select the OBJ (not the MTL) and chose the following Import settings:
 
    * Untick Smooth Groups and untick Lines and everything in 'Split By'
 
    * Tick 'Keep Vert Order' and tick 'Poly Groups'
+(Note: *It's a good idea to save these settings so you merely have to select from the dropdown: I save the settings as 'Poser')*
 
 * Import OBJ
-(Note: *It's a good idea to save these settings so you merely have to select from the dropdown: I save the settings as 'Poser')*
 
 * Click on the figure in the scene, press [S] (for scale), and type 10 (Poser's scale is woefully tiny!)
 
-* The next step is to select the name of your target object file (the figure you are trying to apply a shader to). You will see a list of all objects in your Blender scene in the dropdown under "Select the figure for SkinShaders:" -- you want to select the figure with skin material zones. Currently, FigureShaders supports these core figures:
+* OPen the FigureShader pane if it is not already open. You should see two dropdowns and an 'Apply Shaders' button. Select the name of your target object file (the figure you are trying to apply a shader to) from the first dropdown under "Select the figure for SkinShaders:" -- in this dropdown you will see a list of all objects in your Blender scene. Select the figure you wish to apply skin and other materials to. Currently, FigureShaders supports these core figures:
 
    1. Victoria4
    2. Dawn
    3. Mariko
    4. Antonia
 
-* Then, select the name your figure is based on, to ensure all material zones will be correctly populated with shaders.
+* To identify which figure that object is based on, select the figure type name from the second dropdown.
 
 * Finally, click on Apply Shaders.
-Remember: *until you save your .blend file -- giving it a name -- you will notice the 'Apply Shaders' button is greyed out (disabled)*.
+Remember: *until you save your .blend file -- giving it a name -- the 'Apply Shaders' button will remain disabled*.
+
+
+# Behaviour
+
+The script will detect certain errors and display them in an Error (FYI) dialogue. Since this is a bit experimental at this point, expect that clicking 'OK' will not close the dialogue: moving the cursor away from the dialogue will.
+
+Selecting the wrong base figure will result in no shaders being painted on your figure. Previous versions required that the figure be named that of its origins, such as 'V4' or 'Dawn': that is no longer required, the object can be named anything. If no shaders show up on your figure, double-check that you have the right figure type selected.
+
+
+
+# Other Cool Stuff
 
 Blender makes use of the alpha channel (transparency) of .png files. This is a far superior solution to lashes and hair to the one Poser uses, where black is interpreted as alpha. For this reason, you will need to convert your lashes jpgs to .png. This is trivial to accomplish in GIMP, a free download -- apparently not so easy to accomplish in PS. Anyway, a quick howto:
 
@@ -158,9 +169,9 @@ __http://blender.stackexchange.com/questions/6173/where-does-console-output-go__
 
 
 # [ Update Log ]
-Update 18-Mar-2018: Added figure and figure-type selection dropdowns.
+Update 18-Mar-2018: version 0.5.5. Added figure and figure-type selection dropdowns. Added error dilogue for end users not accustomed to looking for problems in the console.
 
-Update 08-Jan-2018: branched to PrinceShader to take advantage of the Principled Shader. Restructured a lot of the code, basing it on what I learned from reading JSulpis' fine example: __https://github.com/jsulpis/blender-addons__
+Update 08-Jan-2018: version 0.5.0. Branched to PrinceShader to take advantage of the Principled Shader. Restructured a lot of the code, basing it on what I learned from reading JSulpis' fine example: __https://github.com/jsulpis/blender-addons__
 
 Update 07-Nov-2016: version 0.4.3. Messages successfully sent to the Info panel in the Linux version. Need more extensive testing, however, on the Mac and in Windows.
 
