@@ -30,7 +30,7 @@ These three files will reside in your scripts/addons folder -- after installatio
 
 They need to be copied to their respective final folders **(and edited)** for the script to work. *Note: A copy of the csv files will end up in that /scripts/addons/make_shaders folder, but neither .csv file in that location will be read by the script.*
 
-This script has been designed and should work for the Antonia, Victoria4, Dawn and Mariko figures. Extensive testing has been limited to the V4 and Antonia figures so far. If you want other figures adding, please drop me a line (under **Issues**, above) and if I have that figure I'll try to add it to the **figure_defs.py** file. Or, feel free to edit this file. Be keen to see if you can get it working on another figure!
+This script has been designed and should work for the Antonia, Victoria4, Dawn and Mariko figures. The only figure that has not undergone extensive testing has been Mariko. If you want other figures adding, please drop me a line (under **Issues**, above) and if I have that figure I'll try to add it to the **figure_defs.py** file... or: feel free to edit this file. This software is open-source... you're free to edit, chop and change all you want, as long as you observe the terms of GPL3. Be keen to see if you can get it working on another figure!
 
 
 # Instructions for Use
