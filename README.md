@@ -161,7 +161,7 @@ The script currently traps for:
 
 	1. missing path_list.csv - meant to be in the .blend file's folder, and edited
 	2. missing image_list.csv - meant to be in the images folder, and edited
-	3. missing or misspelt image file, referenced in the image_list.csv file: names the file
+	3. missing or misspelt image file, referenced in the image_list.csv file: file name is identified
 	4. missing double-quote ( " ) in either the path_list.csv or image_list.csv file
 
 More issues could be managed this way as users identify them.
@@ -180,7 +180,9 @@ Please contact me if you run into any dramas at robinseahahn at gmail dot com, o
 
 
 # [ Update Log ]
-Update 18-Mar-2018: version 0.5.5. Added figure and figure-type selection dropdowns. Added: FigureShader now displays key trapped error messages in a dialogue instead of the Info panel and on the console.
+Update 19-Mar-2018: version 0.5.5. FigureShader manages missing double-quotes in csv files.
+
+Update 18-Mar-2018: version 0.5.4. Added figure and figure-type selection dropdowns. Added: FigureShader now displays three trapped error messages (missing path_list.csv, missing image_list.csv or missing image file referenced in image_list.csv, which file is identified by name) in a dialogue instead of the Info panel and on the console.
 
 Update 08-Jan-2018: version 0.5.0. Takes advantage of the Principled Shader for skin. Restructured a lot of the code, basing it on what I learned from reading JSulpis' fine example: __https://github.com/jsulpis/blender-addons__
 
