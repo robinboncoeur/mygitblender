@@ -147,7 +147,7 @@ Remember: *until you save your .blend file -- giving it a name -- the 'Apply Sha
 
 # Behaviour
 
-After some checking, the script will paint a fairly basic shader on material zones of your figure, including eyelashes and teeth. If you have material zones that aren't in the list for that figure, those zones are ignored. 
+After some basic error checking, the script will paint a fairly basic shader on material zones of your figure, including eyelashes and teeth. If you have material zones in the figure that aren't in the list for that figure, those zones are ignored. 
 
 Selecting the wrong base figure will result in no shaders being painted on your figure. Note: *previous versions of this script required that the figure be named that of its origins, such as 'V4' or 'Dawn': that is no longer required, the object can be named anything. If no shaders show up on your figure, double-check that you have the right figure type selected.*
 
@@ -180,11 +180,13 @@ Please contact me if you run into any dramas at robinseahahn at gmail dot com, o
 
 
 # [ Update Log ]
-Update 19-Mar-2018: version 0.5.5. FigureShader manages missing double-quotes in csv files.
+Update 19-Mar-2018: version 0.5.5. FigureShader traps for missing double-quotes in csv files.
 
-Update 18-Mar-2018: version 0.5.4. Added figure and figure-type selection dropdowns. Added: FigureShader now displays three trapped error messages (missing path_list.csv, missing image_list.csv or missing image file referenced in image_list.csv, which file is identified by name) in a dialogue instead of the Info panel and on the console.
+Update 18-Mar-2018: version 0.5.4. 
+Added figure and figure-type selection dropdowns. No longer required that the object to be painted (shadered) be named after the figure the object is based on.  
+Added: FigureShader now displays three trapped error messages (missing path_list.csv, missing image_list.csv or missing image file referenced in image_list.csv, which file is identified by name) in a dialogue instead of the Info panel and on the console.  
 
-Update 08-Jan-2018: version 0.5.0. Takes advantage of the Principled Shader for skin. Restructured a lot of the code, basing it on what I learned from reading JSulpis' fine example: __https://github.com/jsulpis/blender-addons__
+Update 08-Jan-2018: version 0.5.0. Takes advantage of the Principled Shader for skin. Restructured a lot of the code, basing it on what I learned from reading JSulpis' fine example: __https://github.com/jsulpis/blender-addons__ . 
 
 Update 07-Nov-2016: version 0.4.3. Messages successfully sent to the Info panel in the Linux version. Need more extensive testing, however, on the Mac and in Windows.
 
