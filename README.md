@@ -147,27 +147,12 @@ Remember: *until you save your .blend file -- giving it a name -- the 'Apply Sha
 
 # Behaviour
 
-The script will detect certain errors and display them in an Error (FYI) dialogue. Since this is a bit experimental at this point, expect that clicking 'OK' will not close the dialogue: moving the cursor away from the dialogue will.
+After some checking, the script will paint a fairly basic shader on material zones of your figure, including eyelashes and teeth. If you have material zones that aren't in the list for that figure, those zones are ignored. 
 
-Selecting the wrong base figure will result in no shaders being painted on your figure. Previous versions required that the figure be named that of its origins, such as 'V4' or 'Dawn': that is no longer required, the object can be named anything. If no shaders show up on your figure, double-check that you have the right figure type selected.
+Selecting the wrong base figure will result in no shaders being painted on your figure. Note: *previous versions of this script required that the figure be named that of its origins, such as 'V4' or 'Dawn': that is no longer required, the object can be named anything. If no shaders show up on your figure, double-check that you have the right figure type selected.*
 
+The script will detect some basic issues and display them in an "Error Detected" dialogue. This dialogue is a bit temperamental at this point, using somewhat immature API stuff, so expect that clicking the 'OK' button will not close the dialogue: moving the cursor away from the dialogue afterwards will.
 
-
-# Other Cool Stuff
-
-Blender makes use of the alpha channel (transparency) of .png files. This is a far superior solution to lashes and hair to the one Poser uses, where black is interpreted as alpha. For this reason, you will need to convert your lashes jpgs to .png. This is trivial to accomplish in GIMP, a free download -- apparently not so easy to accomplish in PS. Anyway, a quick howto:
-
-   1. If you haven't done so, install GIMP
-
-   2. Open the lashes .jpg in GIMP
-
-   3. Under Image -> Mode, confirm that the image is set to RGB, not greyscale
-
-   4. Under Colors, select Colour to Alpha... and click OK  
-
-   5. Under File, select Export As...  and click Export
-
-   6. If you wish, you can save the XCF file or discard it.
 
 
 # Caveat
@@ -192,4 +177,22 @@ Update 07-Nov-2016: version 0.4.3. Messages successfully sent to the Info panel 
 Update 28-Oct-2016: version 0.4.2. Checks path statement in path_list.csv that the path is correct for the folder holding the image files. Checks for the existence of the image_list.csv file. Checks that all entries in image_list.csv are correct (as in: correspond to a file in that folder).
 
 Update 25-Oct-2016: version 0.4.1. Checks for and compensates for Blender sometimes tacking on a :1 (or a .001, or even a :1.002) to a material name for the V4 series. I've solved some of those issues (material names), hopefully without creating others. Please do let me know if you run into dramas. Also checks for the presence of the .csv files. Invalid edits are as yet not trapped.
+
+
+# Other Cool Stuff
+
+Blender makes use of the alpha channel (transparency) of .png files. This is a far superior solution to lashes and hair to the one Poser uses, where black is interpreted as alpha. For this reason, you will need to convert your lashes jpgs to .png. This is trivial to accomplish in GIMP, a free download -- apparently not so easy to accomplish in PS. Anyway, a quick howto:
+
+   1. If you haven't done so, install GIMP
+
+   2. Open the lashes .jpg in GIMP
+
+   3. Under Image -> Mode, confirm that the image is set to RGB, not greyscale
+
+   4. Under Colors, select Colour to Alpha... and click OK  
+
+   5. Under File, select Export As...  and click Export
+
+   6. If you wish, you can save the XCF file or discard it.
+
 
