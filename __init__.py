@@ -93,7 +93,7 @@ class MessageOperator(bpy.types.Operator):
   #        ("","",""),
   #       ]
   #)
-  mesglen = 200
+  mesglen = 1
 
   def execute(self, context):
     self.report({'INFO'}, self.message)
@@ -102,21 +102,16 @@ class MessageOperator(bpy.types.Operator):
 
   def invoke(self, context, event):
     wm = context.window_manager
-    self.mesglen = self.mesglen + (len(self.message) * 3)
+    self.mesglen = len(self.message) * 5.5
     return wm.invoke_popup(self, width=self.mesglen, height=400)
 
   def draw(self, context):
     self.layout.label("Error Detected")
-    #row = self.layout.split(0.15)
     layout = self.layout
-    row = layout.row()
-    #row.label(text="Error: ")
-    #row = layout.row()
+    row = layout.row(align=False)
     row.label(text=self.message)
-    #row.prop(self, "message")
     row = layout.row()
-    row = self.layout.split(0.85)
-    #row.label("")
+    row.alignment='RIGHT'
     row.operator("error.ok")
 
 #   The OK button in the error dialog
