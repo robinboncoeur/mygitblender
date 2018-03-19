@@ -151,7 +151,11 @@ After some checking, the script will paint a fairly basic shader on material zon
 
 Selecting the wrong base figure will result in no shaders being painted on your figure. Note: *previous versions of this script required that the figure be named that of its origins, such as 'V4' or 'Dawn': that is no longer required, the object can be named anything. If no shaders show up on your figure, double-check that you have the right figure type selected.*
 
-The script will detect some basic issues and display them in an "Error Detected" dialogue. This dialogue is a bit temperamental at this point, using somewhat immature API stuff, so expect that clicking the 'OK' button will not close the dialogue: moving the cursor away from the dialogue afterwards will.
+The script will detect some basic issues and display them in an "Error Detected" dialogue:
+
+<img src="http://www.tightbytes.com/Blender/FigShTute03.png" alt="Error message"/>
+
+This dialogue is a bit temperamental at this point, using somewhat immature API stuff, so expect that clicking the 'OK' button will not close the dialogue: moving the cursor away from the dialogue afterwards will.
 
 
 
