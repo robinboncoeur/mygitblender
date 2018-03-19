@@ -157,6 +157,14 @@ The script will detect some basic issues and display them in an "Error Detected"
 
 This dialogue is a bit temperamental at this point, using somewhat immature API stuff, so expect that clicking the 'OK' button will not close the dialogue: moving the cursor away from the dialogue afterwards will.
 
+The script currently traps for:
+
+	1. missing path_list.csv - meant to be in the .blend file's folder, and edited
+	2. missing image_list.csv - meant to be in the images folder, and edited
+	3. missing or misspelt image file, referenced in the image_list.csv file: names the file
+	4. missing double-quote ( " ) in either the path_list.csv or image_list.csv file
+
+More issues could be managed this way as users identify them.
 
 
 # Caveat
