@@ -153,7 +153,7 @@ Selecting the wrong base figure will result in no shaders being painted on your 
 
 The script will detect some basic issues and display them in an "Error Detected" dialogue:
 
-<img src="http://www.tightbytes.com/Blender/FigShTute03.png" alt="Error message"/>
+<img src="http://www.tightbytes.com/Blender/FigShTute03a.png" alt="Error message"/>
 
 This dialogue is a bit temperamental at this point, using somewhat immature API stuff, so expect that clicking the 'OK' button will not close the dialogue: moving the cursor away from the dialogue afterwards will.
 
