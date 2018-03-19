@@ -2,7 +2,7 @@
 # File: __init__.py (for figure_shaders)
 # ---------------------------------------------------------------------
 # Copyright (c) 16-Nov-2015, Robyn Hahn
-# Revision: 24-Feb-2018
+# Revision: 19-Mar-2018
 #
 # ***** BEGIN GPL LICENSE BLOCK *****
 # This program is free software; you can redistribute it and/or modify it under
@@ -23,7 +23,7 @@ bl_info = {
   "blender": (2, 79, 0),
   "location": "View3D",
   "description": "Generates simple Cycles shaders for imported OBJ Figures",
-  "warning": "Select Figure by name, then associate Figure type ...",
+  "warning": "",
   "wiki_url": "",
   "category": "Material"}
 
@@ -86,13 +86,6 @@ class MessageOperator(bpy.types.Operator):
   bl_label = "Message"
   type = StringProperty()
   message = StringProperty()
-  #name="ErrorMessage:",
-  #description="Shows error message",
-  #items=[ ("","",""),
-  #        ("","",""),
-  #        ("","",""),
-  #       ]
-  #)
   mesglen = 1
 
   def execute(self, context):
