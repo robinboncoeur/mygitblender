@@ -471,24 +471,30 @@ def shadersSetup(BaseFigure, SelectFigure):
         pic_list = readList(img_list)
         nVal = len(pic_list)
         nInt = 0
-        imgDict = dict(pic_list)
-        for attr, val in imgDict.items():
-          # print("attr: " + attr + ", val: " + val)
-          val = imgDict.get(attr, val)
-          imgFile = cleanStr(val)
-          # print("the current imgFile is: " + imgFile)
-          if len(imgFile) < 1:
-            # print("val-IN: " + val)
-            pass
-          else:
-            pathFile = os.path.join(imag_dir, imgFile)
-            # print("the current pathFile is: " + pathFile)
-            try:
-              with open(pathFile) as file:
-                pass
-            except IOError as e:
-              # print("could not open: " + val)
-              sRet = val
+        try:
+          imgDict = dict(pic_list)
+        except:
+          print("could not create dictionary... ")
+          sRet = "BADDICT"
+
+        if sRet == "FILEEXISTS":
+          for attr, val in imgDict.items():
+            # print("attr: " + attr + ", val: " + val)
+            val = imgDict.get(attr, val)
+            imgFile = cleanStr(val)
+            # print("the current imgFile is: " + imgFile)
+            if len(imgFile) < 1:
+              # print("val-IN: " + val)
+              pass
+            else:
+              pathFile = os.path.join(imag_dir, imgFile)
+              # print("the current pathFile is: " + pathFile)
+              try:
+                with open(pathFile) as file:
+                  pass
+              except IOError as e:
+                # print("could not open: " + val)
+                sRet = val
     return sRet
 
   def showErrMsg(sMsg):
@@ -500,6 +506,9 @@ def shadersSetup(BaseFigure, SelectFigure):
       longMsg = "Your path_list.csv points to a folder missing the image_list.csv file."
     if sMsg == "IMAGE":
       longMsg = "image_list.csv points to a missing image file."
+    if sMsg == "BADDICT":
+      longMsg = "Either image_list.csv or path_list.csv "
+      longMsg += "is missing a double-quote. Please double-check your files for typos."
     if len(sMsg) < 1:
       longMsg = "Another problem occurred."
     # this if len() assumes imgfile name.ext is going to be longer than 9 chars
