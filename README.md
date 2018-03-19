@@ -3,7 +3,8 @@
 # Figure Shaders
 
 **tl;dr:**
--- to install the script in Blender, please click on the green Clone or Download button above. The download file (**Figureshaders-master.zip**) will contain a zip file: **make_shaders.zip**. You will need to unzip the **Figureshaders-master.zip** file to a folder, which will contain that **make_shaders.zip** file. Select this **make_shaders.zip** zip file in the Preference page in Blender to install this script:
+
+To install the script in Blender, please click on the green Clone or Download button above. The download file (**Figureshaders-master.zip**) will contain a zip file: **make_shaders.zip**. You will need to unzip the **Figureshaders-master.zip** file to a folder, which will contain that **make_shaders.zip** file. Select this **make_shaders.zip** zip file in the Preference page in Blender to install this script:
 File -> User Preferences... -> then click on "Install From File..." at the bottom of the dialogue box.
 
 
@@ -172,11 +173,7 @@ Blender makes use of the alpha channel (transparency) of .png files. This is a f
 # Caveat
 This script has currently been tested in Linux (Mint Cinnamon 18), on a Macbook Pro running MacOS High Sierra and on Windows 7 Professional. The script loads and runs successfully on all these OSes.
 
-Errors: I'm currently working on displaying FigureShader error messages in a dialogue instead of displaying them on the Info panel, between the Render Engine dropdown and the Blender Logo and on the console. 
-
-**Currently, however, most error messages will still show up on the System Console and probably in a temporary popup, and will be Python-esque and seemingly unfriendly.** 
-
-I have endeavoured to trap for most known errors: however, some will probably still slip through. For that reason, the system console is your friend. I tend to run Blender from a Terminal window in Linux (Blenderites know this as the console), so I check there for error messages. In Windows, you can toggle the System Console under: (Menu) Window > Toggle System Console. Mac users, please refer to this page:
+FigureShader will display known, trapped error messages in a dialogue instead of the Info panel and on the console.   **However, most untrapped Python error messages will still show up on the System Console and probably in a temporary popup, and will be Python-esque and seemingly unfriendly.**  I have endeavoured to trap for most known errors: however, some will probably still slip through. For that reason, if you expect something to happen and doesn't, the system console is your friend. I tend to run Blender from a Terminal window in Linux (Blenderites know this as the console), so I check there for error messages. In Windows, you can toggle the System Console under: (Menu) Window > Toggle System Console. Mac users, please refer to this page:
 
 __http://blender.stackexchange.com/questions/6173/where-does-console-output-go__
 
@@ -186,9 +183,9 @@ Please contact me if you run into any dramas at robinseahahn at gmail dot com, o
 
 
 # [ Update Log ]
-Update 18-Mar-2018: version 0.5.4. Added figure and figure-type selection dropdowns. Added error dilogue for end users not accustomed to looking for problems in the console, but this is currently not working right.
+Update 18-Mar-2018: version 0.5.5. Added figure and figure-type selection dropdowns. Added: FigureShader now displays key trapped error messages in a dialogue instead of the Info panel and on the console.
 
-Update 08-Jan-2018: version 0.5.0. Branched to PrinceShader to take advantage of the Principled Shader. Restructured a lot of the code, basing it on what I learned from reading JSulpis' fine example: __https://github.com/jsulpis/blender-addons__
+Update 08-Jan-2018: version 0.5.0. Takes advantage of the Principled Shader for skin. Restructured a lot of the code, basing it on what I learned from reading JSulpis' fine example: __https://github.com/jsulpis/blender-addons__
 
 Update 07-Nov-2016: version 0.4.3. Messages successfully sent to the Info panel in the Linux version. Need more extensive testing, however, on the Mac and in Windows.
 
