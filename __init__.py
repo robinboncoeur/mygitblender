@@ -2,7 +2,7 @@
 # File: __init__.py (for figure_shaders)
 # ---------------------------------------------------------------------
 # Copyright (c) 16-Nov-2015, Robyn Hahn
-# Revision: 18-Mar-2018
+# Revision: 24-Feb-2018
 #
 # ***** BEGIN GPL LICENSE BLOCK *****
 # This program is free software; you can redistribute it and/or modify it under
@@ -19,7 +19,7 @@
 bl_info = {
   "name": "Shaders for Imported Figures",
   "author": "Robyn Hahn",
-  "version": (0, 5, 4),
+  "version": (0, 5, 5),
   "blender": (2, 79, 0),
   "location": "View3D",
   "description": "Generates simple Cycles shaders for imported OBJ Figures",
@@ -86,6 +86,14 @@ class MessageOperator(bpy.types.Operator):
   bl_label = "Message"
   type = StringProperty()
   message = StringProperty()
+  #name="ErrorMessage:",
+  #description="Shows error message",
+  #items=[ ("","",""),
+  #        ("","",""),
+  #        ("","",""),
+  #       ]
+  #)
+  mesglen = 200
 
   def execute(self, context):
     self.report({'INFO'}, self.message)
@@ -94,15 +102,16 @@ class MessageOperator(bpy.types.Operator):
 
   def invoke(self, context, event):
     wm = context.window_manager
-    return wm.invoke_popup(self, width=300, height=400)
+    self.mesglen = self.mesglen + (len(self.message) * 3)
+    return wm.invoke_popup(self, width=self.mesglen, height=400)
 
   def draw(self, context):
-    self.layout.label("FYI:")
-    row = self.layout.split(0.15)
+    self.layout.label("Error Detected")
+    #row = self.layout.split(0.15)
     layout = self.layout
     row = layout.row()
-    row.label(text="Error: ")
-    row = layout.row()
+    #row.label(text="Error: ")
+    #row = layout.row()
     row.label(text=self.message)
     #row.prop(self, "message")
     row = layout.row()
@@ -132,7 +141,7 @@ class panelTools(PropertyGroup):
   baseFigEnum = EnumProperty(
       name="FigureType:",
       description="Choose base figure name.",
-      items=[ ("V4", "Victoria4", ""),
+      items=[ ("V4","Victoria4",""),
               ("Mariko","Mariko",""),
               ("Dawn","Dawn",""),
               ("Antonia","Antonia",""),
@@ -496,8 +505,8 @@ def shadersSetup(BaseFigure, SelectFigure):
 
   def showErrMsg(sMsg):
     if sMsg == "PATH":
-      longMsg = "Missing path_list.csv. "+"\r\n"
-      longMsg += "Copy this file to the folder "+"\r"
+      longMsg = "Missing path_list.csv. "
+      longMsg += "Copy this file to the folder "
       longMsg += "containing your .blend and edit it."
     if sMsg == "IMGLIST":
       longMsg = "Your path_list.csv points to a folder missing the image_list.csv file."
@@ -505,8 +514,9 @@ def shadersSetup(BaseFigure, SelectFigure):
       longMsg = "image_list.csv points to a missing image file."
     if len(sMsg) < 1:
       longMsg = "Another problem occurred."
+    # this if len() assumes imgfile name.ext is going to be longer than 9 chars
     if len(sMsg) > 9:
-      longMsg = sMsg + " is missing, or the file is spelled wrong in image_list.csv..."
+      longMsg = sMsg + " is missing, or the file is spelled incorrectly in image_list.csv..."
 
     return longMsg
 
