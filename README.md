@@ -11,7 +11,7 @@ File -> User Preferences... -> then click on "Install From File..." at the botto
 # Description
 
 **Figure Shaders** is a script to give humanoid figures imported into Blender: skin, eyes and mouth shaders using an image set. These image sets are usually provided by the figure or character maker. The script runs in a panel [ T ] in the context of the the 3D Viewport window.
-Currently - as of 18-Feb-2018 - the most recent version is 0.5.4. This is a test version only because a dialogue is not working correctly. Otherwise, all should work as advertised.
+Currently - as of 19-Feb-2018 - the most recent version is 0.5.5. All should work as advertised.
 
 **Figure Shaders** requires Blender 2.78 or newer to work properly, largely because it takes advantage of a new shader node called PrincipledShader. Download the current version of Blender at:
 
