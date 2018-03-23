@@ -71,11 +71,11 @@ The **image_list.csv** file should look something like this when you've finished
 	2. you've saved (and edited) a path_list.csv file to that location
 Be sure to edit this file prior to running the script. An edited file will look something like this:
 
-	"img_pathP", "/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/Antonia/"  
-	"img_pathN", "E:\Blender\Projects\AllTextures\AllSkin\Antonia\"  
-	"csv_pathP", "/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/Antonia/"  
-	"csv_pathN", "E:\Blender\Projects\AllTextures\AllSkin\Antonia\"  
-	"csv_name", "image_list.csv"  
+		"img_pathP", "/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/Antonia/"  
+		"img_pathN", "E:\Blender\Projects\AllTextures\AllSkin\Antonia\"  
+		"csv_pathP", "/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/Antonia/"  
+		"csv_pathN", "E:\Blender\Projects\AllTextures\AllSkin\Antonia\"  
+		"csv_name", "image_list.csv"  
 
 * To edit the **path_list.csv** file, open it in a pure-text editor or spreadsheet programme, as explained above. The two columns represent the path key: this first column has names used by the script, so they must not be changed, and the fully-qualified path (value) to your images folder. Note: I tend to keep my textures files together in a sub-folder called "AllSkin" in my "AllTextures" folder in the main "Projects" folder that has all my Blender projects in it. This cuts down on redundant files everywhere and makes it easy for scripts (and Blender itself) to find stuff. The **path_list.csv** file assumes this sort of structure: of course, you can always just replace the existing images folder path to the path location of your images. The current entry is just an example and is almost definitely not a valid path to your files, since it is unlikely your name is Robyn, nor would your computer be set up exactly like mine. Thus, you will need to replace the existing path statement with a fully-qualified path designating your image texture files' location. As you can see from the example, an example of a fully-qualified path for Linux would be:
 
