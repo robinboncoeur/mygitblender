@@ -441,63 +441,72 @@ def shadersSetup(BaseFigure, SelectFigure):
     if sRet == "FILEEXISTS":
       # check if image_list.csv is in the right place (or exists)
       csv_listpath = os.path.join(blend_dir, "path_list.csv")
-      # print("csv_listpath is: " + csv_listpath)
+      #print("csv_listpath is: " + csv_listpath)
       csv_list = readList(csv_listpath)
       pathlist = dict(csv_list)
       if thisOS_name == 'posix':
-          print("A-thisOS_Name is: " + thisOS_name)
+          #print("A-thisOS_Name is: " + thisOS_name)
           path_str = pathlist.get('img_pathP')
       if thisOS_name == 'nt':
           path_str = pathlist.get('img_pathN')
-          print("B-thisOS_Name is: " + thisOS_name)
+          #print("B-thisOS_Name is: " + thisOS_name)
       path_str = cleanStr(path_str)
-      print("Cleaned path string: " + path_str)
-      imag_dir = os.path.dirname(path_str)
-      # print("The os path is: " + imag_dir)
-      img_list = os.path.join(imag_dir, "image_list.csv")
-      # print("The whole path is: " + img_list)
       try:
-        with open(img_list) as file:
+        if len(path_str) == 0:
           pass
-      except IOError as e:
-        print("could not open: " + img_list)
-        sRet = "IMGLIST"
+      except:
+        sRet = "BADPATH"
 
       if sRet == "FILEEXISTS":
-        # step through the image_list.csv to check for invalid file references
-        imgFile = ""
-        pathFile = ""
-        retImgName = ""
-        pic_list = readList(img_list)
-        nVal = len(pic_list)
-        nInt = 0
+        print("sRet is: " + sRet)
+        imag_dir = os.path.dirname(path_str)
+        # print("The os path is: " + imag_dir)
+        img_list = os.path.join(imag_dir, "image_list.csv")
+        # print("The whole path is: " + img_list)
         try:
-          imgDict = dict(pic_list)
-        except:
-          print("could not create dictionary... ")
-          sRet = "BADDICT"
+          with open(img_list) as file:
+            pass
+        except IOError as e:
+          #print("could not open: " + img_list)
+          sRet = "IMGLIST"
 
         if sRet == "FILEEXISTS":
-          for attr, val in imgDict.items():
-            # print("attr: " + attr + ", val: " + val)
-            val = imgDict.get(attr, val)
-            imgFile = cleanStr(val)
-            # print("the current imgFile is: " + imgFile)
-            if len(imgFile) < 1:
-              # print("val-IN: " + val)
-              pass
-            else:
-              pathFile = os.path.join(imag_dir, imgFile)
-              # print("the current pathFile is: " + pathFile)
-              try:
-                with open(pathFile) as file:
-                  pass
-              except IOError as e:
-                # print("could not open: " + val)
-                sRet = val
+          # step through the image_list.csv to check for invalid file references
+          imgFile = ""
+          pathFile = ""
+          retImgName = ""
+          pic_list = readList(img_list)
+          nVal = len(pic_list)
+          nInt = 0
+          try:
+            imgDict = dict(pic_list)
+          except:
+            #print("could not create dictionary... ")
+            sRet = "BADDICT"
+
+          if sRet == "FILEEXISTS":
+            for attr, val in imgDict.items():
+              # print("attr: " + attr + ", val: " + val)
+              val = imgDict.get(attr, val)
+              imgFile = cleanStr(val)
+              # print("the current imgFile is: " + imgFile)
+              if len(imgFile) < 1:
+                # print("val-IN: " + val)
+                pass
+              else:
+                pathFile = os.path.join(imag_dir, imgFile)
+                # print("the current pathFile is: " + pathFile)
+                try:
+                  with open(pathFile) as file:
+                    pass
+                except IOError as e:
+                  # print("could not open: " + val)
+                  sRet = val
     return sRet
 
   def showErrMsg(sMsg):
+    if sMsg == "INVALIDMAT":
+      longMsg = "Unable to assign shaders at this time: no valid material."
     if sMsg == "PATH":
       longMsg = "Missing path_list.csv. "
       longMsg += "Copy this file to the folder "
@@ -509,6 +518,9 @@ def shadersSetup(BaseFigure, SelectFigure):
     if sMsg == "BADDICT":
       longMsg = "Either image_list.csv or path_list.csv "
       longMsg += "is missing a double-quote. Please double-check your files for typos."
+    if sMsg == "BADPATH":
+      longMsg = "path_list.csv has an invalid path statement. Please refer to the "
+      longMsg += "readme.md on the git page you downloaded from for help on this issue."
     if len(sMsg) < 1:
       longMsg = "Another problem occurred."
     # this if len() assumes imgfile name.ext is going to be longer than 9 chars
