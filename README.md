@@ -163,8 +163,21 @@ The script currently traps for:
 	2. missing image_list.csv - meant to be in the images folder, and edited
 	3. missing or misspelt image file, referenced in the image_list.csv file: file name is identified
 	4. missing double-quote ( " ) in either the path_list.csv or image_list.csv file
+	5. invalid path statements in the path_list.csv file
 
 More issues could be managed this way as users identify them.
+
+# Invalid Path Issue
+For issue # 5, the problem is likely an old path_list.csv version. The old version included two path entries with two keys: img_path and csv_path. That file needs to be overwritten with the following keys:
+
+		"img_pathP", "/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/Antonia/"  
+		"img_pathN", "E:\Blender\Projects\AllTextures\AllSkin\Antonia\"  
+		"csv_pathP", "/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/Antonia/"  
+		"csv_pathN", "E:\Blender\Projects\AllTextures\AllSkin\Antonia\"  
+		"csv_name", "image_list.csv"  
+
+Then, edit the paths to reflect your image file locations.
+
 
 
 # Caveat
