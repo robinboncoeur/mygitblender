@@ -235,7 +235,7 @@ class buildShader():
     craClr02 = (0, 0, 0, 1)
     craClr03 = (0, 0, 0, 1)
     crPosn01 = (0)
-    crPosn02 = (.05)
+    crPosn02 = (.45)
     crPosn03 = (.5)
     shCrRamp = self.addColorRamp(-250, 0, craClr01, craClr02, craClr03, crPosn01, crPosn02, crPosn03)
     self.nodeLinks.new(self.shVCRamp.outputs[0], shCrRamp.inputs[0])
