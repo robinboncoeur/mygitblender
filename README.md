@@ -193,6 +193,8 @@ Please contact me if you run into any dramas at robinseahahn at gmail dot com, o
 
 
 # [ Update Log ]
+Update 01-Apr-2018: version 0.5.5 Included trap for old path_list.csv files, which contain old format (and invalid information). *Proposed solution: this and other .csv situations to be managed by the software writing to the file as opposed to having the user manually editing the file. Currently under development.*
+
 Update 19-Mar-2018: version 0.5.5. FigureShader traps for missing double-quotes in csv files.
 
 Update 18-Mar-2018: version 0.5.4. 
