@@ -1,4 +1,4 @@
-<img style="width: 80px;" src="http://www.tightbytes.com/Blender/SeaChange09.jpg" alt="Skin shaders on V4"/>
+<img style="width: 80px;" src="http://www.tightbytes.com/Blender/SeaChange.jpg" alt="Skin shaders on V4"/>
 
 # Figure Shaders
 
