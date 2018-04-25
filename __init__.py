@@ -23,7 +23,7 @@ bl_info = {
   "blender": (2, 79, 0),
   "location": "View3D",
   "description": "Generates simple Cycles shaders for imported OBJ Figures",
-  "warning": "",
+  "warning": "Reads settings from CSV only, does not save any to CSV, all stored in the .blend.",
   "wiki_url": "",
   "category": "Material"}
 
@@ -534,11 +534,9 @@ class RunScript(bpy.types.Operator):
   bl_label = "Invokes Shader Script"
 
   """
-  ================================================
-   bpy.path.basename() returns the name of the
-   currently active .blend.
-   If un-named, returns .F. and so button does
-   not activate until file is saved with a name.
+  =============================================================================
+   bpy.path.basename() returns the name of the currently active .blend. If un-
+   named, returns .F. Button does not activate until file is saved with a name.
   ================================================
   """
   @classmethod
@@ -557,7 +555,7 @@ class RunScript(bpy.types.Operator):
     sBaseFgr = bpy.context.scene.figTools.baseFigEnum
     sSelFgr =  bpy.context.scene.figTools.curFigEnum
     #print("Selected shader is: " + sSelShader)
-    shadersSetup(sBaseFgr, sSelFgr,sSelShader)
+    shadersSetup(sBaseFgr, sSelFgr, sSelShader)
     return {'FINISHED'}
 
 
