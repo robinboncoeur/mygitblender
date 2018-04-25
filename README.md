@@ -4,6 +4,8 @@
 
 **tl;dr:**
 
+*NOTE: this is an experimental, non-stable branch. Please consider this when downloading and installing.*
+
 To install the script in Blender, please click on the green Clone or Download button above. The download file (**Figureshaders-master.zip**) will contain a zip file: **make_shaders.zip**. You will need to unzip the **Figureshaders-master.zip** file to a folder, which will contain that **make_shaders.zip** file. Select this **make_shaders.zip** zip file in the Preference page in Blender to install this script:
 File -> User Preferences... -> then click on "Install From File..." at the bottom of the dialogue box.
 
@@ -11,7 +13,7 @@ File -> User Preferences... -> then click on "Install From File..." at the botto
 # Description
 
 **Figure Shaders** is a script to give humanoid figures imported into Blender: skin, eyes and mouth shaders using an image set. These image sets are usually provided by the figure or character maker. The script runs in a panel [ T ] in the context of the the 3D Viewport window.
-Currently - as of 01-Apr-2018 - the most recent version is 0.5.5. All should work as advertised.
+Currently - as of 25-Apr-2018 - the most recent version is 0.5.7. This is a WIP branch, which adds some features for managing the Principled Shader Node the shaders are based on. The Principled Shader Node is probably not the best approach for rendering skin, but it is easy to work with and will give decent results until a more sophisticated note set can be devised.
 
 **Figure Shaders** requires Blender 2.79 or newer to work properly, largely because it takes advantage of a new shader node called PrincipledShader. Download the current version of Blender at:
 
@@ -27,7 +29,7 @@ The current version of this script is comprised of five files:
 
 These three files will reside in your scripts/addons folder -- after installation -- in a folder called **make_shaders**: Blender will install the folder and files from the make_shader.zip file, as noted above. Additionally, the zip contains these files:
 
-* path_list.csv: **must be copied to the folder your currently open .blend file is in, and edited**.
+* parm_list.csv: **must be copied to the folder your currently open .blend file is in, and edited**.
 
 * image_list.csv: **must be copied to the image folder for your figure, and edited**.
 
@@ -41,7 +43,7 @@ This script has been designed and should work for the Antonia, Victoria4, Dawn a
 
 * Download the **Figureshaders-master.zip** file and install the script in Blender using the above instructions.
 
-* Find the .csv files: **image_list.csv** and **path_list.csv** will be in your unzip folder. Copy the image_list.csv to each skin-texture image folder. You will need to edit this file: in Windows and Linux use either a plain text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free), or on the Mac, in LibreOffice. See notes below on how and why LibreOffice is recommended for the Mac.
+* Find the .csv files: **image_list.csv** and **parm_list.csv** will be in your unzip folder. Copy the image_list.csv to each skin-texture image folder. You will need to edit this file: in Windows and Linux use either a plain text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free), or on the Mac, in LibreOffice. See notes below on how and why LibreOffice is recommended for the Mac.
 
 The **image_list.csv** file should look something like this when you've finished editing (using Antonia textures as an example):
 
@@ -71,13 +73,16 @@ The **image_list.csv** file should look something like this when you've finished
 	2. you've saved (and edited) a path_list.csv file to that location
 Be sure to edit this file prior to running the script. An edited file will look something like this:
 
-		"img_pathP", "/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/Antonia/"  
-		"img_pathN", "E:\Blender\Projects\AllTextures\AllSkin\Antonia\"  
-		"csv_pathP", "/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/Antonia/"  
-		"csv_pathN", "E:\Blender\Projects\AllTextures\AllSkin\Antonia\"  
-		"csv_name", "image_list.csv"  
+	"img_path", "/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/V4/"
+	"fl01_sssval",".180"
+	"fl02_sssrad",".220"
+	"fl05_spcamt",".150"
+	"fl06_spcruf",".350"
+	"fl11_sheenv",".120"
+	"fl14_iorval","1.86"
 
-* To edit the **path_list.csv** file, open it in a pure-text editor or spreadsheet programme, as explained above. The two columns represent the path key: this first column has names used by the script, so they must not be changed, and the fully-qualified path (value) to your images folder. Note: I tend to keep my textures files together in a sub-folder called "AllSkin" in my "AllTextures" folder in the main "Projects" folder that has all my Blender projects in it. This cuts down on redundant files everywhere and makes it easy for scripts (and Blender itself) to find stuff. The **path_list.csv** file assumes this sort of structure: of course, you can always just replace the existing images folder path to the path location of your images. The current entry is just an example and is almost definitely not a valid path to your files, since it is unlikely your name is Robyn, nor would your computer be set up exactly like mine. Thus, you will need to replace the existing path statement with a fully-qualified path designating your image texture files' location. As you can see from the example, an example of a fully-qualified path for Linux would be:
+* To edit the **parm_list.csv** file, open it in a pure-text editor or spreadsheet programme, as explained above. The two columns represent the parameter key: this first column has names used by the script, so they must not be changed. The second column holds, among other values, then fully-qualified path to your images folder as well as PrincipledShader parameter values.
+Note: I tend to keep my textures files together in a sub-folder called "AllSkin" in my "AllTextures" folder in the main "Projects" folder that has all my Blender projects in it. This cuts down on redundant files everywhere and makes it easy for scripts (and Blender itself) to find stuff. The **parm_list.csv** file assumes this sort of structure: of course, you can always just replace the existing images folder path to the path location of your images. The current entry is just an example and is almost definitely not a valid path to your files, since it is unlikely your name is Robyn, nor would your computer be set up exactly like mine. Thus, you will need to replace the existing path statement with a fully-qualified path designating your image texture files' location. As you can see from the example, an example of a fully-qualified path for Linux would be:
 
 __"/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/Antonia/"__
 
@@ -91,6 +96,8 @@ __"E:\MyRuntime\runtime\textures\VendorName\ImagesFolder\Character\"__
 
 
 Note the closing forward slash [ / ] for Linux-Mac and back-slash [ \ ] for Windows: these are important and need to be appropriate for your system **as well as at the end of the path statement**. Again, if you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes and commas: they need to exist for each value.
+
+The PrincipledShader values are all arbitrary based on mucking around with the shader to get some passable skin and as they are almost definitely not accurate, please use the values as a possible starting point.
 
 
 # Reviewing Script Installation Instructions
@@ -122,26 +129,26 @@ Note the closing forward slash [ / ] for Linux-Mac and back-slash [ \ ] for Wind
 
 * Click on the figure in the scene, press [S] (for scale), and type 10 (Poser's scale is woefully tiny!)
 
-* Press T to open the panel, then find the FigureShader section. You should see two dropdowns and an 'Apply Shaders' button:
+* Press T to open the panel, then find the FigureShader section. At the top of the panel are two buttons (*currently, only the Load button works, the Save will put all settings into the parm_list.csv eventually*). This will load values such as image path and shader settings to the panel operators.
 
-<img src="http://www.tightbytes.com/Blender/FigShTute00.png" alt="FigureShader"/>
+<img src="http://www.tightbytes.com/Blender/FigShTute11.png" alt="FigureShader"/>
 
-Select the name of your target object file (the figure you are trying to apply a shader to) from the first dropdown under "Select the figure for SkinShaders:"
+	1) Select Shader Type: only the Principled SSS works at this point.
+	2) If the Image file path is not in the imgpath operator, click on the file icon and navigate to your images folder.
 
-<img src="http://www.tightbytes.com/Blender/FigShTute01.png" alt="Select figure to shade"/>
+	<img src="http://www.tightbytes.com/Blender/FigShTute12.png" alt="Select figure to shade"/>
 
-... in this dropdown you will see a list of all objects in your Blender scene. Select the figure you wish to apply skin and other materials to. Currently, FigureShaders supports these core figures:
+	3) Select the target object file (the figure you are trying to apply a shader to) under "Figure to paint:". Currently, FigureShaders supports these core figures:
 
-   1. Victoria4
-   2. Dawn
-   3. Mariko
-   4. Antonia
+	   o Victoria4
+	   o Dawn
+	   o Mariko
+	   o Antonia
 
-* To identify which figure that object is based on, select the figure type name from the second dropdown.
+	4) To identify which figure that object is based on, select the figure type name under "Figure Type:".
+	5) Principled Shader setting defaults have been arbitrarily set - these have yielded resonable results. You will almost certainly find better settings, which is the whole point of sharing this.
 
-<img src="http://www.tightbytes.com/Blender/FigShTute02.png" alt="Select base figure"/>
-
-* Finally, click on Apply Shaders.
+	6) Finally, click on Apply Shaders.
 Remember: *until you save your .blend file -- giving it a name -- the 'Apply Shaders' button will remain disabled*.
 
 
@@ -162,23 +169,13 @@ The script currently traps for:
 	1. missing path_list.csv - meant to be in the .blend file's folder, and edited
 	2. missing image_list.csv - meant to be in the images folder, and edited
 	3. missing or misspelt image file, referenced in the image_list.csv file: file name is identified
-	4. missing double-quote ( " ) in either the path_list.csv or image_list.csv file
-	5. invalid path statements in the path_list.csv file
+	4. missing double-quote ( " ) in either the parm_list.csv or image_list.csv file
+	5. invalid path statements in the parm_list.csv file
 
 More issues could be managed this way as users identify them.
 
 # Invalid Path Issue
-For issue # 5, the problem is likely an old path_list.csv version. The old version included two path entries with two keys: img_path and csv_path. That file needs to be overwritten with the following keys:
-
-		"img_pathP", "/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/Antonia/"  
-		"img_pathN", "E:\Blender\Projects\AllTextures\AllSkin\Antonia\"  
-		"csv_pathP", "/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/Antonia/"  
-		"csv_pathN", "E:\Blender\Projects\AllTextures\AllSkin\Antonia\"  
-		"csv_name", "image_list.csv"  
-
-Then, edit the paths to reflect your image file locations.
-
-
+For issue # 5, the problem is likely an old path_list.csv version. The old version included two path entries with two keys: img_path and csv_path.
 
 # Caveat
 This script has currently been tested in Linux (Mint Cinnamon 18), on a Macbook Pro running MacOS High Sierra and on Windows 7 Professional. The script loads and runs successfully on all these OSes.
@@ -193,6 +190,8 @@ Please contact me if you run into any dramas at robinseahahn at gmail dot com, o
 
 
 # [ Update Log ]
+Update 25-Apr-2018: -> branch parmListRead. Able to navigate to image folder. Loads -- reads -- settings from parm_list.csv (which replaces path_list.csv). Allows management of SSSValue, SSSRadiate, SpecAmt (erroneously labeled Spec Tint), Spec roughness, Sheen Value and IOR value. Very much a WIP at this point: main next goal is to be able to write settings to csv.
+
 Update 01-Apr-2018: version 0.5.5 Included trap for old path_list.csv files, which contain old format (and invalid information). *Proposed solution: this and other .csv situations to be managed by the software writing to the file as opposed to having the user manually editing the file. Currently under development.*
 
 Update 19-Mar-2018: version 0.5.5. FigureShader traps for missing double-quotes in csv files.
