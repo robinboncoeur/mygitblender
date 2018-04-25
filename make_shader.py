@@ -1,35 +1,28 @@
 # ---------------------------------------------------------------------
-# File: make_shaders.py
+# File: make_shader.py
 # ---------------------------------------------------------------------
-#
 # ***** BEGIN GPL LICENSE BLOCK *****
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software Foundation,
-# Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2 of the License or (your option) any later version.
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
+# Street, Fifth Floor, Boston, MA 02110-1301, USA.
 # ***** END GPL LICENCE BLOCK *****
 
 import bpy
 from bpy_extras.io_utils import ImportHelper
-#from bpy.props import CollectionProperty, StringProperty, EnumProperty, PointerProperty, FloatProperty
-#from bpy.types import Operator
-
+from __main__ import *
+#from bpy.props import CollectionProperty, StringProperty, EnumProperty, PointerProperty, FloatProperty #from bpy.types import Operator
 
 # builds very simple shaders for skin, eyes (incl trans), lashes and mouth
 class buildShader():
-  def __init__(self, cObj, cRegion, ImgClr = None, valBum = 0.00, valSpe = 0.00):
+  def __init__(self, cObj, cShdr, cRegion, ImgClr = None, valBum = 0.00, valSpe = 0.00):
     self.selObj = cObj
+    self.selSdr = cShdr
     self.Region = cRegion
     self.ImgCol = ImgClr
     self.valCoo = 2 if ImgClr else 0
@@ -51,14 +44,33 @@ class buildShader():
     self.nodeLinks = self.treeNodes.links
     self.nodes = {}
 
-    # clear all existing nodes in material list
+    self.fTools = bpy.context.scene.figTools
+    self.shvsssval = self.fTools.flSssVal
+    self.shvsssrad = self.fTools.flSssRad
+    self.shvspcamt = self.fTools.flSpcAmt
+    self.shvspcruf = self.fTools.flSpcRuf
+    self.shvsheenv = self.fTools.flSheenV
+    self.shviorval = self.fTools.flIorVal
+
+    """ First, clear all existing nodes in material list """
     for n in self.treeNodes.nodes:
       self.treeNodes.nodes.remove(n)
 
-    self.buildShaderset(ImgClr)
+    """ Second, run script to create material node sets """
+    if self.selSdr == "SimpleS":
+      pass
+    else:
+      #bpy.ops.system.message('INVOKE_DEFAULT',
+      #  type = "Error",
+      #  message = "200-The current figure is: " + self.fTools.curFigEnum,
+      #  )
+      self.buildShaderset(ImgClr)
 
 
 
+  """ ================================
+  ===> All node-builder functions <===
+  ================================ """
   def addRGBMix(self, ptX, ptY, nClamp, flFactor, mixType):
     """ adds an RGBMix node """
     nodeRGB = self.treeNodes.nodes.new("ShaderNodeMixRGB")
@@ -70,7 +82,7 @@ class buildShader():
     return nodeRGB
 
   def addColorRamp(self, ptX, ptY, cRClrA, cRClrB, cRClrC, cRPosA, cRPosB=0, cRPosC=0, cMode=None, Interp=None):
-    """ adds an RGBMix node """
+    """ adds an ColorRamp node """
     nodeClrRamp = self.treeNodes.nodes.new("ShaderNodeValToRGB")
     nodeClrRamp.location = (ptX, ptY)
     self.nodes["ColorRamp"] = nodeClrRamp
@@ -109,8 +121,6 @@ class buildShader():
     texCoord = self.treeNodes.nodes.new("ShaderNodeTexCoord")
     texCoord.location = (ptX, ptY)
     self.nodes["Tex Coord"] = texCoord
-    #return texCoord
-
     mapping = self.treeNodes.nodes.new("ShaderNodeMapping")
     mapping.location = (ptX + 175, ptY)
     mapping.name = mName
@@ -185,6 +195,7 @@ class buildShader():
     shVoron = self.addVoronoi(-725, -175, 1)
     self.nodeLinks.new(shNoUV.outputs[0], shVoron.inputs[0])
     # -> ColorRamps ->
+    # colour settings (craClr=colorramp color, crPosn=colo position)
     craClr01 = (.18, .02, .01, 1)
     craClr02 = (.6, .25, .12, 1)
     craClr03 = (1.0, .47, .22, 1)
@@ -239,7 +250,7 @@ class buildShader():
     crPosn03 = (.5)
     shCrRamp = self.addColorRamp(-250, 0, craClr01, craClr02, craClr03, crPosn01, crPosn02, crPosn03)
     self.nodeLinks.new(self.shVCRamp.outputs[0], shCrRamp.inputs[0])
-    self.nodeLinks.new(shCrRamp.outputs[0], self.shPrin.inputs[7])
+    self.nodeLinks.new(shCrRamp.outputs[0], self.shPrin.inputs[6])
 
 
   def makeMouth(self):
@@ -297,23 +308,30 @@ class buildShader():
 
 
   def buildShaderset(self, image):
-    """ For skin, mouth, lashes or any node suffixed clr (colour)
-    These are the Principled shader, texture coordinate, Mapping and Image Texture nodes.
-    Also sets up the DiffuseBSDF node.                                 """
-    # Create a startup node tree : material output and principled shader
-    self.matOut = self.treeNodes.nodes.new("ShaderNodeOutputMaterial")
-    self.matOut.location = (100, 450)
-    self.nodes["Output"] = self.matOut
+    if self.selSdr == "PrinSSS":
+      """
+      For skin, mouth, lashes or any node suffixed clr (colour) These are the
+      Principled shader, texture coordinate, Mapping and Image Texture nodes.
+      Also sets up the DiffuseBSDF node.
+      """
+      # Create a startup node tree : material output and principled shader
+      self.matOut = self.treeNodes.nodes.new("ShaderNodeOutputMaterial")
+      self.matOut.location = (100, 450)
+      self.nodes["Output"] = self.matOut
 
-    if (self.Region[0:4] == 'Skin' or self.Region == 'Mouth'):
-      self.shPrin = self.treeNodes.nodes.new("ShaderNodeBsdfPrincipled")
-      self.shPrin.location = (100, 250)
-      self.nodes["Principled"] = self.shPrin
-      self.treeNodes.links.new(self.shPrin.outputs[0], self.matOut.inputs[0])
-      # Specular (to be sent as parm)
-      self.shPrin.inputs[5].default_value = .015
-      self.shPrin.inputs[11].default_value = .2
-      self.shPrin.inputs[14].default_value = 1.8
+      if (self.Region[0:4] == 'Skin' or self.Region == 'Mouth'):
+        self.shPrin = self.treeNodes.nodes.new("ShaderNodeBsdfPrincipled")
+        self.shPrin.location = (100, 250)
+        self.nodes["Principled"] = self.shPrin
+        self.treeNodes.links.new(self.shPrin.outputs[0], self.matOut.inputs[0])
+        # SSS value - to be reviewed
+        self.shPrin.inputs[1].default_value = self.shvsssval
+        self.shPrin.inputs[2].default_value = [self.shvsssrad,self.shvsssrad,self.shvsssrad]
+        # Specular values
+        self.shPrin.inputs[5].default_value = self.shvspcamt
+        self.shPrin.inputs[7].default_value = self.shvspcruf
+        self.shPrin.inputs[11].default_value = self.shvsheenv
+        self.shPrin.inputs[14].default_value = self.shviorval
 
     # Skin and Eyes mat slot names have _suffixes
     if self.Region[0:4] == 'Skin':
