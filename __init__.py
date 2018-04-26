@@ -2,7 +2,7 @@
 # File: __init__.py (for figure_shaders)
 # ---------------------------------------------------------------------
 # Copyright (c) 16-Nov-2015, Robyn Hahn
-# Revision: 05-Apr-2018
+# Revision: 26-Apr-2018
 #
 # ***** BEGIN GPL LICENSE BLOCK *****
 # This program is free software; you can redistribute it and/or modify it under
@@ -19,7 +19,7 @@
 bl_info = {
   "name": "Shaders for Imported Figures",
   "author": "Robyn Hahn",
-  "version": (0, 5, 7),
+  "version": (0, 5, 8),
   "blender": (2, 79, 0),
   "location": "View3D",
   "description": "Generates simple Cycles shaders for imported OBJ Figures",
@@ -68,30 +68,36 @@ thisOS_name = os.name
 def showErrMsg(sMsg):
   if sMsg == "INVALIDMAT":
     longMsg = "375-Unable to assign shaders to one material: invalid mat zone."
-  if sMsg == "PATH":
+  if sMsg == "NOPATHL":
     longMsg = "500-Missing path_list.csv. Copy this file to the folder "
     longMsg += "containing your .blend and edit it."
   if sMsg == "IMGLIST":
     longMsg = "425-Your path_list.csv points to a folder missing the image_list.csv file."
   if sMsg == "IMAGE":
-    longMsg = "230-image_list.csv points to a missing image file."
+    longMsg = "260-image_list.csv points to a missing image file."
+  if sMsg == "SAVSUCC":
+    longMsg = "260-Your settings have been saved successfully."
+  if sMsg == "LODSUCC":
+    longMsg = "230-Your settings loaded successfully."
   if sMsg == "BADDICT":
     longMsg = "625-Either image_list.csv or path_list.csv "
     longMsg += "is missing a double-quote. Please double-check your files for typos."
   if sMsg == "NOPARMS":
-    longMsg = "500-Missing parm_list.csv. Copy this file to the folder "
-    longMsg += "containing your .blend and edit it."
+    longMsg = "560-Missing parm_list.csv. Create this file by finding your images "
+    longMsg += "folder, then save your settings."
+  if sMsg == "NOIMAGES":
+    longMsg = "900-The image_list.csv might be missing or have information on images "
+    longMsg += "in another folder. Please double-check image_list.csv that the files "
+    longMsg += "correspond to the entries in image_list.csv."
   if sMsg == "BADPARM":
     longMsg = "400-A problem has been detected with your parm_list.csv file."
   if sMsg == "BADPATH":
     longMsg = "750-path_list.csv has an invalid path statement. Please refer to the "
     longMsg += "readme.md on the FigureShader git page for help on this issue."
-  if len(sMsg) < 1:
-    longMsg = "200-Another problem occurred."
-  # this if len() assumes imgfile name.ext is going to be longer than 9 chars
+  # this [if len()] assumes imgfile name.ext is going to be longer than 9 chars
   if not sMsg == "INVALIDMAT":
     if len(sMsg) > 9:
-      longMsg = "650-The file:  [ " + sMsg + " ]  is missing, or the file name is spelled "
+      longMsg = "700-The file:  [ " + sMsg + " ]  is missing, or the file name is spelled "
       longMsg += "incorrectly in image_list.csv in that images folder."
 
   return longMsg
@@ -105,7 +111,7 @@ def readList(fname):
     with open(fname, 'r') as csvfile:
       pass
   except IOError as e:
-    sRet = "NOPARMS"
+    sRet = "NOVALS"
   if sRet == "FILEEXISTS":
     with open(fname, 'r') as csvfile:
       r = csv.reader(csvfile, delimiter=',')
@@ -131,9 +137,11 @@ def parmDictGet(stringParm):
   """
   parm_list.csv is in .blend's current location (path)
   principledShader values:
+  "img_path","/fully/qualified/image/path/"
   "fl01_sssval",".012"
   "fl02_sssrad",".220"
-  "fl05_spcamt",".500"
+  "fl05_spcamt",".050"
+  "fl06_spcruf",".850"
   "fl11_sheenv",".200"
   "fl14_iorval","1.80"
   """
@@ -142,11 +150,84 @@ def parmDictGet(stringParm):
   parm_dir = os.path.dirname(parm_path)
   parm_listpath = os.path.join(parm_dir, 'parm_list.csv')
   parm_list = readList(parm_listpath)
-  if not parm_list == "NOPARMS":
+  if not parm_list == "NOVALS":
     parmdict = dict(parm_list)
     stringParm = parmdict.get(stringParm)
+    stringParm = cleanStr(stringParm)
+  if parm_list == "NOVALS":
+    stringParm = "NOPARMS"
+  return stringParm
+
+def parmListSave(lstSettings, pPath):
+  sRet = "FILEEXISTS"
+  parm_list = ""
+  parm_dir = pPath
+  parm_listpath = os.path.join(parm_dir, 'parm_list.csv')
+  #parm_list = readList(parm_listpath)
+  #if not parm_list == "NOPARMS":
+  wrtFile = open(parm_listpath, 'w')
+  for item in lstSettings:
+    wrtFile.write(item + "\n")
+
   if parm_list == "NOPARMS":
     stringParm = "NOPARMS"
+  else:
+    stringParm = "SAVSUCC"
+  return stringParm
+
+def imgDictGet(stringImg, stringPath):
+  """
+  image_list.csv is in image folder, path is in parm_list.csv
+  sample image_list.csv values:
+  "clrALimb","RMElaineL.jpg"
+  "clrLLimb","RMElaineL.jpg"
+  "bmpALimb","RMElaineLBnh.jpg"
+  "bmpLLimb","RMElaineLBnh.jpg"
+  "spcALimb","RMElaineLS.jpg"
+  "spclLimb","RMElaineLS.jpg"
+  "clr_Body","RMElaineT.jpg"
+  "bmp_Body","RMElaineTB.jpg"
+  "spc_Body","RMElaineTS.jpg"
+  "clr_Face","RMElaineHCnh.jpg"
+  "bmp_Face","RMElaineHBnh.jpg"
+  "spc_Face","RMElaineHSnh.jpg"
+  "clr_Eyes","RMElaineEyeBrn.jpg"
+  "clrMouth","RMElaineTf.jpg"
+  "bmpMouth","RMElaineTfB.jpg"
+  "clr_Lash","RMElaineLshFul.png"
+  """
+  sReturn = "FILEEXISTS"
+  image_path = stringPath
+  image_dir = os.path.dirname(image_path)
+  pathFile = os.path.join(image_dir, 'image_list.csv')
+  #print("pathFile is:" + pathFile)
+  imagelist = readList(pathFile)
+  if not imagelist == "NOVALS":
+    imagedict = dict(imagelist)
+    try:
+      strImage = imagedict.get(stringImg)
+      strImage = cleanStr(strImage)
+    except TypeError as e:
+      strImage = ""
+  else:
+    strImage = "BADPATH"
+  return strImage
+
+def imgListSave(lstSettings, iPath):
+  sRet = "FILEEXISTS"
+  image_list = ""
+  image_dir = iPath
+  image_listpath = os.path.join(image_dir, 'image_list.csv')
+  #image_list = readList(image_listpath)
+  #if not image_list == "NOPARMS":
+  wrtFile = open(image_listpath, 'w')
+  for item in lstSettings:
+    wrtFile.write(item + "\n")
+
+  if image_list == "NOPARMS":
+    stringParm = "NOPARMS"
+  else:
+    stringParm = "SAVSUCC"
   return stringParm
 
 def updFigure(self, context):
@@ -254,15 +335,6 @@ class OkOperator(bpy.types.Operator):
   def execute(self, context):
     return {'FINISHED'}
 
-"""
-ParmStore() and CsvXchng() are initialised using the Load button over the
-PrincipledShader set. Used for retrieving from CSV, storing and (using the
-Save Button) writing values to CSV.
-class ParmTools(PropertyGroup):
-  savedVals = CollectionProperty()
-  floatField = StringProperty()
-"""
-
 
 
 class PanelTools(PropertyGroup):
@@ -310,7 +382,7 @@ class PanelTools(PropertyGroup):
     )
 
   #========== Path to Images =========================
-  imgpath = StringProperty(
+  simgpath = StringProperty(
     name="imagePath",
     description="Choose a directory:",
     default="",
@@ -337,7 +409,7 @@ class PanelTools(PropertyGroup):
 
   flSssVal = FloatProperty(
     name="SSS Value",
-    description="Increasing beyond .2 will make figure look waxy",
+    description="Increasing beyond .2, figure will glow a bit weird...",
     default=0.2000,
     )
 
@@ -348,8 +420,8 @@ class PanelTools(PropertyGroup):
     )
 
   flSpcAmt = FloatProperty(
-    name="Spec Tint",
-    description="Trying Specular tint values...",
+    name="Spec Amount",
+    description="Trying Specular amount values...",
     default=0.1200,
     )
 
@@ -371,7 +443,103 @@ class PanelTools(PropertyGroup):
     default=1.850,
     )
 
+  sHeadClr = StringProperty(
+    name="HeadColour",
+    description="Choose face colour file:",
+    default="",
+    maxlen=1024,
+    subtype='FILE_PATH',
+    )
+  sHeadBmp = StringProperty(
+    name="HeadBump",
+    description="Choose face bump file:",
+    default="",
+    maxlen=1024,
+    subtype='FILE_PATH',
+    )
+  sHeadSpc = StringProperty(
+    name="HeadSpecular",
+    description="Choose face specular file:",
+    default="",
+    maxlen=1024,
+    subtype='FILE_PATH',
+    )
 
+  sBodyClr = StringProperty(
+    name="BodyColour",
+    description="Choose torso colour file:",
+    default="",
+    maxlen=1024,
+    subtype='FILE_PATH',
+    )
+  sBodyBmp = StringProperty(
+    name="BodyBump",
+    description="Choose torso bump file:",
+    default="",
+    maxlen=1024,
+    subtype='FILE_PATH',
+    )
+  sBodySpc = StringProperty(
+    name="BodySpecular",
+    description="Choose torso specular file:",
+    default="",
+    maxlen=1024,
+    subtype='FILE_PATH',
+    )
+
+  sLimbClr = StringProperty(
+    name="LimbColour",
+    description="Choose limb colour file:",
+    default="",
+    maxlen=1024,
+    subtype='FILE_PATH',
+    )
+  sLimbBmp = StringProperty(
+    name="LimbBump",
+    description="Choose limb bump file:",
+    default="",
+    maxlen=1024,
+    subtype='FILE_PATH',
+    )
+  sLimbSpc = StringProperty(
+    name="LimbSpecular",
+    description="Choose limb specular file:",
+    default="",
+    maxlen=1024,
+    subtype='FILE_PATH',
+    )
+
+  sEyesClr = StringProperty(
+    name="EyesColour",
+    description="Choose iris colour file:",
+    default="",
+    maxlen=1024,
+    subtype='FILE_PATH',
+    )
+
+  sOralClr = StringProperty(
+    name="MouthColour",
+    description="Choose inner mouth colour file:",
+    default="",
+    maxlen=1024,
+    subtype='FILE_PATH',
+    )
+
+  sOralBmp = StringProperty(
+    name="MouthBump",
+    description="Choose inner mouth bump file:",
+    default="",
+    maxlen=1024,
+    subtype='FILE_PATH',
+    )
+
+  sLashTrn = StringProperty(
+    name="LashesTrans",
+    description="Choose eyelash transparency file:",
+    default="",
+    maxlen=1024,
+    subtype='FILE_PATH',
+    )
 
 
 
@@ -392,24 +560,24 @@ class MatShaderPanel(bpy.types.Panel):
     if context.object:
       box = layout.box()
       row = box.row()
-      row.label(text="Load or Save Settings")
       row = box.row()
+      row.label(text="Shader Settings")
+      row = box.row()
+      layout.row().separator()
       col = row.column()
       subrow = col.row()
       subrow.operator("object.load_presets", text='Load')
       subrow.operator("object.save_presets", text='Save')
-
-      layout.row().separator()
-
-      box = layout.box()
       row = box.row()
-      row.label(text="-1- Select shader type: ")
+      layout.row().separator()
+      row = box.row()
+      row.label(text="-1- Find image files: ")
+      row = box.row()
+      row.prop(sFgrTool, "simgpath", text="")
+      row = box.row()
+      row.label(text="-2- Select shader type: ")
       row = box.row()
       row.prop(sFgrTool,"shaderEnum",text='')
-      row = box.row()
-      row.label(text="-2- Find image files: ")
-      row = box.row()
-      row.prop(sFgrTool, "imgpath", text="")
       row = box.row()
       row.label(text="-3- Figure to paint: ")
       row = box.row()
@@ -418,11 +586,7 @@ class MatShaderPanel(bpy.types.Panel):
       row.label(text="-4- Figure Type: ")
       row = box.row()
       row.prop(sFgrTool, "baseFigEnum", "")
-      box = layout.box()
-
-
       layout.row().separator()
-
       row = box.row()
       row.label(text="-5- Principled Settings: ")
       row = box.row()
@@ -437,19 +601,94 @@ class MatShaderPanel(bpy.types.Panel):
       row.prop(sFgrTool, "flSheenV")
       row = box.row()
       row.prop(sFgrTool, "flIorVal")
-
-
-      layout.row().separator()
-
-      sub = layout.row(align=True)
+      row = box.row()
+      sub = box.row(align=True)
       sub.alignment = 'CENTER'
       sub.scale_y = 2.0
-      #OUTLINER_OB_ARMATURE
       sub.operator("object.run_script", text='Apply Shaders', icon='POSE_HLT')
-
+      row = box.row()
     else:
       row = layout.row()
       row.label(text='No Object in Scene')
+
+class ImageEditPanel(bpy.types.Panel):
+  """User-associate image to material zone: Panel"""
+  bl_space_type = 'VIEW_3D'
+  bl_region_type = 'TOOLS'
+  bl_label = "Image Settings"
+  bl_context = "objectmode"
+  bl_idname = "MATERIALS_PT_images"
+  bl_category = "FigureShader"
+
+  def draw(self, context):
+    layout = self.layout
+    scene = bpy.context.scene
+    sFgrTool = scene.figTools
+
+    if context.object:
+      box = layout.box()
+      row = box.row()
+      row.label(text="Image files location: ")
+      row = box.row()
+      row.prop(sFgrTool, "simgpath", text="")
+      row = box.row()
+      col = row.column()
+      subrow = col.row()
+      subrow.operator("object.load_images", text='Load')
+      subrow.operator("object.save_images", text='Save')
+      row = box.row()
+      row.label(text="Head- Colour")
+      row = box.row()
+      row.prop(sFgrTool, "sHeadClr", text="")
+      row = box.row()
+      row.label(text="Head- Bump")
+      row = box.row()
+      row.prop(sFgrTool, "sHeadBmp", text="")
+      row = box.row()
+      row.label(text="Head- Specular")
+      row = box.row()
+      row.prop(sFgrTool, "sHeadSpc", text="")
+      row = box.row()
+      row.label(text="Body- Colour")
+      row = box.row()
+      row.prop(sFgrTool, "sBodyClr", text="")
+      row = box.row()
+      row.label(text="Body- Bump")
+      row = box.row()
+      row.prop(sFgrTool, "sBodyBmp", text="")
+      row = box.row()
+      row.label(text="Body- Specular")
+      row = box.row()
+      row.prop(sFgrTool, "sBodySpc", text="")
+      row = box.row()
+      row.label(text="Limb- Colour")
+      row = box.row()
+      row.prop(sFgrTool, "sLimbClr", text="")
+      row = box.row()
+      row.label(text="Limb- Bump")
+      row = box.row()
+      row.prop(sFgrTool, "sLimbBmp", text="")
+      row = box.row()
+      row.label(text="Limb- Specular")
+      row = box.row()
+      row.prop(sFgrTool, "sLimbSpc", text="")
+      row = box.row()
+      row.label(text="Eyes- Colour")
+      row = box.row()
+      row.prop(sFgrTool, "sEyesClr", text="")
+      row = box.row()
+      row.label(text="Mouth- Colour")
+      row = box.row()
+      row.prop(sFgrTool, "sOralClr", text="")
+      row = box.row()
+      row.label(text="Mouth- Bump")
+      row = box.row()
+      row.prop(sFgrTool, "sOralBmp", text="")
+      row = box.row()
+      row.label(text="Lashes- Transparency")
+      row = box.row()
+      row.prop(sFgrTool, "sLashTrn", text="")
+
 
 
 class LoadPresets(bpy.types.Operator):
@@ -468,21 +707,19 @@ class LoadPresets(bpy.types.Operator):
   def execute(self, context):
     print("Loading Principled shader vals... ")
     fTools = bpy.context.scene.figTools
-    xStr = parmDictGet('fl01_sssval')
     try:
-      print("xStr = " + xStr)
+      xChk = parmDictGet('img_path')
     except:
-      print("xStr = None")
-    items = []
+      xChk = "NOPARMS"
 
-    if xStr == 'NOPARMS':
-      sErrorMsg = showErrMsg(xStr)
+    if xChk == 'NOPARMS':
+      sErrorMsg = showErrMsg(xChk)
       bpy.ops.system.message('INVOKE_DEFAULT',
         type = "Error",
         message = sErrorMsg,
         )
-    elif xStr == 'BADPARM':
-      sErrorMsg = showErrMsg(xStr)
+    elif xChk == 'BADPARM':
+      sErrorMsg = showErrMsg(xChk)
       bpy.ops.system.message('INVOKE_DEFAULT',
         type = "Error",
         message = sErrorMsg,
@@ -490,27 +727,59 @@ class LoadPresets(bpy.types.Operator):
     else:
       """ Really clumsy, but it works """
       #"img_path", "/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/V4/"
-      fTools.imgpath = cleanStr(parmDictGet('img_path'))
+      fTools.simgpath = cleanStr(parmDictGet('img_path'))
       fTools.flSssVal = float(parmDictGet('fl01_sssval'))
       fTools.flSssRad = float(parmDictGet('fl02_sssrad'))
       fTools.flSpcAmt = float(parmDictGet('fl05_spcamt'))
       fTools.flSpcRuf = float(parmDictGet('fl06_spcruf'))
       fTools.flSheenV = float(parmDictGet('fl11_sheenv'))
       fTools.flIorVal = float(parmDictGet('fl14_iorval'))
-      """
-      items.append[("1","fl01_sssval",str(fTools.flSssVal))]
-      items.append[("2","fl02_sssrad",str(fTools.flSssRad))]
-      items.append[("3","fl05_spcamt",str(fTools.flSpcAmt))]
-      items.append[("4","fl11_sheenv",str(fTools.flSheenV))]
-      items.append[("5","fl14_iorval",str(fTools.flIorVal))]
-      """
+      sErrorMsg = showErrMsg("LODSUCC")
+      bpy.ops.system.message('INVOKE_DEFAULT',
+        type = "Error",
+        message = sErrorMsg,
+        )
 
     return {'FINISHED'}
-
 
 class SavePresets(bpy.types.Operator):
   bl_idname = "object.save_presets"
   bl_label = "Saves Shader Presets to CSV"
+
+  def execute(self, context):
+    print("Saving shader vals... ")
+    wrtfile = []
+    fTools = bpy.context.scene.figTools
+    fullPath = bpy.path.abspath(fTools.simgpath)
+    print("fullPath is: " + fullPath)
+    blend_path = bpy.context.blend_data.filepath
+    blend_dir = os.path.dirname(blend_path)
+    simgp = '"' + fullPath + '"'
+    ssval = '"' + format(fTools.flSssVal,'f') + '"'
+    ssrad = '"' + format(fTools.flSssRad,'f') + '"'
+    ssamt = '"' + format(fTools.flSpcAmt,'f') + '"'
+    ssruf = '"' + format(fTools.flSpcRuf,'f') + '"'
+    ssshe = '"' + format(fTools.flSheenV,'f') + '"'
+    ssior = '"' + format(fTools.flIorVal,'f') + '"'
+    wrtfile.append('"img_path", ' + simgp)
+    wrtfile.append('"fl01_sssval", ' + ssval)
+    wrtfile.append('"fl02_sssrad", ' + ssrad)
+    wrtfile.append('"fl05_spcamt", ' + ssamt)
+    wrtfile.append('"fl06_spcruf", ' + ssruf)
+    wrtfile.append('"fl11_sheenv", ' + ssshe)
+    wrtfile.append('"fl14_iorval", ' + ssior)
+    xChk = parmListSave(wrtfile, blend_dir)
+    # if successful, give success msg, else give error msg
+    sErrorMsg = showErrMsg(xChk)
+    bpy.ops.system.message('INVOKE_DEFAULT',
+      type = "Error",
+      message = sErrorMsg,
+      )
+    return {'FINISHED'}
+
+class LoadImages(bpy.types.Operator):
+  bl_idname = "object.load_images"
+  bl_label = "Loads image names from CSV"
   @classmethod
   def poll(cls, context):
     def allCondsMet():
@@ -522,8 +791,113 @@ class SavePresets(bpy.types.Operator):
     return allCondsMet()
 
   def execute(self, context):
-    print("Saving shader vals... ")
-    #loadAllPresets()
+    print("Loading image names... ")
+    fTools = bpy.context.scene.figTools
+    items = []
+    xErr = "FILEEXISTS"
+    fullPath = bpy.path.abspath(fTools.simgpath)
+    print("Image full path is: " + fullPath)
+
+      #"img_path", "/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/V4/"
+    try:
+      fTools.sHeadClr = cleanStr(imgDictGet('clr_Face', fullPath))
+    except:
+      xErr = "NOIMAGES"
+    print("xErr is: " + xErr)
+    if xErr == 'NOIMAGES':
+      sErrorMsg = showErrMsg(xErr)
+      bpy.ops.system.message('INVOKE_DEFAULT',
+        type = "Error",
+        message = sErrorMsg,
+        )
+    elif xErr == 'BADFILES':
+      sErrorMsg = showErrMsg(xErr)
+      bpy.ops.system.message('INVOKE_DEFAULT',
+        type = "Error",
+        message = sErrorMsg,
+        )
+    else:
+      fTools.sHeadBmp = cleanStr(imgDictGet('bmp_Face', fullPath))
+      fTools.sHeadSpc = cleanStr(imgDictGet('spc_Face', fullPath))
+      fTools.sBodyClr = cleanStr(imgDictGet('clr_Body', fullPath))
+      fTools.sBodyBmp = cleanStr(imgDictGet('bmp_Body', fullPath))
+      fTools.sBodySpc = cleanStr(imgDictGet('spc_Body', fullPath))
+      fTools.sLimbClr = cleanStr(imgDictGet('clrALimb', fullPath))
+      fTools.sLimbBmp = cleanStr(imgDictGet('bmpALimb', fullPath))
+      fTools.sLimbSpc = cleanStr(imgDictGet('spcALimb', fullPath))
+      fTools.sEyesClr = cleanStr(imgDictGet('clr_Eyes', fullPath))
+      fTools.sOralClr = cleanStr(imgDictGet('clrMouth', fullPath))
+      fTools.sOralBmp = cleanStr(imgDictGet('bmpMouth', fullPath))
+      fTools.sLashTrn = cleanStr(imgDictGet('clr_Lash', fullPath))
+      # tack on fully-qualified path only if there is an actual file name
+      fTools.sHeadClr = fullPath + fTools.sHeadClr if fTools.sHeadClr else ""
+      fTools.sHeadBmp = fullPath + fTools.sHeadBmp if fTools.sHeadBmp else ""
+      fTools.sHeadSpc = fullPath + fTools.sHeadSpc if fTools.sHeadSpc else ""
+      fTools.sBodyClr = fullPath + fTools.sBodyClr if fTools.sBodyClr else ""
+      fTools.sBodyBmp = fullPath + fTools.sBodyBmp if fTools.sBodyBmp else ""
+      fTools.sBodySpc = fullPath + fTools.sBodySpc if fTools.sBodySpc else ""
+      fTools.sLimbClr = fullPath + fTools.sLimbClr if fTools.sLimbClr else ""
+      fTools.sLimbBmp = fullPath + fTools.sLimbBmp if fTools.sLimbBmp else ""
+      fTools.sLimbSpc = fullPath + fTools.sLimbSpc if fTools.sLimbSpc else ""
+      fTools.sEyesClr = fullPath + fTools.sEyesClr if fTools.sEyesClr else ""
+      fTools.sOralClr = fullPath + fTools.sOralClr if fTools.sOralClr else ""
+      fTools.sOralBmp = fullPath + fTools.sOralBmp if fTools.sOralBmp else ""
+      fTools.sLashTrn = fullPath + fTools.sLashTrn if fTools.sLashTrn else ""
+      sErrorMsg = showErrMsg("LODSUCC")
+      bpy.ops.system.message('INVOKE_DEFAULT',
+        type = "Error",
+        message = sErrorMsg,
+        )
+
+    return {'FINISHED'}
+
+class SaveImages(bpy.types.Operator):
+  bl_idname = "object.save_images"
+  bl_label = "Saves Image Names to CSV"
+
+  def execute(self, context):
+    print("Saving image names... ")
+    fTools = bpy.context.scene.figTools
+    curPath = bpy.path.abspath(fTools.simgpath)
+    getBN = bpy.path
+    wrtfile = []
+    hdc = '"' + getBN.basename(fTools.sHeadClr) + '"'
+    hdb = '"' + getBN.basename(fTools.sHeadBmp) + '"'
+    hds = '"' + getBN.basename(fTools.sHeadSpc) + '"'
+    byc = '"' + getBN.basename(fTools.sBodyClr) + '"'
+    byb = '"' + getBN.basename(fTools.sBodyBmp) + '"'
+    bys = '"' + getBN.basename(fTools.sBodySpc) + '"'
+    lbc = '"' + getBN.basename(fTools.sLimbClr) + '"'
+    lbb = '"' + getBN.basename(fTools.sLimbBmp) + '"'
+    lbs = '"' + getBN.basename(fTools.sLimbSpc) + '"'
+    eye = '"' + getBN.basename(fTools.sEyesClr) + '"'
+    olc = '"' + getBN.basename(fTools.sOralClr) + '"'
+    olb = '"' + getBN.basename(fTools.sOralBmp) + '"'
+    trn = '"' + getBN.basename(fTools.sLashTrn) + '"'
+    wrtfile.append('"clrALimb", ' + lbc)
+    wrtfile.append('"clrLLimb", ' + lbc)
+    wrtfile.append('"bmpALimb", ' + lbb)
+    wrtfile.append('"bmpLLimb", ' + lbb)
+    wrtfile.append('"spcALimb", ' + lbs)
+    wrtfile.append('"spcLLimb", ' + lbs)
+    wrtfile.append('"clr_Body", ' + byc)
+    wrtfile.append('"bmp_Body", ' + byb)
+    wrtfile.append('"spc_Body", ' + bys)
+    wrtfile.append('"clr_Face", ' + hdc)
+    wrtfile.append('"bmp_Face", ' + hdb)
+    wrtfile.append('"spc_Face", ' + hds)
+    wrtfile.append('"clr_Eyes", ' + eye)
+    wrtfile.append('"clrMouth", ' + olc)
+    wrtfile.append('"bmpMouth", ' + olb)
+    wrtfile.append('"clr_Lash", ' + trn)
+    print("curPath is: " + curPath)
+    xChk = imgListSave(wrtfile, curPath)
+    # if successful, give success msg, else give error msg
+    sErrorMsg = showErrMsg(xChk)
+    bpy.ops.system.message('INVOKE_DEFAULT',
+      type = "Error",
+      message = sErrorMsg,
+      )
     return {'FINISHED'}
 
 
@@ -551,20 +925,21 @@ class RunScript(bpy.types.Operator):
     return allCondsMet()
 
   def execute(self, context):
-    sSelShader = bpy.context.scene.figTools.shaderEnum
-    sBaseFgr = bpy.context.scene.figTools.baseFigEnum
-    sSelFgr =  bpy.context.scene.figTools.curFigEnum
     #print("Selected shader is: " + sSelShader)
-    shadersSetup(sBaseFgr, sSelFgr, sSelShader)
+    shadersSetup()
     return {'FINISHED'}
 
 
-def shadersSetup(BaseFigure, SelectedFigure, SelectedShader):
+
+def shadersSetup():
   sMissingFile = ""
   blend_name = ""
-  crShader = SelectedShader
-  cBaseFig = BaseFigure
-  cSeltFig = SelectedFigure
+  scene = bpy.context.scene
+  fTools = scene.figTools
+  strImgPath = bpy.path.abspath(fTools.simgpath)
+  sSelShader = fTools.shaderEnum
+  sBaseFgr = fTools.baseFigEnum
+  sSelFgr =  fTools.curFigEnum
 
   """
   ================================================================
@@ -590,7 +965,7 @@ def shadersSetup(BaseFigure, SelectedFigure, SelectedShader):
     paintShaders() is invoked.
     ========================================================
     """
-    dict_mats = matZones(cBaseFig)
+    dict_mats = matZones(sBaseFgr)
 
     """
     =============================================================
@@ -620,44 +995,31 @@ def shadersSetup(BaseFigure, SelectedFigure, SelectedShader):
     if bpy.context.scene.render.engine == 'BLENDER_RENDER':
       bpy.context.scene.render.engine = 'CYCLES'
 
-    """ Read the csv files for image location info
-    # current location of .blend and path_list.csv
-    blend_path = bpy.data.filepath
-    blend_dir = os.path.dirname(blend_path)
-    csv_listpath = os.path.join(blend_dir, 'path_list.csv')
-
-    # readList() make array of path entries, weed out empties
-    csv_list = readList(csv_listpath)
-    pathlist = dict(csv_list)
-
-    # gets the path to the images
-    if thisOS_name == 'posix':
-      path_str = pathlist.get('img_pathP')
-    if thisOS_name == 'nt':
-      path_str = pathlist.get('img_pathN')
-    path_str = cleanStr(path_str) """
-    path_str = bpy.context.scene.figTools.imgpath
+    """
+    No longer in use...
+    path_str = bpy.context.scene.figTools.simgpath
     imag_dir = os.path.dirname(path_str)
     img_list = os.path.join(imag_dir, 'image_list.csv')
+    print("img_list is: " + img_list)
     pic_list = readList(img_list)
     imaglist = dict(pic_list)
-
-    clrALimb = cleanStr(imaglist.get('clrALimb'))
-    clrLLimb = cleanStr(imaglist.get('clrLLimb'))
-    bmpALimb = cleanStr(imaglist.get('bmpALimb'))
-    bmpLLimb = cleanStr(imaglist.get('bmpLLimb'))
-    spcALimb = cleanStr(imaglist.get('spcALimb'))
-    spcLLimb = cleanStr(imaglist.get('spcLLimb'))
-    clr_Body = cleanStr(imaglist.get('clr_Body'))
-    bmp_Body = cleanStr(imaglist.get('bmp_Body'))
-    spc_Body = cleanStr(imaglist.get('spc_Body'))
-    clr_Face = cleanStr(imaglist.get('clr_Face'))
-    bmp_Face = cleanStr(imaglist.get('bmp_Face'))
-    spc_Face = cleanStr(imaglist.get('spc_Face'))
-    clr_Eyes = cleanStr(imaglist.get('clr_Eyes'))
-    clrMouth = cleanStr(imaglist.get('clrMouth'))
-    bmpMouth = cleanStr(imaglist.get('bmpMouth'))
-    clr_Lash = cleanStr(imaglist.get('clr_Lash'))
+      """
+    clrALimb = fTools.sLimbClr
+    clrLLimb = fTools.sLimbClr
+    bmpALimb = fTools.sLimbBmp
+    bmpLLimb = fTools.sLimbBmp
+    spcALimb = fTools.sLimbSpc
+    spcLLimb = fTools.sLimbClr
+    clr_Body = fTools.sBodyClr
+    bmp_Body = fTools.sBodyBmp
+    spc_Body = fTools.sBodySpc
+    clr_Face = fTools.sHeadClr
+    bmp_Face = fTools.sHeadBmp
+    spc_Face = fTools.sHeadSpc
+    clr_Eyes = fTools.sEyesClr
+    clrMouth = fTools.sOralClr
+    bmpMouth = fTools.sOralBmp
+    clr_Lash = fTools.sLashTrn
 
     """ Not all figures have a bump or spec map. The bump maps can be replaced
     by procedural bump, the spec maps may need another solution, as yet undefined."""
@@ -672,14 +1034,14 @@ def shadersSetup(BaseFigure, SelectedFigure, SelectedShader):
     bmpMouth = None if '0' else bmpMouth
 
     # makes the current figure active
-    bpy.context.scene.objects.active = bpy.data.objects[cSeltFig]
-    curr_obj = bpy.data.objects[cSeltFig]
+    bpy.context.scene.objects.active = bpy.data.objects[sSelFgr]
+    curr_obj = bpy.data.objects[sSelFgr]
     bpy.context.object.active_material_index = 0
     all_slots = bpy.context.object.material_slots
 
     # iterate through the material slots...
     for i in range(len(all_slots)):
-      #print ("identified the figure... " + cSeltFig)
+      #print ("identified the figure... " + sSelFgr)
       #img_Bmp = None
       img_Clr = None
       #img_Spc = None
@@ -731,11 +1093,11 @@ def shadersSetup(BaseFigure, SelectedFigure, SelectedShader):
             img_Clr = clrMouth
           # fully qualified path added
           if img_Clr is not None:
-            ImgColr = path_str + img_Clr
+            ImgColr = img_Clr
             ImgColr = bpy.data.images.load(filepath=ImgColr)
           """ Sending:      figure(obj)--shadertype-material-clrImage--bumpmap--specmap
                             (last two can be None)"""
-          new_mat = buildShader(curr_obj, crShader, matType, ImgColr, dblBump, dblSpec)
+          new_mat = buildShader(curr_obj, sSelShader, matType, ImgColr, dblBump, dblSpec)
       else:
         sErrorMsg = showErrMsg("INVALIDMAT")
         bpy.ops.system.message('INVOKE_DEFAULT',
@@ -762,42 +1124,37 @@ def shadersSetup(BaseFigure, SelectedFigure, SelectedShader):
     blend_name = bpy.path.basename(bpy.context.blend_data.filepath)
     # print(blend_name)
     blend_path = bpy.context.blend_data.filepath
-    # print(blend_path)
+    print(blend_path)
     blend_dir = os.path.dirname(blend_path)
-    # print(blend_dir)
+    print(blend_dir)
 
     # readlist() attempts to create list from csv file, if this fails, exit the process
     #  with a .F., which the if() then returns a msg
-    """ First, check for path_list"""
+    """ First, check for parm_list"""
     try:
-      csv_listpath = os.path.join(blend_dir, "path_list.csv")
+      csv_listpath = os.path.join(blend_dir, "parm_list.csv")
       with open(csv_listpath) as file:
         pass
     except IOError as e:
-      sRet = "PATH"
+      sRet = "NOPARMS"
 
     if sRet == "FILEEXISTS":
       # check if image_list.csv is in the right place (or exists)
-      csv_listpath = os.path.join(blend_dir, "path_list.csv")
+      csv_listpath = os.path.join(blend_dir, "parm_list.csv")
       #print("csv_listpath is: " + csv_listpath)
       csv_list = readList(csv_listpath)
       pathlist = dict(csv_list)
-      if thisOS_name == 'posix':
-          #print("A-thisOS_Name is: " + thisOS_name)
-          path_str = pathlist.get('img_pathP')
-      if thisOS_name == 'nt':
-          path_str = pathlist.get('img_pathN')
-          #print("B-thisOS_Name is: " + thisOS_name)
-      path_str = cleanStr(path_str)
+      strImgPath = pathlist.get('img_path')
+      strImgPath = cleanStr(strImgPath)
       #try:
-      if len(path_str) == 0:
+      if len(strImgPath) == 0:
       #    pass
       #except:
         sRet = "BADPATH"
 
       if sRet == "FILEEXISTS":
         #print("sRet is: " + sRet)
-        imag_dir = os.path.dirname(path_str)
+        imag_dir = os.path.dirname(strImgPath)
         # print("The os path is: " + imag_dir)
         img_list = os.path.join(imag_dir, "image_list.csv")
         # print("The whole path is: " + img_list)
@@ -859,8 +1216,8 @@ def shadersSetup(BaseFigure, SelectedFigure, SelectedShader):
         # FINALLY: run the script!!!
         oName = obj.name
         #print("The current figure name is: " + oName)
-        if oName == cSeltFig:
-          #print("oName = " + cSeltFig)
+        if oName == sSelFgr:
+          #print("oName = " + sSelFgr)
           obj.select = True
           paintShaders()
           #obj.name = oName
