@@ -23,7 +23,7 @@ bl_info = {
   "blender": (2, 79, 0),
   "location": "View3D",
   "description": "Generates simple Cycles shaders for imported OBJ Figures",
-  "warning": "Reads settings from CSV only, does not save any to CSV, all stored in the .blend.",
+  "warning": "Testing for error-trapping",
   "wiki_url": "https://github.com/robinboncoeur/FigureShaders/wiki",
   "category": "Material"}
 
