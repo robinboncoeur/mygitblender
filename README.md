@@ -7,11 +7,13 @@
 To install the script in Blender, please click on the green Clone or Download button above. The download file (**Figureshaders-master.zip**) will contain a zip file: **make_shaders.zip**. You will need to unzip the **Figureshaders-master.zip** file to a folder, which will contain that **make_shaders.zip** file. Select this **make_shaders.zip** zip file in the Preference page in Blender to install this script:
 File -> User Preferences... -> then click on "Install From File..." at the bottom of the dialogue box.
 
-See wiki:
+See wiki for more detailed instructions on installation and usage:
 https://github.com/robinboncoeur/FigureShaders/wiki
-for more details on installation and use.
+
 
 # [ Update Log ]
+Update 29-Apr-2018: version 0.5.9 Relatively stable version, full debugging / testing in progress. Debug code commented out but not removed. Please report bugs to the Issues page: https://github.com/robinboncoeur/FigureShaders/issues.
+
 Update 26-Apr-2018: version 0.5.8 Reads and writes (creates if it doesn't exist) CSV files. Edit image file association to regions to shader. Initial debugging / testing started.
 
 Update 25-Apr-2018: version 0.5.7 -> branch parmListRead. Able to navigate to image folder. Loads -- reads -- settings from parm_list.csv (which replaces path_list.csv). Allows management of SSSValue, SSSRadiate, SpecAmt (erroneously labeled Spec Tint), Spec roughness, Sheen Value and IOR value. Very much a WIP at this point: main next goal is to be able to write settings to csv.
