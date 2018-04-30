@@ -12,6 +12,8 @@ https://github.com/robinboncoeur/FigureShaders/wiki
 
 
 # [ Update Log ]
+Update 30-Apr-2018: version 0.5.91 Relative path (invalid path) trapped, test and working in Linux. To test on the Mac and Windows Much debug code commented out but not removed. Dialogue box still does not respond to clicking [OK]. Very much still in Alpha.
+
 Update 29-Apr-2018: version 0.5.9 Relatively stable version, full debugging / testing in progress. Debug code commented out but not removed. Please report bugs to the Issues page: https://github.com/robinboncoeur/FigureShaders/issues.
 
 Update 26-Apr-2018: version 0.5.8 Reads and writes (creates if it doesn't exist) CSV files. Edit image file association to regions to shader. Initial debugging / testing started.
