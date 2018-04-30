@@ -83,8 +83,8 @@ def showErrMsg(sMsg):
     longMsg = "625-Either image_list.csv or path_list.csv "
     longMsg += "is missing a double-quote. Please double-check your files for typos."
   if sMsg == "NOPARMS":
-    longMsg = "560-Missing parm_list.csv. Create this file by finding your images "
-    longMsg += "folder, then save your settings."
+    longMsg = "750-Missing parm_list.csv. Create this file after finding your images "
+    longMsg += "folder by clicking [Save] in Figure Shader Settings."
   if sMsg == "NOIMAGES":
     longMsg = "900-The image_list.csv might be missing or have information on images "
     longMsg += "in another folder. Please double-check image_list.csv that the files "
@@ -94,6 +94,10 @@ def showErrMsg(sMsg):
   if sMsg == "BADPATH":
     longMsg = "750-path_list.csv has an invalid path statement. Please refer to the "
     longMsg += "readme.md on the FigureShader git page for help on this issue."
+  if sMsg == "RLTVPATH":
+    longMsg = "750-The path to your image files is in an invalid format. Please untick "
+    longMsg += "the 'Relative Path' tickbox when you select the path to the image files."
+
   """
   this [if len()] assumes imgfile name.ext is going to be longer than 9 chars
   """
@@ -134,6 +138,11 @@ def cleanStr(sStr):
       sStr = sStr[:-1]
     # print("CleanStr()...post-cleaning, sStr is: " + sStr)
   return sStr
+
+def chkPathStr(strPath):
+  """ will work in Linux and Mac, need to check in Windows """
+  isRelative = True if strPath[:2] == "//" else False
+  return isRelative
 
 def parmDictGet(stringParm):
   """
@@ -287,9 +296,9 @@ def pop_Parms():
 
 
 
-def getMessage(msgStr, retv=None):
+def getMessage(msgStr, retVal=None):
   sep = ('-')
-  if retv == "str":
+  if retVal == "str":
     cMsg = msgStr.split(sep, 1)[1]
   else:
     cMsg = msgStr.split(sep)[0]
@@ -301,21 +310,22 @@ class MessageOperator(bpy.types.Operator):
   type = StringProperty()
   message = StringProperty()
   mesglen = 0
-
-  def execute(self, context):
-    self.report({'INFO'}, self.message)
-    print(self.message)
-    return {'FINISHED'}
+  @classmethod
+  def poll(cls, context):
+    return True
 
   def invoke(self, context, event):
     cMsgS = self.message
     self.message = getMessage(cMsgS,"str")
     cMsgS = getMessage(cMsgS)
-    #print("cMsgS is: " + cMsgS)
     self.mesglen = int(cMsgS)
     wm = context.window_manager
-    #self.mesglen = (len(self.message) * 5.5) + len(self.message)
     return wm.invoke_popup(self, width=self.mesglen, height=400)
+
+  def execute(self, context):
+    self.report({'INFO'}, self.message)
+    #print(self.message)
+    return {'FINISHED'}
 
   def draw(self, context):
     self.layout.label("Please Note")
@@ -600,6 +610,7 @@ class MatShaderPanel(bpy.types.Panel):
       row = layout.row()
       row.label(text='No Object in Scene')
 
+
 class ImageEditPanel(bpy.types.Panel):
   """User-associate image to material zone: Panel"""
   bl_space_type = 'VIEW_3D'
@@ -784,33 +795,44 @@ class SavePresets(bpy.types.Operator):
     return allCondsMet()
 
   def execute(self, context):
-    print("Saving shader vals... ")
-    wrtfile = []
-    blend_path = bpy.context.blend_data.filepath
-    blend_dir = os.path.dirname(blend_path)
     fTools = bpy.context.scene.figTools
-    absImgPath = bpy.path.abspath(fTools.simgpath)
-    simgp = '"' + absImgPath + '"'
-    ssval = '"' + format(fTools.flSssVal,'f') + '"'
-    ssrad = '"' + format(fTools.flSssRad,'f') + '"'
-    ssamt = '"' + format(fTools.flSpcAmt,'f') + '"'
-    ssruf = '"' + format(fTools.flSpcRuf,'f') + '"'
-    ssshe = '"' + format(fTools.flSheenV,'f') + '"'
-    ssior = '"' + format(fTools.flIorVal,'f') + '"'
-    wrtfile.append('"img_path", ' + simgp)
-    wrtfile.append('"fl01_sssval", ' + ssval)
-    wrtfile.append('"fl02_sssrad", ' + ssrad)
-    wrtfile.append('"fl05_spcamt", ' + ssamt)
-    wrtfile.append('"fl06_spcruf", ' + ssruf)
-    wrtfile.append('"fl11_sheenv", ' + ssshe)
-    wrtfile.append('"fl14_iorval", ' + ssior)
-    xChk = parmListSave(wrtfile, blend_dir)
-    sErrorMsg = showErrMsg(xChk)
-    bpy.ops.system.message('INVOKE_DEFAULT',
-      type = "Error",
-      message = sErrorMsg,
-      )
-    return {'FINISHED'}
+    print("fTools.simgpath is... " + fTools.simgpath)
+    # check path statement is not relative
+    isPathRelative = chkPathStr(fTools.simgpath)
+    if isPathRelative:
+      # Need to fix the path
+      sErrorMsg = showErrMsg("RLTVPATH")
+      bpy.ops.system.message('INVOKE_DEFAULT',
+        type = "Error",
+        message = sErrorMsg,
+        )
+      return {'CANCELLED'}
+    else:
+      blend_path = bpy.context.blend_data.filepath
+      blend_dir = os.path.dirname(blend_path)
+      absImgPath = bpy.path.abspath(fTools.simgpath)
+      wrtfile = []
+      simgp = '"' + absImgPath + '"'
+      ssval = '"' + format(fTools.flSssVal,'f') + '"'
+      ssrad = '"' + format(fTools.flSssRad,'f') + '"'
+      ssamt = '"' + format(fTools.flSpcAmt,'f') + '"'
+      ssruf = '"' + format(fTools.flSpcRuf,'f') + '"'
+      ssshe = '"' + format(fTools.flSheenV,'f') + '"'
+      ssior = '"' + format(fTools.flIorVal,'f') + '"'
+      wrtfile.append('"img_path", ' + simgp)
+      wrtfile.append('"fl01_sssval", ' + ssval)
+      wrtfile.append('"fl02_sssrad", ' + ssrad)
+      wrtfile.append('"fl05_spcamt", ' + ssamt)
+      wrtfile.append('"fl06_spcruf", ' + ssruf)
+      wrtfile.append('"fl11_sheenv", ' + ssshe)
+      wrtfile.append('"fl14_iorval", ' + ssior)
+      xChk = parmListSave(wrtfile, blend_dir)
+      sErrorMsg = showErrMsg(xChk)
+      bpy.ops.system.message('INVOKE_DEFAULT',
+        type = "Error",
+        message = sErrorMsg,
+        )
+        return {'FINISHED'}
 
 class LoadImages(bpy.types.Operator):
   bl_idname = "object.load_images"
@@ -1303,14 +1325,18 @@ def register():
     name="fgrPanelTools",
     description="figTools",
     type=PanelTools)
+  bpy.utils.register_class(OkOperator)
+  bpy.utils.register_class(MessageOperator)
 #  bpy.typ.Scene.shaderCtls = PointerProperty(
 #    name="parmTools",
 #    description="shaderCtls",
 #    type="ParmTools")
 
 def unregister():
-#  del bpy.types.Scene.shaderCtls
+  #  del bpy.types.Scene.shaderCtls
   del bpy.types.Scene.figTools
+  bpy.utils.unregister_class(MessageOperator)
+  bpy.utils.unregister_class(OkOperator)
   bpy.utils.unregister_module(__name__)
 
 if __name__ == "__main__":
