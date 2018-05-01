@@ -89,6 +89,8 @@ def showErrMsg(sMsg):
     longMsg = "900-The image_list.csv might be missing or have information on images "
     longMsg += "in another folder. Please double-check image_list.csv that the files "
     longMsg += "correspond to the entries in image_list.csv."
+  if sMsg == "INVALSHAD":
+    longMsg = "400-FigureShader only supports Principled Shader at this time."
   if sMsg == "BADPARM":
     longMsg = "400-A problem has been detected with your parm_list.csv file."
   if sMsg == "BADPATH":
@@ -832,7 +834,7 @@ class SavePresets(bpy.types.Operator):
         type = "Error",
         message = sErrorMsg,
         )
-        return {'FINISHED'}
+      return {'FINISHED'}
 
 class LoadImages(bpy.types.Operator):
   bl_idname = "object.load_images"
@@ -1183,12 +1185,18 @@ def shadersSetup():
             img_Clr = clrMouth
           if img_Clr is not None:
             if len(img_Clr) > 0:
-              img_Clr = fTools.simgpath + img_Clr
-              #print("img_Clr is: *" + img_Clr + "*")
-              img_Clr = bpy.data.images.load(filepath=img_Clr)
-              """ Sending:      figure(obj)--shadertype-material-clrImage--bumpmap--specmap
-                                (last two can be None)"""
-              new_mat = buildShader(curr_obj, sSelShader, matType, img_Clr, dblBump, dblSpec)
+              if sSelShader == "PrinSSS":
+                img_Clr = fTools.simgpath + img_Clr
+                img_Clr = bpy.data.images.load(filepath=img_Clr)
+                """ Sending:      figure(obj)--shadertype-material-clrImage--bumpmap--specmap
+                                  (last two can be None)"""
+                new_mat = buildShader(curr_obj, sSelShader, matType, img_Clr, dblBump, dblSpec)
+              else:
+                sErrorMsg = showErrMsg("INVALSHAD")
+                bpy.ops.system.message('INVOKE_DEFAULT',
+                  type = "Error",
+                  message = sErrorMsg,
+                  )
       else:
         sErrorMsg = showErrMsg("INVALIDMAT")
         bpy.ops.system.message('INVOKE_DEFAULT',
