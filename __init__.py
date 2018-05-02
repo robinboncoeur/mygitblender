@@ -1333,8 +1333,8 @@ def register():
     name="fgrPanelTools",
     description="figTools",
     type=PanelTools)
-  bpy.utils.register_class(OkOperator)
-  bpy.utils.register_class(MessageOperator)
+  #bpy.utils.register_class(OkOperator)
+  #bpy.utils.register_class(MessageOperator)
 #  bpy.typ.Scene.shaderCtls = PointerProperty(
 #    name="parmTools",
 #    description="shaderCtls",
@@ -1343,8 +1343,8 @@ def register():
 def unregister():
   #  del bpy.types.Scene.shaderCtls
   del bpy.types.Scene.figTools
-  bpy.utils.unregister_class(MessageOperator)
-  bpy.utils.unregister_class(OkOperator)
+  #bpy.utils.unregister_class(MessageOperator)
+  #bpy.utils.unregister_class(OkOperator)
   bpy.utils.unregister_module(__name__)
 
 if __name__ == "__main__":
