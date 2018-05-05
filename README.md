@@ -12,7 +12,7 @@ https://github.com/robinboncoeur/FigureShaders/wiki
 
 
 # [ Update Log ]
-Update 05-May-2018: version 0.5.92 Removed image_list.csv and parm_list.csv, as the app now writes them, and so less errors will result as opposed to manually-edited files. Tested in Linux and Mac, currently testing in Windows. Removed debug code and generally cleaning up. Considering changing how buldShaders.py will be called (no real need for parameters anymore). 
+Update 05-May-2018: version 0.5.92 Removed image_list.csv and parm_list.csv, as the app now writes them, and so less errors will result as opposed to manually-edited files. Tested in Linux and Mac, currently testing in Windows. Removed debug code and generally cleaning up. Considering changing how make_shader.py will be called (no real need for parameters anymore). 
 
 Update 30-Apr-2018: version 0.5.91 Relative path (invalid path) trapped, test and working in Linux. To test on the Mac and Windows Much debug code commented out but not removed. Dialogue box still does not respond to clicking [OK]. Very much still in Alpha.
 
