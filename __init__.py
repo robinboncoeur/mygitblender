@@ -2,7 +2,7 @@
 # File: __init__.py (for figure_shaders)
 # ---------------------------------------------------------------------
 # Copyright (c) 16-Nov-2015, Robyn Hahn
-# Revision: 27-Apr-2018
+# Revision: 07-May-2018
 #
 # ***** BEGIN GPL LICENSE BLOCK *****
 # This program is free software; you can redistribute it and/or modify it under
@@ -23,7 +23,7 @@ bl_info = {
   "blender": (2, 79, 0),
   "location": "View3D",
   "description": "Generates simple Cycles shaders for imported OBJ Figures",
-  "warning": "Beta: testing in Windows, error-handling finalised, removing print()",
+  "warning": "Beta: testing in Windows, error-handling revisions",
   "wiki_url": "https://github.com/robinboncoeur/FigureShaders/wiki",
   "category": "Material"}
 
@@ -66,36 +66,28 @@ siniMsg = figure_defs.sMsg
 thisOS_name = os.name
 
 def showErrMsg(sMsg):
-  if sMsg == "INVALIDMAT":
+  if sMsg == "INVLDMAT":
     longMsg = "375-Unable to assign shaders to one material: invalid mat zone."
-  if sMsg == "NOPATHL":
-    longMsg = "500-Missing path_list.csv. Copy this file to the folder "
-    longMsg += "containing your .blend and edit it."
-  if sMsg == "IMGLIST":
-    longMsg = "425-Your path_list.csv points to a folder missing the image_list.csv file."
-  if sMsg == "IMAGE":
-    longMsg = "260-image_list.csv points to a missing image file."
+  if sMsg == "NIMGLIST":
+    longMsg = "425-Your parm_list.csv points to a folder missing the image_list.csv file."
   if sMsg == "SAVSUCC":
     longMsg = "260-Your settings have been saved successfully."
   if sMsg == "LODSUCC":
     longMsg = "230-Your settings loaded successfully."
   if sMsg == "BADDICT":
-    longMsg = "625-Either image_list.csv or path_list.csv "
+    longMsg = "625-Either image_list.csv or parm_list.csv "
     longMsg += "is missing a double-quote. Please double-check your files for typos."
   if sMsg == "NOPARMS":
     longMsg = "750-Missing parm_list.csv. Create this file after finding your images "
     longMsg += "folder by clicking [Save] in Figure Shader Settings."
-  if sMsg == "NOIMAGES":
+  if sMsg == "WRONGIMG":
     longMsg = "900-The image_list.csv might be missing or have information on images "
     longMsg += "in another folder. Please double-check image_list.csv that the files "
     longMsg += "correspond to the entries in image_list.csv."
-  if sMsg == "INVALSHAD":
+  if sMsg == "INVLSHAD":
     longMsg = "400-FigureShader only supports Principled Shader at this time."
   if sMsg == "BADPARM":
     longMsg = "400-A problem has been detected with your parm_list.csv file."
-  if sMsg == "BADPATH":
-    longMsg = "750-path_list.csv has an invalid path statement. Please refer to the "
-    longMsg += "readme.md on the FigureShader git page for help on this issue."
   if sMsg == "RLTVPATH":
     longMsg = "750-The path to your image files is in an invalid format. Please untick "
     longMsg += "the 'Relative Path' tickbox when you select the path to the image files."
@@ -103,32 +95,34 @@ def showErrMsg(sMsg):
   """
   this [if len()] assumes imgfile name.ext is going to be longer than 9 chars
   """
-  if not sMsg == "INVALIDMAT":
-    if len(sMsg) > 9:
-      longMsg = "700-The file:  [ " + sMsg + " ]  is missing, or the file name is spelled "
-      longMsg += "incorrectly in image_list.csv in that images folder."
+  if len(sMsg) > 9:
+    longMsg = "750-The file:  [ " + sMsg + " ]  is missing, or the file name "
+    longMsg += "is spelled incorrectly in image_list.csv in the images folder."
 
   return longMsg
 
 
-""" create array of entries in the csv, gets turned into a dictionary"""
 def readList(fname):
-  rval = []
-  sRet = "FILEEXISTS"
+  """
+  Accepts: fname - csv file name with fully-qualified path
+  Returns: arrVal - either array of entries in the csv, or str NOVALS
+  """
+  arrVal = []
+  sReturn = fname
   try:
     with open(fname, 'r') as csvfile:
       pass
   except IOError as e:
-    sRet = "NOVALS"
-  if sRet == "FILEEXISTS":
+    sReturn = "NOVALS"
+  if sReturn == fname:
     with open(fname, 'r') as csvfile:
       r = csv.reader(csvfile, delimiter=',')
       for row in r:
         if not len(row) == 0:
-          rval.append(row)
+          arrVal.append(row)
   else:
-    rval=sRet
-  return rval
+    arrVal = sReturn
+  return arrVal
 
 def cleanStr(sStr):
   if not sStr is None:
@@ -139,15 +133,23 @@ def cleanStr(sStr):
       sStr = sStr[:-1]
   return sStr
 
-def chkPathStr(strPath):
-  """ will work in Linux and Mac, need to check in Windows """
+def chkPathRltv(strPath):
+  #if os.name == "posix":
+  #  isRelative = True if strPath[:2] == "//" else False
+  if os.name == "nt":
+    dirName = os.path.dirname
+    lenDName = len(str(dirName))
+    strPath = strPath[:lenDName + 2]
   isRelative = True if strPath[:2] == "//" else False
+  #print ("isRelative is: " + "True" if isRelative else "False")
   return isRelative
 
-def parmDictGet(stringParm):
+def parmDictGet(strParm):
   """
-  parm_list.csv is in .blend's current location (path)
-  principledShader values:
+  Accepts: strParm - name of value to extract from csv (str)
+  Returns: retParm - a) the value associated to the name (str) or b) NOPARMS
+  parm_list.csv is in the .blend current location (path)
+  Sample PrincipledShader values in parm_list.csv:
   "img_path","/fully/qualified/image/path/"
   "fl01_sssval",".012"
   "fl02_sssrad",".220"
@@ -156,38 +158,43 @@ def parmDictGet(stringParm):
   "fl11_sheenv",".200"
   "fl14_iorval","1.80"
   """
-  sRet = "FILEEXISTS"
+  retParm = ""
   parm_path = bpy.data.filepath
   parm_dir = os.path.dirname(parm_path)
-  parm_listpath = os.path.join(parm_dir, 'parm_list.csv')
-  parm_list = readList(parm_listpath)
-  if not parm_list == "NOVALS":
-    parmdict = dict(parm_list)
-    stringParm = parmdict.get(stringParm)
-    stringParm = cleanStr(stringParm)
-  if parm_list == "NOVALS":
-    stringParm = "NOPARMS"
-  return stringParm
+  parm_list = os.path.join(parm_dir, 'parm_list.csv')
+  try:
+    with open(parm_list) as file:
+      pass
+  except IOError as e:
+    retParm = "NOPARMS"
+  if not retParm == "NOPARMS":
+    parmlist = readList(parm_list)
+    if not parmlist == "NOVALS":
+      parmdict = dict(parmlist)
+      retParm = parmdict.get(strParm)
+      retParm = cleanStr(retParm)
+  return retParm
 
 def parmListSave(lstSettings, pPath):
-  sRet = "FILEEXISTS"
-  parm_list = ""
+  """
+  This will write from a list (lstSettings) to a file called parm_list.csv in
+  the folder named in pPath, creating the file if it does not already exist.
+  As this is an action that is unlikely to generate errors, only pass SAVSUCC.
+  """
   parm_dir = pPath
   parm_listpath = os.path.join(parm_dir, 'parm_list.csv')
   wrtFile = open(parm_listpath, 'w')
   for item in lstSettings:
     wrtFile.write(item + "\n")
-
-  if parm_list == "NOPARMS":
-    stringParm = "NOPARMS"
-  else:
-    stringParm = "SAVSUCC"
-  return stringParm
+  return "SAVSUCC"
 
 def imgDictGet(stringImg, stringPath):
   """
-  image_list.csv is in image folder, path is in parm_list.csv
-  sample image_list.csv values:
+  Accepts: stringImg  - image name (str)
+  .........stringPath - path to image (str)
+  Returns: strImage   - a) name of image file (str) or b) NIMGLIST
+  image_list.csv is in image folder, folder path to image_list.csv is in
+  parm_list.csv. Sample image_list.csv values:
   "clrALimb","RMElaineL.jpg"
   "clrLLimb","RMElaineL.jpg"
   "bmpALimb","RMElaineLBnh.jpg"
@@ -205,35 +212,40 @@ def imgDictGet(stringImg, stringPath):
   "bmpMouth","RMElaineTfB.jpg"
   "clr_Lash","RMElaineLshFul.png"
   """
-  sReturn = "FILEEXISTS"
+  """ keep in mind some image entries may be blank, hence this init of strImage """
+  strImage = ""
   image_path = stringPath
   image_dir = os.path.dirname(image_path)
-  pathFile = os.path.join(image_dir, 'image_list.csv')
-  imagelist = readList(pathFile)
-  if not imagelist == "NOVALS":
-    imagedict = dict(imagelist)
-    try:
-      strImage = imagedict.get(stringImg)
-      strImage = cleanStr(strImage)
-    except TypeError as e:
-      strImage = ""
-  else:
-    strImage = "BADPATH"
+  img_list = os.path.join(image_dir, 'image_list.csv')
+  try:
+    with open(img_list) as file:
+      pass
+  except IOError as e:
+    strImage = "NIMGLIST"
+
+  if not strImage == "NIMGLIST":
+    imagelist = readList(img_list)
+    if not imagelist == "NOVALS":
+      imagedict = dict(imagelist)
+      try:
+        strImage = imagedict.get(stringImg)
+        strImage = cleanStr(strImage)
+      except TypeError as e:
+        strImage = ""
   return strImage
 
 def imgListSave(lstSettings, iPath):
-  sRet = "FILEEXISTS"
-  image_list = ""
+  """
+  This will write from a list (lstSettings) to a file called image_list.csv in
+  the folder named in pPath, creating the file if it does not already exist.
+  As this is an action that is unlikely to generate errors, only pass SAVSUCC.
+  """
   image_dir = iPath
   image_listpath = os.path.join(image_dir, 'image_list.csv')
   wrtFile = open(image_listpath, 'w')
   for item in lstSettings:
     wrtFile.write(item + "\n")
-  if image_list == "NOPARMS":
-    stringParm = "NOPARMS"
-  else:
-    stringParm = "SAVSUCC"
-  return stringParm
+  return "SAVSUCC"
 
 def updImgPath(self, context):
   #pass
@@ -339,7 +351,6 @@ class OkOperator(bpy.types.Operator):
     return {'FINISHED'}
 
 
-
 class PanelTools(PropertyGroup):
   bl_idname = "panel.shaderdata"
   bl_label = "Set up for Shaders"
@@ -405,7 +416,7 @@ class PanelTools(PropertyGroup):
   flSssVal = FloatProperty(
     name="SSS Value",
     description="Increasing beyond .2, figure will glow a bit weird...",
-    default=0.2000,
+    default=0.0800,
     )
 
   flSssRad = FloatProperty(
@@ -417,19 +428,19 @@ class PanelTools(PropertyGroup):
   flSpcAmt = FloatProperty(
     name="Spec Amount",
     description="Trying Specular amount values...",
-    default=0.1200,
+    default=0.3200,
     )
 
   flSpcRuf = FloatProperty(
     name="Spec Roughness",
     description="Trying Specular roughness values...",
-    default=0.800,
+    default=0.260,
     )
 
   flSheenV = FloatProperty(
     name="Sheen Value",
     description="Trying Sheen values...",
-    default=0.0600,
+    default=0.1600,
     )
 
   flIorVal = FloatProperty(
@@ -537,7 +548,6 @@ class PanelTools(PropertyGroup):
     )
 
 
-
 class MatShaderPanel(bpy.types.Panel):
   """Create shaders for imported figures: Panel"""
   bl_space_type = 'VIEW_3D'
@@ -618,10 +628,73 @@ class ImageEditPanel(bpy.types.Panel):
 
   def draw(self, context):
     layout = self.layout
+
+    def mySplit():
+      splitval = row.split(percentage=0.25)
+      return splitval
+
     scene = bpy.context.scene
     sFgrTool = scene.figTools
 
     if context.object:
+      box = layout.box()
+      col = box.column(align=True)
+      col.separator()
+      row = col.row()
+      split = mySplit()
+      col_left = split.column()
+      col_right = split.column()
+      col_left.label(text="Head-Clr")
+      col_right.prop(sFgrTool, "sHeadClr", text="")
+      row = col.row()
+      split = mySplit()
+      col_left.label(text="Head-Bmp")
+      col_right.prop(sFgrTool, "sHeadBmp", text="")
+      row = col.row()
+      split = mySplit()
+      col_left.label(text="Head-Spc")
+      col_right.prop(sFgrTool, "sHeadSpc", text="")
+      row = col.row()
+      split = mySplit()
+      col_left.label(text="Body-Clr")
+      col_right.prop(sFgrTool, "sBodyClr", text="")
+      row = col.row()
+      split = mySplit()
+      col_left.label(text="Body-Bmp")
+      col_right.prop(sFgrTool, "sBodyBmp", text="")
+      row = col.row()
+      split = mySplit()
+      col_left.label(text="Body-Spc")
+      col_right.prop(sFgrTool, "sBodySpc", text="")
+      row = col.row()
+      split = mySplit()
+      col_left.label(text="Limb-Clr")
+      col_right.prop(sFgrTool, "sLimbClr", text="")
+      row = col.row()
+      split = mySplit()
+      col_left.label(text="Limb-Bmp")
+      col_right.prop(sFgrTool, "sLimbBmp", text="")
+      row = col.row()
+      split = mySplit()
+      col_left.label(text="Limb-Spc")
+      col_right.prop(sFgrTool, "sLimbSpc", text="")
+      row = col.row()
+      split = mySplit()
+      col_left.label(text="Eyes-Clr")
+      col_right.prop(sFgrTool, "sEyesClr", text="")
+      row = col.row()
+      split = mySplit()
+      col_left.label(text="Mouth-Clr")
+      col_right.prop(sFgrTool, "sOralClr", text="")
+      row = col.row()
+      split = mySplit()
+      col_left.label(text="Mouth-Bmp")
+      col_right.prop(sFgrTool, "sOralBmp", text="")
+      row = col.row()
+      split = mySplit()
+      col_left.label(text="Lashes-Trn")
+      col_right.prop(sFgrTool, "sLashTrn", text="")
+      row = col.row()
       box = layout.box()
       row = box.row()
       row.label(text="Image files location: ")
@@ -634,57 +707,6 @@ class ImageEditPanel(bpy.types.Panel):
       subrow.operator("object.load_images", text='Load')
       subrow.operator("object.save_images", text='Save')
       row = box.row()
-      row.label(text="Head- Colour")
-      row = box.row()
-      row.prop(sFgrTool, "sHeadClr", text="")
-      row = box.row()
-      row.label(text="Head- Bump")
-      row = box.row()
-      row.prop(sFgrTool, "sHeadBmp", text="")
-      row = box.row()
-      row.label(text="Head- Specular")
-      row = box.row()
-      row.prop(sFgrTool, "sHeadSpc", text="")
-      row = box.row()
-      row.label(text="Body- Colour")
-      row = box.row()
-      row.prop(sFgrTool, "sBodyClr", text="")
-      row = box.row()
-      row.label(text="Body- Bump")
-      row = box.row()
-      row.prop(sFgrTool, "sBodyBmp", text="")
-      row = box.row()
-      row.label(text="Body- Specular")
-      row = box.row()
-      row.prop(sFgrTool, "sBodySpc", text="")
-      row = box.row()
-      row.label(text="Limb- Colour")
-      row = box.row()
-      row.prop(sFgrTool, "sLimbClr", text="")
-      row = box.row()
-      row.label(text="Limb- Bump")
-      row = box.row()
-      row.prop(sFgrTool, "sLimbBmp", text="")
-      row = box.row()
-      row.label(text="Limb- Specular")
-      row = box.row()
-      row.prop(sFgrTool, "sLimbSpc", text="")
-      row = box.row()
-      row.label(text="Eyes- Colour")
-      row = box.row()
-      row.prop(sFgrTool, "sEyesClr", text="")
-      row = box.row()
-      row.label(text="Mouth- Colour")
-      row = box.row()
-      row.prop(sFgrTool, "sOralClr", text="")
-      row = box.row()
-      row.label(text="Mouth- Bump")
-      row = box.row()
-      row.prop(sFgrTool, "sOralBmp", text="")
-      row = box.row()
-      row.label(text="Lashes- Transparency")
-      row = box.row()
-      row.prop(sFgrTool, "sLashTrn", text="")
 
 
 class ClearFields(bpy.types.Operator):
@@ -722,7 +744,6 @@ class ClearFields(bpy.types.Operator):
     fTools.sOralBmp = ""
     fTools.sLashTrn = ""
 
-
 class LoadPresets(bpy.types.Operator):
   bl_idname = "object.load_presets"
   bl_label = "Loads Shader Presets from CSV"
@@ -751,7 +772,7 @@ class LoadPresets(bpy.types.Operator):
         type = "Error",
         message = sErrorMsg,
         )
-    elif xChk == 'BADPARM':
+    elif xChk == 'WHEREIS':
       sErrorMsg = showErrMsg(xChk)
       bpy.ops.system.message('INVOKE_DEFAULT',
         type = "Error",
@@ -759,7 +780,7 @@ class LoadPresets(bpy.types.Operator):
         )
     else:
       """ Really clumsy, but it works """
-      #fTools.simgpath = cleanStr(parmDictGet('img_path'))
+      fTools.simgpath = cleanStr(parmDictGet('img_path'))
       fTools.flSssVal = float(parmDictGet('fl01_sssval'))
       fTools.flSssRad = float(parmDictGet('fl02_sssrad'))
       fTools.flSpcAmt = float(parmDictGet('fl05_spcamt'))
@@ -789,10 +810,8 @@ class SavePresets(bpy.types.Operator):
 
   def execute(self, context):
     fTools = bpy.context.scene.figTools
-    """ check path statement is not relative """
-    isPathRelative = chkPathStr(fTools.simgpath)
-    if isPathRelative:
-      """ Need to fix the path """
+    """ chkPathRltv returns .T. if path is relative """
+    if chkPathRltv(fTools.simgpath):
       sErrorMsg = showErrMsg("RLTVPATH")
       bpy.ops.system.message('INVOKE_DEFAULT',
         type = "Error",
@@ -889,36 +908,71 @@ class LoadImages(bpy.types.Operator):
     fTools.sLashTrn = absImgPath + fTools.sLashTrn if fTools.sLashTrn else ""
 
   def execute(self, context):
+    #print ("Trying to load image names...")
     items = []
     xErr = "FILEEXISTS"
     fTools = bpy.context.scene.figTools
     absImgPath = bpy.path.abspath(fTools.simgpath)
-    self.clearImgPanel()
-    try:
-      fTools.sHeadClr = cleanStr(imgDictGet('clr_Face', absImgPath))
-    except:
-      xErr = "NOIMAGES"
-    if xErr == 'NOIMAGES':
-      sErrorMsg = showErrMsg(xErr)
+    """
+    1) Check image path is not as relative path format
+    [    Scripts tend to have dramas with paths that are not absolute. ]
+    """
+    if chkPathRltv(fTools.simgpath):
+      sErrorMsg = showErrMsg("RLTVPATH")
       bpy.ops.system.message('INVOKE_DEFAULT',
         type = "Error",
         message = sErrorMsg,
         )
-    elif xErr == 'BADFILES':
-      sErrorMsg = showErrMsg(xErr)
-      bpy.ops.system.message('INVOKE_DEFAULT',
-        type = "Error",
-        message = sErrorMsg,
-        )
-    else:
-      self.getBaseNames()
-      sErrorMsg = showErrMsg("LODSUCC")
-      bpy.ops.system.message('INVOKE_DEFAULT',
-        type = "Error",
-        message = sErrorMsg,
-        )
+      return {'CANCELLED'}
 
-    return {'FINISHED'}
+    else:
+      """
+      2) Check for existence of parm_list.csv.
+      [    parmDictGet returns NOPARMS if parm_list.csv doesn't exist ]
+      """
+      try:
+        xErr = parmDictGet('img_path')
+      except ValueError as e:
+        xErr = "NOPARMS"
+      if xErr == 'NOPARMS':
+        sErrorMsg = showErrMsg(xErr)
+        bpy.ops.system.message('INVOKE_DEFAULT',
+          type = "Error",
+          message = sErrorMsg,
+          )
+        return {'CANCELLED'}
+
+      else:
+        """
+        3) Check for existence of image_list.csv.
+        [    xErr now holds the fully-qualified path name to the images
+        """
+        #print ("currently xErr is: " + xErr)
+        try:
+          xErr = imgDictGet('clr_Face', xErr)
+        except:
+          xErr = "NIMGLIST"
+        #print ("currently xErr is: " + xErr)
+        if xErr == 'NIMGLIST':
+          sErrorMsg = showErrMsg(xErr)
+          bpy.ops.system.message('INVOKE_DEFAULT',
+            type = "Error",
+            message = sErrorMsg,
+            )
+          return {'CANCELLED'}
+
+        else:
+          """
+          4) Conditions all met, load images.
+          """
+          self.clearImgPanel()
+          self.getBaseNames()
+          sErrorMsg = showErrMsg("LODSUCC")
+          bpy.ops.system.message('INVOKE_DEFAULT',
+            type = "Error",
+            message = sErrorMsg,
+            )
+          return {'FINISHED'}
 
 class SaveImages(bpy.types.Operator):
   bl_idname = "object.save_images"
@@ -935,7 +989,7 @@ class SaveImages(bpy.types.Operator):
 
   def execute(self, context):
     fTools = bpy.context.scene.figTools
-    curPath = bpy.path.abspath(fTools.simgpath)
+    imagePath = bpy.path.abspath(fTools.simgpath)
     getBN = bpy.path
     wrtfile = []
     hdc = '"' + getBN.basename(fTools.sHeadClr) + '"'
@@ -967,8 +1021,8 @@ class SaveImages(bpy.types.Operator):
     wrtfile.append('"clrMouth", ' + olc)
     wrtfile.append('"bmpMouth", ' + olb)
     wrtfile.append('"clr_Lash", ' + trn)
-    xChk = imgListSave(wrtfile, curPath)
-    sErrorMsg = showErrMsg(xChk)
+    xErr = imgListSave(wrtfile, imagePath)
+    sErrorMsg = showErrMsg(xErr)
     bpy.ops.system.message('INVOKE_DEFAULT',
       type = "Error",
       message = sErrorMsg,
@@ -985,7 +1039,7 @@ class RunScript(bpy.types.Operator):
   """
   =============================================================================
    bpy.path.basename() returns the name of the currently active .blend. If un-
-   named, returns .F. Button does not activate until file is saved with a name.
+   named, returns False. Button does not activate until file is saved with a name.
   ================================================
   """
   @classmethod
@@ -1000,10 +1054,14 @@ class RunScript(bpy.types.Operator):
     return allCondsMet()
 
   def execute(self, context):
-    shadersSetup()
+    if checkedSettings():
+      shadersSetup()
     return {'FINISHED'}
 
-
+def checkedSettings():
+  """ just a stub at this point """
+  parmsReady = True
+  return parmsReady
 
 def shadersSetup():
   sMissingFile = ""
@@ -1015,18 +1073,6 @@ def shadersSetup():
   sBaseFgr = fTools.baseFigEnum
   sSelFgr =  fTools.curFigEnum
 
-  """
-  ================================================================
-  Returned the name of the figure if it matched the short list.
-  ToDo: Check if the materials in the image_list.csv have
-  any corresponding material zones in the selected figure.
-  4 functions:
-  -readList()
-  -cleanStr()
-  -paintShaders(): main function
-  -check4Files()
-  =============================================================
-  """
 
 
 
@@ -1159,13 +1205,13 @@ def shadersSetup():
                 """
                 new_mat = buildShader(curr_obj, sSelShader, matType, img_Clr, dblBump, dblSpec)
               else:
-                sErrorMsg = showErrMsg("INVALSHAD")
+                sErrorMsg = showErrMsg("INVLSHAD")
                 bpy.ops.system.message('INVOKE_DEFAULT',
                   type = "Error",
                   message = sErrorMsg,
                   )
       else:
-        sErrorMsg = showErrMsg("INVALIDMAT")
+        sErrorMsg = showErrMsg("INVLDMAT")
         bpy.ops.system.message('INVOKE_DEFAULT',
           type = "Error",
           message = sErrorMsg,
@@ -1188,7 +1234,7 @@ def shadersSetup():
 
     """
     readlist() attempts to create list from csv file, if this fails, exit
-    process with a .F., which the if() then returns a msg. First, check
+    process with False, which the if() then returns a msg. First, check
     for parm_list.csv.
     """
     try:
@@ -1205,7 +1251,7 @@ def shadersSetup():
       strImgPath = pathlist.get('img_path')
       strImgPath = cleanStr(strImgPath)
       if len(strImgPath) == 0:
-        sRet = "BADPATH"
+        sRet = "WHEREIS"
 
       if sRet == "FILEEXISTS":
         imag_dir = os.path.dirname(strImgPath)
@@ -1214,7 +1260,7 @@ def shadersSetup():
           with open(img_list) as file:
             pass
         except IOError as e:
-          sRet = "IMGLIST"
+          sRet = "NIMGLIST"
 
         if sRet == "FILEEXISTS":
           """step through image_list.csv, check for invalid file references"""
