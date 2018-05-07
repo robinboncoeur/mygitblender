@@ -133,6 +133,82 @@ def cleanStr(sStr):
       sStr = sStr[:-1]
   return sStr
 
+def check4Files():
+  """
+  ===========================================================================
+  >>>>    Error handling    <<<<
+  ===========================================================================
+  -- blend_name: name-only of the currently open .blend file
+  -- blend_dir: fully-qualified path to [blend_name] - 'parm_list.csv'
+  -- blend_path: fully-qualified path with [blend_name]
+  TODO: remove duplicate funtionality
+  """
+  sRet = "FILEEXISTS"
+  scene = bpy.context.scene
+  fTools = scene.figTools
+  strImgPath = bpy.path.abspath(fTools.simgpath)
+  blend_name = bpy.path.basename(bpy.context.blend_data.filepath)
+  blend_path = bpy.context.blend_data.filepath
+  blend_dir = os.path.dirname(blend_path)
+
+  """
+  readlist() attempts to create list from csv file, if this fails, exit
+  process with False, which the if() then returns a msg. First, check
+  for parm_list.csv.
+  """
+  try:
+    csv_listpath = os.path.join(blend_dir, "parm_list.csv")
+    with open(csv_listpath) as file:
+      pass
+  except IOError as e:
+    sRet = "NOPARMS"
+
+  if sRet == "FILEEXISTS":
+    csv_listpath = os.path.join(blend_dir, "parm_list.csv")
+    csv_list = readList(csv_listpath)
+    pathlist = dict(csv_list)
+    strImgPath = pathlist.get('img_path')
+    strImgPath = cleanStr(strImgPath)
+    if len(strImgPath) == 0:
+      sRet = "WHEREIS"
+
+    if sRet == "FILEEXISTS":
+      imag_dir = os.path.dirname(strImgPath)
+      img_list = os.path.join(imag_dir, "image_list.csv")
+      try:
+        with open(img_list) as file:
+          pass
+      except IOError as e:
+        sRet = "NIMGLIST"
+
+      if sRet == "FILEEXISTS":
+        """step through image_list.csv, check for invalid file references"""
+        imgFile = ""
+        pathFile = ""
+        retImgName = ""
+        pic_list = readList(img_list)
+        nVal = len(pic_list)
+        nInt = 0
+        try:
+          imgDict = dict(pic_list)
+        except:
+          sRet = "BADDICT"
+
+        if sRet == "FILEEXISTS":
+          for attr, val in imgDict.items():
+            val = imgDict.get(attr, val)
+            imgFile = cleanStr(val)
+            if len(imgFile) < 1:
+              pass
+            else:
+              pathFile = os.path.join(imag_dir, imgFile)
+              try:
+                with open(pathFile) as file:
+                  pass
+              except IOError as e:
+                sRet = val
+  return sRet
+
 def chkPathRltv(strPath):
   #if os.name == "posix":
   #  isRelative = True if strPath[:2] == "//" else False
@@ -143,6 +219,16 @@ def chkPathRltv(strPath):
   isRelative = True if strPath[:2] == "//" else False
   #print ("isRelative is: " + "True" if isRelative else "False")
   return isRelative
+
+def chkPathEmbedded(strPath):
+  print ("strPath is: " + strPath)
+  if os.name == "posix":
+    isEmbedded = True if strPath[:2] == "//" else False
+  if os.name == "nt":
+    substr = strPath[1:2]
+    isEmbedded = True if substr == ":" else False
+    print ("strPath[1:1] is: " + substr)
+  return isEmbedded
 
 def parmDictGet(strParm):
   """
@@ -257,10 +343,56 @@ def updImgPath(self, context):
 
 def updFigure(self, context):
   scn = bpy.context.scene
-  sSelectedFigure = scn.objects[(scn.FS_FigureList)]
+  cSelFgr = scn.objects[(scn.figTools.curFigEnum)]
   for object in bpy.data.objects:
     object.select = False
-  sSelectedFigure.select = True
+  cSelFgr.select = True
+
+def updEntries():
+  needsSaving = False
+  fTools = bpy.context.scene.figTools
+  pathbn = bpy.path
+  print ("fTools.sHeadClr is: " + fTools.sHeadClr)
+  if chkPathEmbedded(fTools.sHeadClr):
+    fTools.sHeadClr = pathbn.basename(fTools.sHeadClr)
+    needsSaving = True
+  if chkPathEmbedded(fTools.sHeadBmp):
+    fTools.sHeadBmp = pathbn.basename(fTools.sHeadBmp)
+    needsSaving = True
+  if chkPathEmbedded(fTools.sHeadSpc):
+    fTools.sHeadSpc = pathbn.basename(fTools.sHeadSpc)
+    needsSaving = True
+  if chkPathEmbedded(fTools.sBodyClr):
+    fTools.sBodyClr = pathbn.basename(fTools.sBodyClr)
+    needsSaving = True
+  if chkPathEmbedded(fTools.sBodyBmp):
+    fTools.sBodyBmp = pathbn.basename(fTools.sBodyBmp)
+    needsSaving = True
+  if chkPathEmbedded(fTools.sBodySpc):
+    fTools.sBodySpc = pathbn.basename(fTools.sBodySpc)
+    needsSaving = True
+  if chkPathEmbedded(fTools.sLimbClr):
+    fTools.sLimbClr = pathbn.basename(fTools.sLimbClr)
+    needsSaving = True
+  if chkPathEmbedded(fTools.sLimbBmp):
+    fTools.sLimbBmp = pathbn.basename(fTools.sLimbBmp)
+    needsSaving = True
+  if chkPathEmbedded(fTools.sLimbSpc):
+    fTools.sLimbSpc = pathbn.basename(fTools.sLimbSpc)
+    needsSaving = True
+  if chkPathEmbedded(fTools.sEyesClr):
+    fTools.sEyesClr = pathbn.basename(fTools.sEyesClr)
+    needsSaving = True
+  if chkPathEmbedded(fTools.sOralClr):
+    fTools.sOralClr = pathbn.basename(fTools.sOralClr)
+    needsSaving = True
+  if chkPathEmbedded(fTools.sOralBmp):
+    fTools.sOralBmp = pathbn.basename(fTools.sOralBmp)
+    needsSaving = True
+  if chkPathEmbedded(fTools.sLashTrn):
+    fTools.sLashTrn = pathbn.basename(fTools.sLashTrn)
+    needsSaving = True
+  return needsSaving
 
 def pop_figList(self, context):
   """ enum property callback:
@@ -908,7 +1040,6 @@ class LoadImages(bpy.types.Operator):
     fTools.sLashTrn = absImgPath + fTools.sLashTrn if fTools.sLashTrn else ""
 
   def execute(self, context):
-    #print ("Trying to load image names...")
     items = []
     xErr = "FILEEXISTS"
     fTools = bpy.context.scene.figTools
@@ -947,12 +1078,10 @@ class LoadImages(bpy.types.Operator):
         3) Check for existence of image_list.csv.
         [    xErr now holds the fully-qualified path name to the images
         """
-        #print ("currently xErr is: " + xErr)
         try:
           xErr = imgDictGet('clr_Face', xErr)
         except:
           xErr = "NIMGLIST"
-        #print ("currently xErr is: " + xErr)
         if xErr == 'NIMGLIST':
           sErrorMsg = showErrMsg(xErr)
           bpy.ops.system.message('INVOKE_DEFAULT',
@@ -1054,27 +1183,22 @@ class RunScript(bpy.types.Operator):
     return allCondsMet()
 
   def execute(self, context):
+    def checkedSettings():
+      """ just a stub at this point """
+      if updEntries():
+        SaveImages(self)
+        print (" Image entries Saved!")
+      parmsReady = True
+      return parmsReady
+
     if checkedSettings():
       shadersSetup()
     return {'FINISHED'}
-
-def checkedSettings():
-  """ just a stub at this point """
-  parmsReady = True
-  return parmsReady
 
 def shadersSetup():
   sMissingFile = ""
   blend_name = ""
   scene = bpy.context.scene
-  fTools = scene.figTools
-  strImgPath = bpy.path.abspath(fTools.simgpath)
-  sSelShader = fTools.shaderEnum
-  sBaseFgr = fTools.baseFigEnum
-  sSelFgr =  fTools.curFigEnum
-
-
-
 
   def paintShaders():
     """
@@ -1085,7 +1209,12 @@ def shadersSetup():
     paintShaders() is invoked.
     ========================================================
     """
-    dict_mats = matZones(sBaseFgr)
+    fTools = scene.figTools
+    #strImgPath = bpy.path.abspath(fTools.simgpath)
+    #print ("img_Clr is: " + img_Clr)
+    fTools.sSelShader = fTools.shaderEnum
+    fTools.sBaseFgr = fTools.baseFigEnum
+    dict_mats = matZones(fTools.sBaseFgr)
 
     """
     =============================================================
@@ -1144,30 +1273,26 @@ def shadersSetup():
     bmpMouth = None if '0' else bmpMouth
 
     """ make the current figure active """
+    sSelFgr =  fTools.curFigEnum
     bpy.context.scene.objects.active = bpy.data.objects[sSelFgr]
-    curr_obj = bpy.data.objects[sSelFgr]
+    sSelFgr = bpy.data.objects[sSelFgr]
     bpy.context.object.active_material_index = 0
     all_slots = bpy.context.object.material_slots
 
     """ iterate through the material slots... """
     for i in range(len(all_slots)):
       img_Clr = None
-      ImgColr = None
-      dblBump = 0.00
-      dblSpec = 0.00
-
       bpy.context.object.active_material_index = i
 
       """
       On occasion empty material slots are created during import from Poser.
       These empty slots will be ignored.
       """
-      if not curr_obj.active_material == None:
-        mat = curr_obj.active_material
-        matName = curr_obj.active_material.name
+      if not sSelFgr.active_material == None:
+        mat = sSelFgr.active_material
+        matName = sSelFgr.active_material.name
         mat.use_nodes = True
         nodes = mat.node_tree.nodes
-        """ Added 11-10-2016: checks for valid material name """
         matType = getMatName(matName)
         if not matType == "NF":
           if matType[0:4] == 'Eyes':
@@ -1195,15 +1320,12 @@ def shadersSetup():
             img_Clr = clrMouth
           if img_Clr is not None:
             if len(img_Clr) > 0:
-              if sSelShader == "PrinSSS":
+              if fTools.sSelShader == "PrinSSS":
                 img_Clr = fTools.simgpath + img_Clr
                 img_Clr = bpy.data.images.load(filepath=img_Clr)
-                """
-                Sending:      figure(obj)--shadertype-material-clrImage--bumpmap--specmap
-                                  (last two can be None)
-                Eventually, this will be called parameterless.
-                """
-                new_mat = buildShader(curr_obj, sSelShader, matType, img_Clr, dblBump, dblSpec)
+
+                """ Sending:          material-clrImage """
+                new_mat = buildShader(sSelFgr, matType, img_Clr)
               else:
                 sErrorMsg = showErrMsg("INVLSHAD")
                 bpy.ops.system.message('INVOKE_DEFAULT',
@@ -1218,77 +1340,6 @@ def shadersSetup():
           )
 
 
-  def check4Files():
-    """
-    ===========================================================================
-    >>>>    Error handling    <<<<
-    ===========================================================================
-    -- blend_name: name-only of the currently open .blend file
-    -- blend_dir: fully-qualified path to [blend_name] - 'parm_list.csv'
-    -- blend_path: fully-qualified path with [blend_name]
-    """
-    sRet = "FILEEXISTS"
-    blend_name = bpy.path.basename(bpy.context.blend_data.filepath)
-    blend_path = bpy.context.blend_data.filepath
-    blend_dir = os.path.dirname(blend_path)
-
-    """
-    readlist() attempts to create list from csv file, if this fails, exit
-    process with False, which the if() then returns a msg. First, check
-    for parm_list.csv.
-    """
-    try:
-      csv_listpath = os.path.join(blend_dir, "parm_list.csv")
-      with open(csv_listpath) as file:
-        pass
-    except IOError as e:
-      sRet = "NOPARMS"
-
-    if sRet == "FILEEXISTS":
-      csv_listpath = os.path.join(blend_dir, "parm_list.csv")
-      csv_list = readList(csv_listpath)
-      pathlist = dict(csv_list)
-      strImgPath = pathlist.get('img_path')
-      strImgPath = cleanStr(strImgPath)
-      if len(strImgPath) == 0:
-        sRet = "WHEREIS"
-
-      if sRet == "FILEEXISTS":
-        imag_dir = os.path.dirname(strImgPath)
-        img_list = os.path.join(imag_dir, "image_list.csv")
-        try:
-          with open(img_list) as file:
-            pass
-        except IOError as e:
-          sRet = "NIMGLIST"
-
-        if sRet == "FILEEXISTS":
-          """step through image_list.csv, check for invalid file references"""
-          imgFile = ""
-          pathFile = ""
-          retImgName = ""
-          pic_list = readList(img_list)
-          nVal = len(pic_list)
-          nInt = 0
-          try:
-            imgDict = dict(pic_list)
-          except:
-            sRet = "BADDICT"
-
-          if sRet == "FILEEXISTS":
-            for attr, val in imgDict.items():
-              val = imgDict.get(attr, val)
-              imgFile = cleanStr(val)
-              if len(imgFile) < 1:
-                pass
-              else:
-                pathFile = os.path.join(imag_dir, imgFile)
-                try:
-                  with open(pathFile) as file:
-                    pass
-                except IOError as e:
-                  sRet = val
-    return sRet
 
 
   """
@@ -1297,6 +1348,7 @@ def shadersSetup():
   ==============================================================================
   """
   scn = bpy.context.scene
+  sSelFgr = scn.figTools.curFigEnum
   siniMsg = check4Files()
   sErrorMsg = ""
   if siniMsg == "FILEEXISTS":
@@ -1320,7 +1372,7 @@ def register():
   """ Note2Self: first in, best dressed -> last out """
   bpy.utils.register_module(__name__)
   bpy.types.Scene.figTools = PointerProperty(
-    name="fgrPanelTools",
+    name="fPanelTools",
     description="figTools",
     type=PanelTools)
 

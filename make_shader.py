@@ -16,20 +16,12 @@
 import bpy
 from bpy_extras.io_utils import ImportHelper
 from __main__ import *
-#from bpy.props import CollectionProperty, StringProperty, EnumProperty, PointerProperty, FloatProperty #from bpy.types import Operator
 
-# builds very simple shaders for skin, eyes (incl trans), lashes and mouth
 class buildShader():
-  def __init__(self, cObj, cShdr, cRegion, ImgClr = None, valBum = 0.00, valSpe = 0.00):
-    self.selObj = cObj
-    self.selSdr = cShdr
+  def __init__(self, cSelObj, cRegion, ImgClr = None):
     self.Region = cRegion
     self.ImgCol = ImgClr
     self.valCoo = 2 if ImgClr else 0
-    self.valBmp = valBum
-    self.inBump = valBum if valBum > 0 else .06
-    self.valSpc = valSpe
-    self.inSpec = valSpe if valSpe > 0 else .08
     self.shPrin = ""
     self.matOut = ""
     self.shImag = ""
@@ -37,14 +29,9 @@ class buildShader():
     self.shVCRamp = ""
     self.rampMixr = ""
 
-    self.selObj.select = True
-    self.selMats = self.selObj.active_material
-    self.selMats.use_nodes = True
-    self.treeNodes = self.selMats.node_tree
-    self.nodeLinks = self.treeNodes.links
-    self.nodes = {}
-
     self.fTools = bpy.context.scene.figTools
+    self.sSlctdObj = cSelObj
+    self.sSlctdSdr = self.fTools.sSelShader
     self.shvsssval = self.fTools.flSssVal
     self.shvsssrad = self.fTools.flSssRad
     self.shvspcamt = self.fTools.flSpcAmt
@@ -52,12 +39,19 @@ class buildShader():
     self.shvsheenv = self.fTools.flSheenV
     self.shviorval = self.fTools.flIorVal
 
+    self.sSlctdObj.select = True
+    self.selMats = self.sSlctdObj.active_material
+    self.selMats.use_nodes = True
+    self.treeNodes = self.selMats.node_tree
+    self.nodeLinks = self.treeNodes.links
+    self.nodes = {}
+
     """ First, clear all existing nodes in material list """
     for n in self.treeNodes.nodes:
       self.treeNodes.nodes.remove(n)
 
     """ Second, run script to create material node sets """
-    if self.selSdr == "SimpleS":
+    if self.sSlctdSdr == "SimpleS":
       pass
     else:
       #bpy.ops.system.message('INVOKE_DEFAULT',
@@ -308,7 +302,7 @@ class buildShader():
 
 
   def buildShaderset(self, image):
-    if self.selSdr == "PrinSSS":
+    if self.sSlctdSdr == "PrinSSS":
       """
       For skin, mouth, lashes or any node suffixed clr (colour) These are the
       Principled shader, texture coordinate, Mapping and Image Texture nodes.
