@@ -309,7 +309,9 @@ def imgDictGet(stringImg, stringPath):
   except IOError as e:
     strImage = "NIMGLIST"
 
-  if not strImage == "NIMGLIST":
+  if strImage == "NIMGLIST":
+    pass
+  else:
     imagelist = readList(img_list)
     if not imagelist == "NOVALS":
       imagedict = dict(imagelist)
@@ -1076,12 +1078,13 @@ class LoadImages(bpy.types.Operator):
       else:
         """
         3) Check for existence of image_list.csv.
-        [    xErr now holds the fully-qualified path name to the images
+        [    xErr now holds the fully-qualified path name to the images ]
         """
-        try:
-          xErr = imgDictGet('clr_Face', xErr)
-        except:
-          xErr = "NIMGLIST"
+        image_path = fTools.simgpath
+        image_dir = os.path.dirname(image_path)
+        img_list = os.path.join(image_dir, 'image_list.csv')
+        xErr = imgDictGet('clr_Face', img_list)
+        print ("xErr is now: " + xErr)
         if xErr == 'NIMGLIST':
           sErrorMsg = showErrMsg(xErr)
           bpy.ops.system.message('INVOKE_DEFAULT',
