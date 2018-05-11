@@ -2,16 +2,16 @@
 
 # Figure Shaders
 
-*NOTE: this is the beta, testing branch. Please consider this when downloading and installing. It should work but may have a few glitches. Being currently tested in Windows, tested on the Mac and Linux.*
-
-To install the script in Blender, please click on the green Clone or Download button above. The download file (**Figureshaders-master.zip**) will contain a zip file: **make_shaders.zip**. You will need to unzip the **Figureshaders-master.zip** file to a folder, which will contain that **make_shaders.zip** file. Select this **make_shaders.zip** zip file in the Preference page in Blender to install this script:
+Quick tip: to install the script in Blender, please click on the green Clone or Download button above. The download file (**Figureshaders-master.zip**) will contain a zip file: **make_shaders.zip**. You will need to unzip the **Figureshaders-master.zip** file to a folder, which will contain that **make_shaders.zip** file. Select this **make_shaders.zip** zip file in the Preference page in Blender to install this script:
 File -> User Preferences... -> then click on "Install From File..." at the bottom of the dialogue box.
 
-See wiki for more detailed instructions on installation and usage:
+Please see the wiki for more detailed instructions on installation and usage:
 https://github.com/robinboncoeur/FigureShaders/wiki
 
 
 # [ Update Log ]
+Update 11-May-2018: version 0.6.0 Current testing shows script is fully stable in Linux, Mac and Windows. Removed beta status.
+
 Update 05-May-2018: version 0.5.92 Removed image_list.csv and parm_list.csv, as the app now writes them, and so less errors will result as opposed to manually-edited files. Tested in Linux and Mac, currently testing in Windows. Removed debug code and generally cleaning up. Considering changing how make_shader.py will be called (no real need for parameters anymore). 
 
 Update 30-Apr-2018: version 0.5.91 Relative path (invalid path) trapped, test and working in Linux. To test on the Mac and Windows Much debug code commented out but not removed. Dialogue box still does not respond to clicking [OK]. Very much still in Alpha.
