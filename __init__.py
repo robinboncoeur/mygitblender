@@ -22,8 +22,8 @@ bl_info = {
   "version": (0, 6, 0),
   "blender": (2, 79, 0),
   "location": "View3D",
-  "description": "Generates simple Cycles shaders for imported OBJ Figures",
-  "warning": "Beta: testing in Windows, error-handling revisions",
+  "description": "Simple Cycles shaders for imported OBJ Figures",
+  "warning": "",
   "wiki_url": "https://github.com/robinboncoeur/FigureShaders/wiki",
   "category": "Material"}
 
