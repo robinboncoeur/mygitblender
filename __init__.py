@@ -2,7 +2,7 @@
 # File: __init__.py (for figure_shaders)
 # ---------------------------------------------------------------------
 # Copyright (c) 16-Nov-2015, Robyn Hahn
-# Revision: 07-May-2018
+# Revision: 11-May-2018
 #
 # ***** BEGIN GPL LICENSE BLOCK *****
 # This program is free software; you can redistribute it and/or modify it under
@@ -19,7 +19,7 @@
 bl_info = {
   "name": "Shaders for Imported Figures",
   "author": "Robyn Hahn",
-  "version": (0, 5, 9),
+  "version": (0, 6, 0),
   "blender": (2, 79, 0),
   "location": "View3D",
   "description": "Generates simple Cycles shaders for imported OBJ Figures",
@@ -217,17 +217,14 @@ def chkPathRltv(strPath):
     lenDName = len(str(dirName))
     strPath = strPath[:lenDName + 2]
   isRelative = True if strPath[:2] == "//" else False
-  #print ("isRelative is: " + "True" if isRelative else "False")
   return isRelative
 
 def chkPathEmbedded(strPath):
-  print ("strPath is: " + strPath)
   if os.name == "posix":
     isEmbedded = True if strPath[:2] == "//" else False
   if os.name == "nt":
     substr = strPath[1:2]
     isEmbedded = True if substr == ":" else False
-    print ("strPath[1:1] is: " + substr)
   return isEmbedded
 
 def parmDictGet(strParm):
@@ -336,7 +333,6 @@ def imgListSave(lstSettings, iPath):
   return "SAVSUCC"
 
 def updImgPath(self, context):
-  #pass
   scn = bpy.context.scene
   sSelectedFigure = scn.objects[(scn.FS_FigureList)]
   for object in bpy.data.objects:
@@ -354,7 +350,6 @@ def updEntries():
   needsSaving = False
   fTools = bpy.context.scene.figTools
   pathbn = bpy.path
-  print ("fTools.sHeadClr is: " + fTools.sHeadClr)
   if chkPathEmbedded(fTools.sHeadClr):
     fTools.sHeadClr = pathbn.basename(fTools.sHeadClr)
     needsSaving = True
@@ -686,7 +681,7 @@ class MatShaderPanel(bpy.types.Panel):
   """Create shaders for imported figures: Panel"""
   bl_space_type = 'VIEW_3D'
   bl_region_type = 'TOOLS'
-  bl_label = "Figure Shader"
+  bl_label = "Princip Shader"
   bl_context = "objectmode"
   bl_idname = "MATERIALS_PT_shaders"
   bl_category = "FigureShader"
@@ -755,7 +750,7 @@ class ImageEditPanel(bpy.types.Panel):
   """User-associate image to material zone: Panel"""
   bl_space_type = 'VIEW_3D'
   bl_region_type = 'TOOLS'
-  bl_label = "Image Settings"
+  bl_label = "Figure Images"
   bl_context = "objectmode"
   bl_idname = "MATERIALS_PT_images"
   bl_category = "FigureShader"
@@ -1084,7 +1079,6 @@ class LoadImages(bpy.types.Operator):
         image_dir = os.path.dirname(image_path)
         img_list = os.path.join(image_dir, 'image_list.csv')
         xErr = imgDictGet('clr_Face', img_list)
-        print ("xErr is now: " + xErr)
         if xErr == 'NIMGLIST':
           sErrorMsg = showErrMsg(xErr)
           bpy.ops.system.message('INVOKE_DEFAULT',
@@ -1190,7 +1184,6 @@ class RunScript(bpy.types.Operator):
       """ just a stub at this point """
       if updEntries():
         SaveImages(self)
-        print (" Image entries Saved!")
       parmsReady = True
       return parmsReady
 
@@ -1213,8 +1206,6 @@ def shadersSetup():
     ========================================================
     """
     fTools = scene.figTools
-    #strImgPath = bpy.path.abspath(fTools.simgpath)
-    #print ("img_Clr is: " + img_Clr)
     fTools.sSelShader = fTools.shaderEnum
     fTools.sBaseFgr = fTools.baseFigEnum
     dict_mats = matZones(fTools.sBaseFgr)
