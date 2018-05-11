@@ -1,5 +1,7 @@
 import bpy
 
+sMsg = ""
+
 class matZones():
   def __init__(self, fig):
     self.fig = fig
