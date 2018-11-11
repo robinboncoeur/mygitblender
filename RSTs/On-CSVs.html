@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>A Brief Discussion on CSVs &mdash; FigureShader 0.6.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Caveats and Gotchas" href="Caveats.html" />
+    <link rel="prev" title="How to Use FigureShader" href="Usage.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> FigureShader
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview.html">An Overview on the Script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Usage.html">How to Use FigureShader</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">A Brief Discussion on CSVs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-they-work">How They Work</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#an-observation">An Observation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#to-edit-the-parm-list-csv-file">To Edit The <strong>parm_list.csv</strong> File</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Caveats.html">Caveats and Gotchas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Resources.html">Resources and Videos</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FigureShader</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>A Brief Discussion on CSVs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/RSTs/On-CSVs.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="a-brief-discussion-on-csvs">
+<h1>A Brief Discussion on CSVs<a class="headerlink" href="#a-brief-discussion-on-csvs" title="Permalink to this headline">¶</a></h1>
+<p><em>Please note: editing csv files in the fashion described on this page is NOT the recommended way to either  create or update either file. I include this merely as it is possible to do, but with heaps of caveats. Proceed at your own risk.</em></p>
+<div class="section" id="how-they-work">
+<h2>How They Work<a class="headerlink" href="#how-they-work" title="Permalink to this headline">¶</a></h2>
+<p>Although it is preferable to allow FigureShader to create and edit the parm_list.csv and image_list.csv files, you may wish to do so yourself manually. <strong>Please exercise caution if you do so: a corrupt .csv can cause FigureShader (or even Blender itself) to crash.</strong></p>
+<p>If you’re game to go ahead, find the .csv files: <strong>image_list.csv</strong> and <strong>parm_list.csv</strong> in your unzip folder. Copy the image_list.csv file to each skin-texture image folder.</p>
+<p>You will need to edit each file before FigureShader can use it. In Windows and Linux use either a plain text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free). On the Mac, edit these files in LibreOffice. See notes below on how and why LibreOffice is recommended for the Mac.</p>
+<p>The <strong>image_list.csv</strong> file should look something like this when you’ve finished editing (using Antonia textures as an example):</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Mat Name</th>
+<th class="head">Material Image</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>“clrALimb”,</td>
+<td>“ToniPArms.jpg”</td>
+</tr>
+<tr class="row-odd"><td>“clrLLimb”,</td>
+<td>“ToniPLegs.jpg”</td>
+</tr>
+<tr class="row-even"><td>“bmpALimb”,</td>
+<td>“ToniPArmsBUMP.jpg”</td>
+</tr>
+<tr class="row-odd"><td>“bmpLLimb”,</td>
+<td>“ToniPLegsBUMP.jpg”</td>
+</tr>
+<tr class="row-even"><td>“spcALimb”,</td>
+<td>“ToniPArmsSPEC.jpg”</td>
+</tr>
+<tr class="row-odd"><td>“spclLimb”,</td>
+<td>“ToniPLegsSPEC.jpg”</td>
+</tr>
+<tr class="row-even"><td>“clr_Body”,</td>
+<td>“ToniPBody.jpg”</td>
+</tr>
+<tr class="row-odd"><td>“bmp_Body”,</td>
+<td>“ToniPBodyBUMP.jpg”</td>
+</tr>
+<tr class="row-even"><td>“spc_Body”,</td>
+<td>“ToniPBodySPEC.jpg”</td>
+</tr>
+<tr class="row-odd"><td>“clr_Face”,</td>
+<td>“ToniPHead.jpg”</td>
+</tr>
+<tr class="row-even"><td>“bmp_Face”,</td>
+<td>“ToniPHeadBUMP.jpg”</td>
+</tr>
+<tr class="row-odd"><td>“spc_Face”,</td>
+<td>“ToniPHeadSPEC.jpg”</td>
+</tr>
+<tr class="row-even"><td>“clr_Eyes”,</td>
+<td>“ToniPEyesAmber.jpg”</td>
+</tr>
+<tr class="row-odd"><td>“clrMouth”,</td>
+<td>“ToniPMouthparts.jpg”</td>
+</tr>
+<tr class="row-even"><td>“bmpMouth”,</td>
+<td>“ToniPMouthpartsBUMP.jpg”</td>
+</tr>
+<tr class="row-odd"><td>“clr_Lash”,</td>
+<td>“ToniPLashFakeTRANS.png”</td>
+</tr>
+</tbody>
+</table>
+<p>The two columns represent the name the script uses to identify the image, and the name of the image file itself. If editing this file, only ever edit the names of the images (the second column): the field names are used by the script and so must not be changed. If you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes (“”): they need to exist for every image and field name. If you are using a spreadsheet program to edit this csv, be sure to save it out as type .csv, and not as .xls or .ods. For Mac and Linux, capitals count: an ‘a’ is not the same as an ‘A’. Windows isn’t as fussy.</p>
+</div>
+<div class="section" id="an-observation">
+<h2>An Observation<a class="headerlink" href="#an-observation" title="Permalink to this headline">¶</a></h2>
+<p>Editing .csv files on the Mac using TextEdit.app can / probably-will corrupt your .csv, as the <strong>TextEdit.app</strong> on the Mac tends to mess with double-quotes. Microsoft Excel for the Mac appears to have the same issues. LibreOffice, on the other hand, respects double-quotes and will save your .csv correctly <strong>if</strong> you do the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Save As</li>
+<li>tick the “Edit Filter Settings” tickbox</li>
+<li>Save over your file when prompted (Replace)</li>
+<li>then in the next dialogue, make sure the Text Delimiter is a double-quote</li>
+<li><strong>very important</strong> – the ‘Quote all text cells’ tickbox is selected (ticked)</li>
+</ul>
+</div></blockquote>
+<p>Blender and the FigureShaders script will now read the file correctly.)</p>
+<p>Optional: copy the <strong>parm_list.csv</strong> file to the folder containing the .blend file that will invoke the script. If you are creating a new .blend file and don’t know where it is going to end up, you can install <strong>FigureShader</strong> anyway, but the script will not run until:</p>
+<blockquote>
+<div><ul class="simple">
+<li>you’ve saved the file to some location with a name</li>
+<li>you’ve created (or edited and saved) a parm_list.csv file to that location</li>
+</ul>
+</div></blockquote>
+<p>Be sure to edit this file prior to running the script. An edited file (for Linux) will look something like this:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="82%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Variable</th>
+<th class="head">Value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>“img_path”,</td>
+<td>“/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/V4/”</td>
+</tr>
+<tr class="row-odd"><td>“fl01_sssval”,</td>
+<td>“.180000”</td>
+</tr>
+<tr class="row-even"><td>“fl02_sssrad”,</td>
+<td>“.220000”</td>
+</tr>
+<tr class="row-odd"><td>“fl05_spcamt”,</td>
+<td>“.150000”</td>
+</tr>
+<tr class="row-even"><td>“fl06_spcruf”,</td>
+<td>“.850000”</td>
+</tr>
+<tr class="row-odd"><td>“fl11_sheenv”,</td>
+<td>“.120000”</td>
+</tr>
+<tr class="row-even"><td>“fl14_iorval”,</td>
+<td>“1.86000”</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="to-edit-the-parm-list-csv-file">
+<h2>To Edit The <strong>parm_list.csv</strong> File<a class="headerlink" href="#to-edit-the-parm-list-csv-file" title="Permalink to this headline">¶</a></h2>
+<p>Open it in a pure-text editor or spreadsheet programme, as explained above. The two columns represent the parameter key: this first column contains names used by the script, so they must not be changed. The second column holds, among other values, then fully-qualified path to your images folder as well as PrincipledShader parameter values.</p>
+<p>Note: I tend to keep my textures files together in a sub-folder called “AllSkin” in my “AllTextures” folder in the main “Projects” folder that has all my Blender projects in it. This cuts down on redundant files everywhere and makes it easy for scripts (and Blender itself) to find stuff. The <strong>parm_list.csv</strong> file assumes this sort of structure: of course, you can always just replace the existing images folder path to the path location of your images. The current entry is just an example and is almost definitely not a valid path to your files, since it is unlikely your name is Robyn, nor would your computer be set up exactly like mine. Thus, you will need to replace the existing path statement with a fully-qualified path designating your image texture files’ location. As you can see from the example, an example of a fully-qualified path for Linux would be:</p>
+<blockquote>
+<div>/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/Antonia/</div></blockquote>
+<p>or, for the Mac:</p>
+<blockquote>
+<div>/Volumes/500GB/Blender/Projects/AllTextures/AllSkin/Antonia/</div></blockquote>
+<p>or, for Windows:</p>
+<blockquote>
+<div>E:\MyRuntime\runtime\textures\VendorName\ImagesFolder\Character\</div></blockquote>
+<p>Note the closing forward slash [ / ] for Linux-Mac and back-slash [ \ ] for Windows: these are important and need to be appropriate for your system <strong>as well as at the end of the path statement</strong>. Again, if you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes and commas: they need to exist for each value.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Caveats.html" class="btn btn-neutral float-right" title="Caveats and Gotchas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Usage.html" class="btn btn-neutral" title="How to Use FigureShader" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Robyn Hahn
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

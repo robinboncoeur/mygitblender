@@ -1,0 +1,99 @@
+##########################
+A Brief Discussion on CSVs
+##########################
+
+*Please note: editing csv files in the fashion described on this page is NOT the recommended way to either  create or update either file. I include this merely as it is possible to do, but with heaps of caveats. Proceed at your own risk.*
+
+
+How They Work
+*************
+
+Although it is preferable to allow FigureShader to create and edit the parm_list.csv and image_list.csv files, you may wish to do so yourself manually. **Please exercise caution if you do so: a corrupt .csv can cause FigureShader (or even Blender itself) to crash.**
+
+If you're game to go ahead, find the .csv files: **image_list.csv** and **parm_list.csv** in your unzip folder. Copy the image_list.csv file to each skin-texture image folder. 
+
+You will need to edit each file before FigureShader can use it. In Windows and Linux use either a plain text editor or in a spreadsheet program such as Excel or LibreOffice Calc (free). On the Mac, edit these files in LibreOffice. See notes below on how and why LibreOffice is recommended for the Mac.
+
+The **image_list.csv** file should look something like this when you've finished editing (using Antonia textures as an example):
+
+============= ===========================
+  Mat Name        Material Image
+============= ===========================
+"clrALimb",   "ToniPArms.jpg"             
+"clrLLimb",   "ToniPLegs.jpg"           
+"bmpALimb",   "ToniPArmsBUMP.jpg"       
+"bmpLLimb",   "ToniPLegsBUMP.jpg"       
+"spcALimb",   "ToniPArmsSPEC.jpg"       
+"spclLimb",   "ToniPLegsSPEC.jpg"       
+"clr\_Body",   "ToniPBody.jpg"           
+"bmp\_Body",   "ToniPBodyBUMP.jpg"       
+"spc\_Body",   "ToniPBodySPEC.jpg"       
+"clr\_Face",   "ToniPHead.jpg"           
+"bmp\_Face",   "ToniPHeadBUMP.jpg"       
+"spc\_Face",   "ToniPHeadSPEC.jpg"       
+"clr\_Eyes",   "ToniPEyesAmber.jpg"      
+"clrMouth",   "ToniPMouthparts.jpg"     
+"bmpMouth",   "ToniPMouthpartsBUMP.jpg" 
+"clr\_Lash",   "ToniPLashFakeTRANS.png"  
+============= ===========================
+
+The two columns represent the name the script uses to identify the image, and the name of the image file itself. If editing this file, only ever edit the names of the images (the second column): the field names are used by the script and so must not be changed. If you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes (""): they need to exist for every image and field name. If you are using a spreadsheet program to edit this csv, be sure to save it out as type .csv, and not as .xls or .ods. For Mac and Linux, capitals count: an 'a' is not the same as an 'A'. Windows isn't as fussy.
+
+
+An Observation
+**************
+
+Editing .csv files on the Mac using TextEdit.app can / probably-will corrupt your .csv, as the **TextEdit.app** on the Mac tends to mess with double-quotes. Microsoft Excel for the Mac appears to have the same issues. LibreOffice, on the other hand, respects double-quotes and will save your .csv correctly **if** you do the following:
+
+   * Save As
+
+   * tick the "Edit Filter Settings" tickbox
+
+   * Save over your file when prompted (Replace)
+
+   * then in the next dialogue, make sure the Text Delimiter is a double-quote
+
+   * **very important** -- the 'Quote all text cells' tickbox is selected (ticked)
+
+Blender and the FigureShaders script will now read the file correctly.)
+
+Optional: copy the **parm_list.csv** file to the folder containing the .blend file that will invoke the script. If you are creating a new .blend file and don't know where it is going to end up, you can install **FigureShader** anyway, but the script will not run until:
+
+   * you've saved the file to some location with a name
+
+   * you've created (or edited and saved) a parm_list.csv file to that location
+
+Be sure to edit this file prior to running the script. An edited file (for Linux) will look something like this:
+
+=============== ===================================================================
+ Variable         Value
+=============== ===================================================================
+"img\_path",     "/home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/V4/"     
+"fl01\_sssval",  ".180000"                                                         
+"fl02\_sssrad",  ".220000"                                                         
+"fl05\_spcamt",  ".150000"                                                         
+"fl06\_spcruf",  ".850000"                                                         
+"fl11\_sheenv",  ".120000"                                                         
+"fl14\_iorval",  "1.86000"                                                         
+=============== ===================================================================
+
+
+To Edit The **parm_list.csv** File
+**********************************
+
+Open it in a pure-text editor or spreadsheet programme, as explained above. The two columns represent the parameter key: this first column contains names used by the script, so they must not be changed. The second column holds, among other values, then fully-qualified path to your images folder as well as PrincipledShader parameter values.
+
+Note: I tend to keep my textures files together in a sub-folder called "AllSkin" in my "AllTextures" folder in the main "Projects" folder that has all my Blender projects in it. This cuts down on redundant files everywhere and makes it easy for scripts (and Blender itself) to find stuff. The **parm_list.csv** file assumes this sort of structure: of course, you can always just replace the existing images folder path to the path location of your images. The current entry is just an example and is almost definitely not a valid path to your files, since it is unlikely your name is Robyn, nor would your computer be set up exactly like mine. Thus, you will need to replace the existing path statement with a fully-qualified path designating your image texture files' location. As you can see from the example, an example of a fully-qualified path for Linux would be:
+
+   /home/robyn/Documents/Blender/Projects/AllTextures/AllSkin/Antonia/
+
+or, for the Mac:
+
+   /Volumes/500GB/Blender/Projects/AllTextures/AllSkin/Antonia/
+
+or, for Windows:
+
+   E:\\MyRuntime\\runtime\\textures\\VendorName\\ImagesFolder\\Character\\
+
+Note the closing forward slash [ / ] for Linux-Mac and back-slash [ \\ ] for Windows: these are important and need to be appropriate for your system **as well as at the end of the path statement**. Again, if you are using a plain-text editor such as Notepad or gEdit, be sure to respect the double-quotes and commas: they need to exist for each value.
+

@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>How to Use FigureShader &mdash; FigureShader 0.6.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="A Brief Discussion on CSVs" href="On-CSVs.html" />
+    <link rel="prev" title="Installation Guide" href="Installation.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> FigureShader
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview.html">An Overview on the Script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to Use FigureShader</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-figureshader-panel">The FigureShader Panel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-the-parm-list-csv-file">Creating The parm_list.csv File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-the-image-list-csv-file">Creating the image_list.csv file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-the-shaders">Creating the Shaders</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="On-CSVs.html">A Brief Discussion on CSVs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Caveats.html">Caveats and Gotchas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Resources.html">Resources and Videos</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FigureShader</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>How to Use FigureShader</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/RSTs/Usage.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="how-to-use-figureshader">
+<h1>How to Use FigureShader<a class="headerlink" href="#how-to-use-figureshader" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>To find the FigureShader panel in Blender: this panel is identifiable in the Tools Panel [T] section of the 3D Viewport. The sideways tab will be labeled ‘<strong>FigureShader</strong>’.</p>
+<p>If this is a new blender file with only the default cube, delete the cube and import your figure. To do so, I suggest the following approach. From the menu, select File -&gt; Import -&gt; Wavefront (obj), navigate to your figure, select the OBJ (not the MTL) and chose the following Import settings:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Untick Smooth Groups and untick Lines and everything in ‘Split By’</li>
+<li>Tick ‘Keep Vert Order’ and tick ‘Poly Groups’</li>
+</ul>
+</div></blockquote>
+<p>Note: It’s a good idea to save these settings. Next to the Operator Presets dropdown are plus [+] and minus [-] buttons:</p>
+<blockquote>
+<div><ul class="simple">
+<li>after you’ve made your selections for import settings, click [+]</li>
+<li>in the Operator Preset dialog, give the Preset a name – I saved mine as ‘Poser’</li>
+<li>click [OK]</li>
+</ul>
+</div></blockquote>
+<p>From then on, to import an OBJ, select your settings from the operator preset dropdown. Bear in mind you only need to select your settings once per Blender session, but you will need to select it at least once when you first start a session and wish to import an OBJ.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Click [Import OBJ] to import the file</li>
+<li>Click on the figure in the scene</li>
+<li>press [S] (for scale) – type 10 (Poser’s scale is woefully tiny!) to increase the scale</li>
+</ul>
+</div></blockquote>
+<p>Note: You will want to set Scale back to 1 for the imported object, in case you want to sim cloth or anything of that sort:</p>
+<blockquote>
+<div><ul class="simple">
+<li>press [Ctrl][A]</li>
+<li>in the ‘Apply’ dialogue select ‘Scale’ to set the object back to 1</li>
+</ul>
+</div></blockquote>
+<p>This will not resize your figure: it will only reset the scale.</p>
+</div>
+<div class="section" id="the-figureshader-panel">
+<h2>The FigureShader Panel<a class="headerlink" href="#the-figureshader-panel" title="Permalink to this headline">¶</a></h2>
+<p>Press [T] to open the panel. FigureShader comes in two sections: the “Princip Shader” (short for “Principled Shader”) settings section:</p>
+<img alt="http://www.tightbytes.com/Blender/Wiki/FigShTute21b.png" src="http://www.tightbytes.com/Blender/Wiki/FigShTute21b.png" />
+<p>and the “Figure Images” settings section:</p>
+<img alt="http://www.tightbytes.com/Blender/Wiki/FigShTute22b.png" src="http://www.tightbytes.com/Blender/Wiki/FigShTute22b.png" />
+<p>At the top of each section next to the name is a triangle/arrow-tip: clicking on the triangle will collapse or display the section.</p>
+</div>
+<div class="section" id="creating-the-parm-list-csv-file">
+<h2>Creating The parm_list.csv File<a class="headerlink" href="#creating-the-parm-list-csv-file" title="Permalink to this headline">¶</a></h2>
+<p>After you have saved your .blend file, locate the [Load] and [Save] buttons at the top of the the Princip Shader settings section:</p>
+<p>Click on the folder icon near the “-1- Find image files” textbox:</p>
+<img alt="http://www.tightbytes.com/Blender/Wiki/FigShTute23b.png" src="http://www.tightbytes.com/Blender/Wiki/FigShTute23b.png" />
+<p>or the “Image files location” textbox in the Image Settings section, they both work the same way, and when one populates, so will the other.
+Note: <em>Until you have saved the .blend file with a name to a specific location, [Load] and [Save] buttons in both sections, the [Clear] button and the [Apply Shaders] button are disabled.</em></p>
+<p>Navigate to the folder containing your figure’s texture image files.</p>
+<img alt="http://www.tightbytes.com/Blender/Wiki/FigShTute24.png" src="http://www.tightbytes.com/Blender/Wiki/FigShTute24.png" />
+<p>Note: in the image below I have the image tile option selected (upper-red-arrow) and that the folder will appear in the “Recent” box, which makes finding that folder much easier:</p>
+<img alt="http://www.tightbytes.com/Blender/Wiki/FigShTute25a.png" src="http://www.tightbytes.com/Blender/Wiki/FigShTute25a.png" />
+<p>It is very important to de-select the “Relative Path” tickbox when selecting the image folder. The script will not run properly when it tries to use Blender’s relative path.</p>
+<img alt="http://www.tightbytes.com/Blender/Wiki/FigShTute25b.png" src="http://www.tightbytes.com/Blender/Wiki/FigShTute25b.png" />
+<p>In the Princip Shader section, click on [Save].</p>
+<img alt="http://www.tightbytes.com/Blender/Wiki/FigShTute26b.png" src="http://www.tightbytes.com/Blender/Wiki/FigShTute26b.png" />
+<p>This will create a parm_list.csv file in the folder your .blend file is saved in, with a path statement to the images folder and the Principled Shader settings.</p>
+</div>
+<div class="section" id="creating-the-image-list-csv-file">
+<h2>Creating the image_list.csv file<a class="headerlink" href="#creating-the-image-list-csv-file" title="Permalink to this headline">¶</a></h2>
+<p>In the Figure Images setting section of the panel, if you haven’t already done so, follow the above steps to navigate to an images folder. <strong>(The first time you do this, there will be no image_list.csv file to load information from, so these steps are going to create that file)</strong>.</p>
+<p>Click on the folder icon next to the empty field next to “Head-Clr”:</p>
+<img alt="http://www.tightbytes.com/Blender/Wiki/FigShTute27b.png" src="http://www.tightbytes.com/Blender/Wiki/FigShTute27b.png" />
+<p>In the “Recent” section of the Navigation window, you will see the folder name you recently navigated to - click on that folder name to display a list of the images in that folder:</p>
+<img alt="http://www.tightbytes.com/Blender/Wiki/FigShTute28.png" src="http://www.tightbytes.com/Blender/Wiki/FigShTute28.png" />
+<p>Select the appropriate image name for that region:</p>
+<img alt="http://www.tightbytes.com/Blender/Wiki/FigShTute29.png" src="http://www.tightbytes.com/Blender/Wiki/FigShTute29.png" />
+<p>The name (and path) to that image will now show in the textbox.</p>
+<p>Repeat these steps for each region and image type (colour, bump and specular). Leave blank those fields for which there is no image: the script only requires a colour field and can manage without a bump or specular map.</p>
+<p>Click on the [Save] button to create an image_list.csv file in that folder.</p>
+</div>
+<div class="section" id="creating-the-shaders">
+<h2>Creating the Shaders<a class="headerlink" href="#creating-the-shaders" title="Permalink to this headline">¶</a></h2>
+<p>Once you’ve selected the images:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Select Shader Type: only the Principled SSS works at this point.</li>
+<li>Select the target object file (the figure you are trying to apply a shader to) under “Figure to paint:”.</li>
+<li>To identify which figure that object is based on, select the figure type name under “Figure Type:”.</li>
+<li>Finally, click on Apply Shaders.</li>
+</ul>
+</div></blockquote>
+<p>Currently, FigureShaders supports these core figures:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Victoria4</li>
+<li>Dawn</li>
+<li>Mariko</li>
+<li>Antonia</li>
+</ul>
+</div></blockquote>
+<p>Note: Principled Shader setting defaults have been arbitrarily set - these have yielded reasonable results. You will almost certainly find better settings, which is the whole point of sharing this. Remember: <em>until you save your .blend file – giving it a name – the ‘Apply Shaders’ button will remain disabled</em>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="On-CSVs.html" class="btn btn-neutral float-right" title="A Brief Discussion on CSVs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Installation.html" class="btn btn-neutral" title="Installation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Robyn Hahn
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

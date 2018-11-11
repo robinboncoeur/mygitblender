@@ -1,0 +1,39 @@
+#########################
+An Overview on the Script
+#########################
+
+
+**FigureShaders** is a script to give humanoid figures imported into Blender: skin, eyes and mouth shaders using an image set. (These image sets are usually provided by the figure or character maker.)
+
+The script runs in a panel [ T ] in the context of the the 3D Viewport window.
+
+Currently - as of 11-May-2018 - the most recent version is 0.6.0. The Principled Shader Node is probably not the best approach for rendering skin, but it is easy to work with and will give decent results until a more sophisticated note set can be devised.
+
+**FigureShaders** requires Blender 2.79 or newer to work properly, largely because it takes advantage of a new shader node called PrincipledShader. Download the current version of Blender at `Blender.org <https://www.blender.org/download/>`_.
+
+
+What You Get
+************
+
+The current version of this script is comprised of three files:
+
+   * \__init__.py: contains the part of the script to create the panel sections and read the CSVs
+
+   * figure_defs.py: dictionary (definitions) of material slot names and material types (skin / eyes / etc)
+
+   * make_shader.py: creates the node sets to populate the material zones
+
+These files live in your scripts/addons folder after installation in a folder called **make_shaders**: Blender will install the folder and files from the \make_shader.zip file, as noted above.
+In the course of using the script, the use will generate the following files when the user clicks on the associated [Save] button:
+
+   * \parm_list.csv <-- the Princip Shader [Save] button creates this file in the .blend folder
+
+   * \image_list.csv  <-- the Figure Images [Save] button creates this file in the images folder
+
+These files (CSVs) need to exist in their respective final folders -- so therefore, need to be created by the script -- for the script to work. See the `usage page <https://github.com/robinboncoeur/FigureShaders/wiki/Usage>`_ for instructions on how to create these files and make the shaders.
+
+This script has been designed and should work for the Antonia, Victoria4, Dawn and Mariko figures. The only figure that has not undergone extensive testing has been Mariko. If you want other figures adding, please drop me a line (under **Issues**, above) and if I have that figure I'll try to add it to the **figure_defs.py** file. Or: feel free to edit this file. This software is open-source; you're free to edit, chop and change all you want, as long as you observe the terms of GPL3. Be keen to see if you can get it working on another figure!
+
+Remember, this is open-source software: if you break it, you get to keep both pieces. 😁 
+
+Please contact me if you run into any dramas at robinseahahn at gmail dot com, or (preferably) raise an issue under `Issues <https://github.com/robinboncoeur/FigureShaders/issues>`_.

@@ -1,0 +1,155 @@
+#######################
+How to Use FigureShader
+#######################
+
+
+Getting Started
+***************
+
+To find the FigureShader panel in Blender: this panel is identifiable in the Tools Panel [T] section of the 3D Viewport. The sideways tab will be labeled '**FigureShader**'.
+
+If this is a new blender file with only the default cube, delete the cube and import your figure. To do so, I suggest the following approach. From the menu, select File -> Import -> Wavefront (obj), navigate to your figure, select the OBJ (not the MTL) and chose the following Import settings:
+
+   * Untick Smooth Groups and untick Lines and everything in 'Split By'
+
+   * Tick 'Keep Vert Order' and tick 'Poly Groups'
+
+Note: It's a good idea to save these settings. Next to the Operator Presets dropdown are plus [+] and minus [-] buttons:
+
+   * after you've made your selections for import settings, click [+]
+
+   * in the Operator Preset dialog, give the Preset a name -- I saved mine as 'Poser'
+
+   * click [OK]
+
+From then on, to import an OBJ, select your settings from the operator preset dropdown. Bear in mind you only need to select your settings once per Blender session, but you will need to select it at least once when you first start a session and wish to import an OBJ.
+
+   * Click [Import OBJ] to import the file
+
+   * Click on the figure in the scene
+
+   * press [S] (for scale) -- type 10 (Poser's scale is woefully tiny!) to increase the scale
+ 
+Note: You will want to set Scale back to 1 for the imported object, in case you want to sim cloth or anything of that sort:
+
+   * press [Ctrl][A]
+
+   * in the 'Apply' dialogue select 'Scale' to set the object back to 1
+
+This will not resize your figure: it will only reset the scale.
+
+
+The FigureShader Panel
+**********************
+
+Press [T] to open the panel. FigureShader comes in two sections: the "Princip Shader" (short for "Principled Shader") settings section:
+
+
+.. image:: http://www.tightbytes.com/Blender/Wiki/FigShTute21b.png
+
+
+and the "Figure Images" settings section:
+
+
+.. image:: http://www.tightbytes.com/Blender/Wiki/FigShTute22b.png
+
+
+At the top of each section next to the name is a triangle/arrow-tip: clicking on the triangle will collapse or display the section.
+
+
+Creating The parm_list.csv File
+*******************************
+
+After you have saved your .blend file, locate the [Load] and [Save] buttons at the top of the the Princip Shader settings section:
+
+Click on the folder icon near the "-1- Find image files" textbox:
+
+
+.. image:: http://www.tightbytes.com/Blender/Wiki/FigShTute23b.png
+
+
+or the "Image files location" textbox in the Image Settings section, they both work the same way, and when one populates, so will the other.
+Note: *Until you have saved the .blend file with a name to a specific location, [Load] and [Save] buttons in both sections, the [Clear] button and the [Apply Shaders] button are disabled.*
+
+Navigate to the folder containing your figure's texture image files.
+
+
+.. image:: http://www.tightbytes.com/Blender/Wiki/FigShTute24.png
+
+
+Note: in the image below I have the image tile option selected (upper-red-arrow) and that the folder will appear in the "Recent" box, which makes finding that folder much easier:
+
+
+.. image:: http://www.tightbytes.com/Blender/Wiki/FigShTute25a.png
+
+
+It is very important to de-select the "Relative Path" tickbox when selecting the image folder. The script will not run properly when it tries to use Blender's relative path.
+
+
+.. image:: http://www.tightbytes.com/Blender/Wiki/FigShTute25b.png
+
+
+In the Princip Shader section, click on [Save].
+
+
+.. image:: http://www.tightbytes.com/Blender/Wiki/FigShTute26b.png
+
+
+This will create a parm_list.csv file in the folder your .blend file is saved in, with a path statement to the images folder and the Principled Shader settings.
+
+
+Creating the image_list.csv file
+********************************
+
+In the Figure Images setting section of the panel, if you haven't already done so, follow the above steps to navigate to an images folder. **(The first time you do this, there will be no image_list.csv file to load information from, so these steps are going to create that file)**.
+
+Click on the folder icon next to the empty field next to "Head-Clr":
+
+
+.. image:: http://www.tightbytes.com/Blender/Wiki/FigShTute27b.png
+
+
+In the "Recent" section of the Navigation window, you will see the folder name you recently navigated to - click on that folder name to display a list of the images in that folder:
+
+
+.. image:: http://www.tightbytes.com/Blender/Wiki/FigShTute28.png
+
+
+Select the appropriate image name for that region:
+
+
+.. image:: http://www.tightbytes.com/Blender/Wiki/FigShTute29.png
+
+
+The name (and path) to that image will now show in the textbox. 
+
+Repeat these steps for each region and image type (colour, bump and specular). Leave blank those fields for which there is no image: the script only requires a colour field and can manage without a bump or specular map.
+
+Click on the [Save] button to create an image_list.csv file in that folder.
+
+
+Creating the Shaders
+********************
+
+Once you've selected the images:
+
+  * Select Shader Type: only the Principled SSS works at this point.
+
+  * Select the target object file (the figure you are trying to apply a shader to) under "Figure to paint:". 
+
+  * To identify which figure that object is based on, select the figure type name under "Figure Type:".
+
+  * Finally, click on Apply Shaders.
+
+Currently, FigureShaders supports these core figures:
+
+   * Victoria4
+
+   * Dawn
+
+   * Mariko
+
+   * Antonia
+
+Note: Principled Shader setting defaults have been arbitrarily set - these have yielded reasonable results. You will almost certainly find better settings, which is the whole point of sharing this. Remember: *until you save your .blend file -- giving it a name -- the 'Apply Shaders' button will remain disabled*.
+
