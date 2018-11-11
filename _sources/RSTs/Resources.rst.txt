@@ -10,7 +10,7 @@ I apologise for the voice: it was the best I could do under the circumstances. P
 
 **Exporting a simple figure from Poser**
 
-/ .. image:: http://www.tightbytes.com/Blender/InstrVideos/FigShadImg01b.png
+.. image:: http://www.tightbytes.com/Blender/InstrVideos/FigShadImg01b.png
 
 .. raw:: html
 
