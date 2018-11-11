@@ -8,8 +8,18 @@ File -> User Preferences... -> then click on "Install From File..." at the botto
 Please see the wiki for more detailed instructions on installation and usage:
 https://github.com/robinboncoeur/FigureShaders/wiki
 
+and
+
+https://robinboncoeur.github.io/FigureShaders/index.html
+
+
 
 # [ Update Log ]
+Update 11-Nov-2018: I am moving wiki pages to a more manageable approach:
+https://robinboncoeur.github.io/FigureShaders/index.html
+These web pages are easier to maintain, as the structure is done in Sphinx.
+Also, the whole workflow is being reviewed as it is unneccesarily convoluted and awkward, to to mention error-prone.
+
 Update 11-May-2018: version 0.6.0 Current testing shows script is fully stable in Linux, Mac and Windows. Removed beta status.
 
 Update 05-May-2018: version 0.5.92 Removed image_list.csv and parm_list.csv, as the app now writes them, and so less errors will result as opposed to manually-edited files. Tested in Linux and Mac, currently testing in Windows. Removed debug code and generally cleaning up. Considering changing how make_shader.py will be called (no real need for parameters anymore). 
