@@ -16,9 +16,10 @@ https://robinboncoeur.github.io/FigureShaders/index.html
 
 # [ Update Log ]
 Update 11-Nov-2018: I am moving wiki pages to a more manageable approach:
+
 https://robinboncoeur.github.io/FigureShaders/index.html
-These web pages are easier to maintain, as the structure is done in Sphinx.
-Also, the whole workflow is being reviewed as it is unneccesarily convoluted and awkward, to to mention error-prone.
+
+These web pages are easier to maintain, as the structure is done in Sphinx. Also, the whole workflow is being reviewed as it is unneccesarily convoluted and awkward, not to mention error-prone.
 
 Update 11-May-2018: version 0.6.0 Current testing shows script is fully stable in Linux, Mac and Windows. Removed beta status.
 
