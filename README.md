@@ -1,6 +1,10 @@
 <img style="width: 80px;" src="http://www.tightbytes.com/Blender/SeaChange.jpg" alt="Skin shaders on V4"/>
 
-# Figure Shaders
+# Blender-focused Projects
+
+2022-03-29: Blender is currently at version 3.1. My Figure Shaders script was written for v2.79. It has not been maintained. In all likelihood, it is no longer relevant, if it ever was.
+
+**Figure Shaders**
 
 Quick tip: to install the script in Blender, please click on the green Clone or Download button above. The download file (**Figureshaders-master.zip**) will contain a zip file: **make_shaders.zip**. You will need to unzip the **Figureshaders-master.zip** file to a folder, which will contain that **make_shaders.zip** file. Select this **make_shaders.zip** zip file in the Preference page in Blender to install this script:
 File -> User Preferences... -> then click on "Install From File..." at the bottom of the dialogue box.
