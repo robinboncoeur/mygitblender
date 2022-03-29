@@ -17,7 +17,7 @@ import bpy
 from bpy_extras.io_utils import ImportHelper
 from __main__ import *
 
-class buildShader():
+class BuildShader():
   def __init__(self, cSelObj, cRegion, ImgClr = None):
     self.Region = cRegion
     self.ImgCol = ImgClr
@@ -29,15 +29,15 @@ class buildShader():
     self.shVCRamp = ""
     self.rampMixr = ""
 
-    self.fTools = bpy.context.scene.figTools
+    self.f_tools = bpy.context.scene.ob_fig_tools
     self.sSlctdObj = cSelObj
-    self.sSlctdSdr = self.fTools.sSelShader
-    self.shvsssval = self.fTools.flSssVal
-    self.shvsssrad = self.fTools.flSssRad
-    self.shvspcamt = self.fTools.flSpcAmt
-    self.shvspcruf = self.fTools.flSpcRuf
-    self.shvsheenv = self.fTools.flSheenV
-    self.shviorval = self.fTools.flIorVal
+    self.sSlctdSdr = self.f_tools.sSelShader
+    self.shvsssval = self.f_tools.fp_sssval
+    self.shvsssrad = self.f_tools.fp_sssrad
+    self.shvspcamt = self.f_tools.fp_spcamt
+    self.shvspcruf = self.f_tools.fp_spcruf
+    self.shvsheenv = self.f_tools.fp_sheenv
+    self.shviorval = self.f_tools.fp_iorval
 
     self.sSlctdObj.select = True
     self.selMats = self.sSlctdObj.active_material
@@ -56,7 +56,7 @@ class buildShader():
     else:
       #bpy.ops.system.message('INVOKE_DEFAULT',
       #  type = "Error",
-      #  message = "200-The current figure is: " + self.fTools.curFigEnum,
+      #  message = "200-The current figure is: " + self.f_tools.curFigEnum,
       #  )
       self.buildShaderset(ImgClr)
 
