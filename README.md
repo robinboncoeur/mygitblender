@@ -1,4 +1,4 @@
-<img style="width: 80px;" src="http://www.tightbytes.com/Blender/SeaChange.jpg" alt="Skin shaders on V4"/>
+<img style="width: 80px;" src="http://www.tightbytes.com/images/pubimages/blender/SeaChange.jpg" alt="Sea Change"/>
 
 # Blender-focused Projects
 
@@ -10,11 +10,9 @@ Quick tip: to install the script in Blender, please click on the green Clone or 
 File -> User Preferences... -> then click on "Install From File..." at the bottom of the dialogue box.
 
 Please see the wiki for more detailed instructions on installation and usage:
+
 https://github.com/robinboncoeur/FigureShaders/wiki
 
-and
-
-https://robinboncoeur.github.io/FigureShaders/index.html
 
 
 
