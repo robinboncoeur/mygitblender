@@ -1,4 +1,4 @@
-<img style="width: 80px;" src="http://www.tightbytes.com/images/pubimages/blender/SeaChange.jpg" alt="Sea Change"/>
+<img style="width: 800px;" src="http://www.tightbytes.com/images/pubimages/blender/SeaChange.jpg" alt="Sea Change"/>
 
 # Blender-focused Projects
 
