@@ -9,6 +9,7 @@ Figure Shaders - The Script
 These help pages include support for a now-defunct script to facilitate Poser figure shader management on Blender. With the arrival of new nodes, better shaders and infinitely faster workflows, this script has outlived its usefulness. I leave it for now but will eventually take it down.
 
 
+
 ==========================
 Rigging Figures in Blender
 ==========================
