@@ -10,8 +10,7 @@ Welcome to Projects Blender's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   RSTs/RigT01.rst
-   RSTs/RigT02.rst
+   RSTs/RiggingFigures.rst
 
 
 Indices and tables
