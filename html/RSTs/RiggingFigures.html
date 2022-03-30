@@ -51,6 +51,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#prepping-for-parenting">Prepping for Parenting</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#declutter-view-new-bones">Declutter / View New Bones</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#parenting-our-rig">Parenting our Rig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#after-parenting-the-rig">After Parenting the Rig</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#final-thoughts">Final Thoughts</a></li>
@@ -89,7 +90,7 @@
 <div class="section" id="introduction">
 <h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h3>
 <p>To start off with: <strong>a caveat</strong>. <em>This is not a definitive tutorial on rigging in Blender. This approach worked for me, and includes a few tips on how to overcome unexpected pitfalls. Your mileage may vary.</em></p>
-<p>I have gone over this road too many times to count, with a ton of failures to show for it. The tools have become a bit easier to use, in the meantime, and the elusive satisfaction of a successful rigging has finally arrived. This document is to help others avoid some of the issues I ran into. A great video to watch on the suject - from which I drew my inspiration for this tutorial - is this one:</p>
+<p>I have gone over this road too many times to count, with a ton of failures to show for it. The tools have become a bit easier to use, in the meantime, and the elusive satisfaction of a successful rigging has finally arrived. This document is to help others avoid some of the issues I ran into. A great video to watch on the suject - from which I drew my inspiration for this tutorial - is <a class="reference external" href="https://www.youtube.com/watch?v=9q5I3cyYS2Y">this one</a>.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/9q5I3cyYS2Y" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>For this tutorial, may I suggest you go to <a class="reference external" href="https://www.cgtrader.com/free-3d-models/character/woman/girl-in-shorts-e56bd72f-0b8e-43e9-b251-a6bbb5ce976b">CG Trader</a> to download a free humanoid mesh, preferably one that is not rigged already. There are some good figures at CGTrader, some free and others at a ranges of prices.  The description claims the figure is rigged, but it is probably for 3DsMax, not Blender. You can also use a Poser figure, or indeed any humanoid figure saved in OBJ format.</p>
 <p>By the way, I sometimes assume a certain amount of Blender knowledge, which may not be a good thing. If you wish more detail on certain points or see any corrections that need making, please leave me a note in my <a class="reference external" href="https://github.com/robinboncoeur/mygitblender/issues">Github Issues page</a>.</p>
 </div>
@@ -97,18 +98,20 @@
 <h3>Import and Prep Work<a class="headerlink" href="#import-and-prep-work" title="Permalink to this headline"></a></h3>
 <p><strong>Download and Unarchive - Organise</strong></p>
 <p>After unarchiving the downloaded files, I rename the folders to keep things organised. I customarily keep texture files in a ‘textures’ folder, the original downloads in an ‘Origs’ folder and the obj file in an ‘obj’ folder… thus:</p>
-<img alt="../_images/001Folder.png" src="../_images/001Folder.png" />
+<a class="reference internal image-reference" href="../_images/000Folder.png"><img alt="../_images/000Folder.png" class="align-center" src="../_images/000Folder.png" style="width: 478.0px; height: 284.0px;" /></a>
 <p><strong>Import The OBJ</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Open Blender and go into either modelling or layout viewport</p></li>
-<li><p>Import the figure via File -&gt; Import -&gt; Wavefront(obj) - keep the defaults and click OK</p></li>
+<li><p>Import the figure via File -&gt; Import -&gt; Wavefront(obj)</p></li>
 </ul>
 </div></blockquote>
+<a class="reference internal image-reference" href="../_images/001ImportOBJ.png"><img alt="../_images/001ImportOBJ.png" class="align-center" src="../_images/001ImportOBJ.png" style="width: 364.5px; height: 419.25px;" /></a>
+<p>For the sake of simplicity I just accept the default settings and click OK</p>
 <p>The <a class="reference external" href="https://www.cgtrader.com/free-3d-models/character/woman/girl-in-shorts-e56bd72f-0b8e-43e9-b251-a6bbb5ce976b">Girl In Shorts</a> will import at the correct scale. Note: <em>Poser figures will need to be scaled up tenfold by selecting the figure expressly - changing the dark-orange outline to light-orange - and pressing [S], then entering the number 10</em>.</p>
 <p><strong>Texture Your Figure</strong></p>
 <p>To put colour on the figure, I let Blender find the texture files for me:</p>
-<img alt="../_images/002FindFiles.png" src="../_images/002FindFiles.png" />
+<a class="reference internal image-reference" href="../_images/002FindFiles.png"><img alt="../_images/002FindFiles.png" class="align-center" src="../_images/002FindFiles.png" style="width: 426.0px; height: 336.75px;" /></a>
 <p>by pointing the above search function to the textures folder.</p>
 <p><strong>Enable Rigify - and a few Checks to Do</strong></p>
 <p>The ‘Rigify’ addon comes with Blender: be sure you have it enabled:</p>
@@ -227,7 +230,9 @@
 <li><p>Press [Z] and select ‘Solid’</p></li>
 </ul>
 </div></blockquote>
-<p><strong>After Parenting the Rig</strong></p>
+</div>
+<div class="section" id="after-parenting-the-rig">
+<h3>After Parenting the Rig<a class="headerlink" href="#after-parenting-the-rig" title="Permalink to this headline"></a></h3>
 <p>In the case of our girl in shorts, parenting hair and clothing would be done with those same deformation bones we just hid. More importantly, before we endeavour to clothe our figure, checking our rigging by deforming our figure - moving bits about - is going to be hours and hours of:</p>
 <blockquote>
 <div><ul class="simple">
