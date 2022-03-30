@@ -1,0 +1,187 @@
+####################################
+Part 1 - Rigging a Figure in Blender 
+####################################
+
+**********************
+Introduction and Setup
+**********************
+
+
+============
+Introduction
+============
+
+To start off with: **a caveat**. *This is not a definitive tutorial on rigging in Blender. This approach worked for me, and includes a few tips on how to overcome unexpected pitfalls. Your mileage may vary.* 
+
+I have gone over this road too many times to count, with a ton of failures to show for it. The tools have become a bit easier to use, in the meantime, and the elusive satisfaction of a successful rigging has finally arrived. This document is to help others avoid some of the issues I ran into. A great video to watch on the suject - from which I drew my inspiration for this tutorial - is this one:
+
+.. raw:: html
+   
+   <iframe width="560" height="315" src="https://www.youtube.com/embed/9q5I3cyYS2Y" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+For this tutorial, may I suggest you go to `CG Trader <https://www.cgtrader.com/free-3d-models/character/woman/girl-in-shorts-e56bd72f-0b8e-43e9-b251-a6bbb5ce976b>`_ to download a free humanoid mesh, preferably one that is not rigged already. There are some good figures at CGTrader, some free and others at a ranges of prices.  The description claims the figure is rigged, but it is probably for 3DsMax, not Blender. You can also use a Poser figure, or indeed any humanoid figure saved in OBJ format.
+
+By the way, I sometimes assume a certain amount of Blender knowledge, which may not be a good thing. If you wish more detail on certain points or see any corrections that need making, please leave me a note in my `Github Issues page <https://github.com/robinboncoeur/mygitblender/issues>`_.
+
+
+
+
+
+====================
+Import and Prep Work
+====================
+
+**Download and Unarchive - Organise**
+
+After unarchiving the downloaded files, I rename the folders to keep things organised. I customarily keep texture files in a 'textures' folder, the original downloads in an 'Origs' folder and the obj file in an 'obj' folder... thus: 
+
+.. image:: ../images/001Folder.png
+
+
+**Import The OBJ**
+
+	* Open Blender and go into either modelling or layout viewport 
+	
+	* Import the figure via File -> Import -> Wavefront(obj) - keep the defaults and click OK
+	
+The `Girl In Shorts <https://www.cgtrader.com/free-3d-models/character/woman/girl-in-shorts-e56bd72f-0b8e-43e9-b251-a6bbb5ce976b>`_ will import at the correct scale. Note: *Poser figures will need to be scaled up tenfold by selecting the figure expressly - changing the dark-orange outline to light-orange - and pressing [S], then entering the number 10*.
+
+
+**Texture Your Figure**
+
+To put colour on the figure, I let Blender find the texture files for me:
+
+.. image:: ../images/002FindFiles.png
+
+by pointing the above search function to the textures folder.
+
+
+**Enable Rigify - and a few Checks to Do**
+
+The 'Rigify' addon comes with Blender: be sure you have it enabled:
+
+.. image:: ../images/003Preferences.png
+
+.. image:: ../images/004Rigify.png
+
+Be sure the figure you are about to rig is set to a scale of 1. Select the figure - selection is indicated by an orange outline around the figure - press the [N] key, and confirm scale:
+
+.. image:: ../images/005ScaleAt1.png
+
+If any other number than 1 is displayed for X, Y or Z, press [Ctrl] [A], and select 'Scale'. a '1' will appear in the X, Y and Z boxes.
+
+The cursor needs to be at the "World Origin". Press [Shift] [S] to bring up this pie menu:
+
+.. image:: ../images/006CursorToWOrigin.png
+
+Select 'Cursor to World Origin. The cursor should be between the feet of the figure, which is where imported OBJs generally land.
+
+
+**Remove 'Doubles'**
+
+Applying your rig will fail if vertices that occupy the same space are detected. Note: *in the case of Poser figures, I have removed thousands*.
+
+For the sake of simplicity, I hide any part of the scene that I am not immediately working on:
+
+.. image:: ../images/007HideInViewpt.png
+
+[TAB] into Edit mode, check that you are in vertex mode (not face or edge), press [A] to select all vertices and from Mesh:
+
+.. image:: ../images/008MBDistance.png
+
+On this figure, you'll see a brief notification that 90 vertices were removed:
+
+.. image:: ../images/009Removed90V.png
+
+The figure is now ready to accept a rig. Save your .blend file.
+
+In order to make it a bit easier to go back to a previous step, I tend to do 'Save As' at 'milestone' points of the project: i.e., points where I'm satisfied all has gone well up to then and that would be a good start-over point in case things go to custard. So, I'll name my file 'GShortsPose01.blend': the only thing that's key here is the number. 
+
+
+
+********************************
+Loading / Adjusting the Armature
+********************************
+
+
+
+=================
+Load the Armature
+=================
+
+This tutorial recommends you start with the Basic Human (MetaRig), just until these steps become more familiar. Note: *the rigging process itself is fairly labour-intensive and you would hate to have gone through hours of adjusting the rig only to have the whole thing go down the gurgler because of something that got missed. Happens more often than not*.
+
+
+**Load the Rig - Get It ready**
+
+Press [Shift] [A] and select Armature -> Basic -> Basic Human (Meta-Rig):
+
+.. image:: ../images/010BasicHuman.png
+
+I've scaled up the rig so that the shoulder/clavicle bones are roughly here:
+
+.. image:: ../images/011ScaledTo.png
+
+Scaling for this figure is not a trivial endeavour. A quick way to get the rig close to her size is to press [S] and type 100. Then press [S] again and scale down to the desired height/size.
+
+Note the scale of the rig:
+
+.. image:: ../images/012ReviewScale.png
+
+To set the values to 1, press [Ctrl] [A], and select 'Scale'.
+
+Notice that a lot of the rig is hidden in the figure. You will want it to *seem* like it's always in front of the figure:
+
+.. image:: ../images/013ShowInFront.png
+
+Now is a good time to save. Typically, I'll start 'versioning' here, so I can go back if I need to:
+
+.. image:: ../images/014SaveAsVers.png
+
+When you 'Save As...', Blender will display the current file name with a red background. Click on the plus [+] will increment your filename... then just click [Save As].
+
+
+===================
+Adjust the Armature
+===================
+
+With the rig selected, press [TAB] to enter edit mode. To cut your work in half, click on the 'X' above the Transform tool box:
+
+.. image:: ../images/015RigMirror.png
+
+Note: *the 'X' is only visible - and tickable - in edit mode*. Mirror mode will move rig components on the right (I generally work on the left) on symmetrical figures. Of course, if your figure isn't symmetrical, you may not wish to use this feature.
+
+This tutorial will not go into great detail on - or pretend to be a definitive source for - the finer points of rigging. What follows is just what I do. I try to keep things as "anatomically correct" in terms of having the rig sort-of play the role of the spine in order for deformations to look as natural as possible. I'm open to suggestions on improving this approach:
+
+.. image:: ../images/016HeadSpine.png
+
+.. image:: ../images/017LegFront.png
+
+.. image:: ../images/018LegSide.png
+
+.. image:: ../images/019Shoulder.png
+
+
+Once you're happy with the rig adjustments, [TAB] out of Edit Mode. Here, I would do an incremental Save (GShortsPose03.blend).
+
+In the Object Data Properties panel for the metarig, press the [Generate Rig] button:
+
+.. image:: ../images/020GenerateRig.png
+
+which results in:
+
+.. image:: ../images/021NewRigHandles.png
+
+
+
+
+
+
+
+
+
+
+
+
+
