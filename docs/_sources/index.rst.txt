@@ -1,19 +1,17 @@
-.. FigureShader documentation master file, created by
-   sphinx-quickstart on Sun Jun 10 18:37:36 2018.
+.. ProjectsBlender documentation master file, created by
+   sphinx-quickstart on Wed 2022-03-30 at 16:30.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to FigureShader's documentation!
-========================================
+Welcome to Projects Blender's documentation!
+============================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   RSTs/Overview.rst
-   RSTs/RiggingTute.rst
-   RSTs/FigureShader.rst
-
+   RSTs/RigT01.rst
+   RSTs/RigT02.rst
 
 
 Indices and tables
