@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rigging a Figure in Blender &mdash; ProjectsBlender  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Welcome to Projects Blender’s documentation!" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> ProjectsBlender
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Rigging a Figure in Blender</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction-and-setup">Introduction and Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#import-and-prep-work">Import and Prep Work</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#loading-adjusting-the-armature">Loading / Adjusting the Armature</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#load-the-armature">Load the Armature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adjust-the-armature">Adjust the Armature</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#prepping-for-parenting">Prepping for Parenting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#declutter-view-new-bones">Declutter / View New Bones</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parenting-our-rig">Parenting our Rig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#after-parenting-the-rig">After Parenting the Rig</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#final-thoughts">Final Thoughts</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ProjectsBlender</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Rigging a Figure in Blender</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/RSTs/RiggingFigures.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="rigging-a-figure-in-blender">
+<h1>Rigging a Figure in Blender<a class="headerlink" href="#rigging-a-figure-in-blender" title="Permalink to this headline"></a></h1>
+<div class="section" id="introduction-and-setup">
+<h2>Introduction and Setup<a class="headerlink" href="#introduction-and-setup" title="Permalink to this headline"></a></h2>
+<div class="section" id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h3>
+<p>To start off with: <strong>a caveat</strong>. <em>This is not a definitive tutorial on rigging in Blender. This approach worked for me, and includes a few tips on how to overcome unexpected pitfalls. Your mileage may vary.</em></p>
+<p>I have gone over this road too many times to count, with a ton of failures to show for it. The tools have become a bit easier to use, in the meantime, and the elusive satisfaction of a successful rigging has finally arrived. This document is to help others avoid some of the issues I ran into. A great video to watch on the suject - from which I drew my inspiration for this tutorial - is <a class="reference external" href="https://www.youtube.com/watch?v=9q5I3cyYS2Y">this one</a>.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9q5I3cyYS2Y" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>For this tutorial, may I suggest you go to <a class="reference external" href="https://www.cgtrader.com/free-3d-models/character/woman/girl-in-shorts-e56bd72f-0b8e-43e9-b251-a6bbb5ce976b">CG Trader</a> to download a free humanoid mesh, preferably one that is not rigged already. There are some good figures at CGTrader, some free and others at a ranges of prices.  The description claims the figure is rigged, but it is probably for 3DsMax, not Blender. You can also use a Poser figure, or indeed any humanoid figure saved in OBJ format.</p>
+<p>By the way, I sometimes assume a certain amount of Blender knowledge, which may not be a good thing. If you wish more detail on certain points or see any corrections that need making, please leave me a note in my <a class="reference external" href="https://github.com/robinboncoeur/mygitblender/issues">Github Issues page</a>.</p>
+</div>
+<div class="section" id="import-and-prep-work">
+<h3>Import and Prep Work<a class="headerlink" href="#import-and-prep-work" title="Permalink to this headline"></a></h3>
+<p><strong>Download and Unarchive - Organise</strong></p>
+<p>After unarchiving the downloaded files, I rename the folders to keep things organised. I customarily keep texture files in a ‘textures’ folder, the original downloads in an ‘Origs’ folder and the obj file in an ‘obj’ folder… thus:</p>
+<a class="reference internal image-reference" href="../_images/000Folder.png"><img alt="../_images/000Folder.png" class="align-center" src="../_images/000Folder.png" style="width: 478.0px; height: 284.0px;" /></a>
+<p><strong>Import The OBJ</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Open Blender and go into either modelling or layout viewport</p></li>
+<li><p>Import the figure via File -&gt; Import -&gt; Wavefront(obj)</p></li>
+</ul>
+</div></blockquote>
+<a class="reference internal image-reference" href="../_images/001ImportOBJ.png"><img alt="../_images/001ImportOBJ.png" class="align-center" src="../_images/001ImportOBJ.png" style="width: 364.5px; height: 419.25px;" /></a>
+<p>For the sake of simplicity I just accept the default settings and click OK</p>
+<p>The <a class="reference external" href="https://www.cgtrader.com/free-3d-models/character/woman/girl-in-shorts-e56bd72f-0b8e-43e9-b251-a6bbb5ce976b">Girl In Shorts</a> will import at the correct scale. Note: <em>Poser figures will need to be scaled up tenfold by selecting the figure expressly - changing the dark-orange outline to light-orange - and pressing [S], then entering the number 10</em>.</p>
+<p><strong>Texture Your Figure</strong></p>
+<p>To put colour on the figure, I let Blender find the texture files for me:</p>
+<a class="reference internal image-reference" href="../_images/002FindFiles.png"><img alt="../_images/002FindFiles.png" class="align-center" src="../_images/002FindFiles.png" style="width: 426.0px; height: 336.75px;" /></a>
+<p>by pointing the above search function to the textures folder.</p>
+<p><strong>Enable Rigify - and a few Checks to Do</strong></p>
+<p>The ‘Rigify’ addon comes with Blender: be sure you have it enabled:</p>
+<img alt="../_images/003Preferences.png" src="../_images/003Preferences.png" />
+<img alt="../_images/004Rigify.png" src="../_images/004Rigify.png" />
+<p>Be sure the figure you are about to rig is set to a scale of 1. Select the figure - selection is indicated by an orange outline around the figure - press the [N] key, and confirm scale:</p>
+<img alt="../_images/005ScaleAt1.png" src="../_images/005ScaleAt1.png" />
+<p>If any other number than 1 is displayed for X, Y or Z, press [Ctrl] [A], and select ‘Scale’. a ‘1’ will appear in the X, Y and Z boxes.</p>
+<p>The cursor needs to be at the “World Origin”. Press [Shift] [S] to bring up this pie menu:</p>
+<img alt="../_images/006CursorToWOrigin.png" src="../_images/006CursorToWOrigin.png" />
+<p>Select ‘Cursor to World Origin. The cursor should be between the feet of the figure, which is where imported OBJs generally land.</p>
+<p><strong>Remove ‘Doubles’</strong></p>
+<p>Applying your rig will fail if vertices that occupy the same space are detected. Note: <em>in the case of Poser figures, I have removed thousands</em>.</p>
+<p>For the sake of simplicity, I hide any part of the scene that I am not immediately working on:</p>
+<img alt="../_images/007HideInViewpt.png" src="../_images/007HideInViewpt.png" />
+<p>[TAB] into Edit mode, check that you are in vertex mode (not face or edge), press [A] to select all vertices and from Mesh:</p>
+<img alt="../_images/008MBDistance.png" src="../_images/008MBDistance.png" />
+<p>On this figure, you’ll see a brief notification that 90 vertices were removed:</p>
+<img alt="../_images/009Removed90V.png" src="../_images/009Removed90V.png" />
+<p>The figure is now ready to accept a rig. Save your .blend file.</p>
+<p>In order to make it a bit easier to go back to a previous step, I tend to do ‘Save As’ at ‘milestone’ points of the project: i.e., points where I’m satisfied all has gone well up to then and that would be a good start-over point in case things go to custard. So, I’ll name my file ‘GShortsPose01.blend’: the only thing that’s key here is the number.</p>
+</div>
+</div>
+<div class="section" id="loading-adjusting-the-armature">
+<h2>Loading / Adjusting the Armature<a class="headerlink" href="#loading-adjusting-the-armature" title="Permalink to this headline"></a></h2>
+<div class="section" id="load-the-armature">
+<h3>Load the Armature<a class="headerlink" href="#load-the-armature" title="Permalink to this headline"></a></h3>
+<p>This tutorial recommends you start with the Basic Human (MetaRig), just until these steps become more familiar. Note: <em>the rigging process itself is fairly labour-intensive and you would hate to have gone through hours of adjusting the rig only to have the whole thing go down the gurgler because of something that got missed. Happens more often than not</em>.</p>
+<p><strong>Load the Rig - Get It ready</strong></p>
+<p>Press [Shift] [A] and select Armature -&gt; Basic -&gt; Basic Human (Meta-Rig):</p>
+<img alt="../_images/010BasicHuman.png" src="../_images/010BasicHuman.png" />
+<p>I’ve scaled up the rig so that the shoulder/clavicle bones are roughly here:</p>
+<img alt="../_images/011ScaledTo.png" src="../_images/011ScaledTo.png" />
+<p>Scaling for this figure is not a trivial endeavour. A quick way to get the rig close to her size is to press [S] and type 100. Then press [S] again and scale down to the desired height/size.</p>
+<p>Note the scale of the rig:</p>
+<img alt="../_images/012ReviewScale.png" src="../_images/012ReviewScale.png" />
+<p>To set the values to 1, press [Ctrl] [A], and select ‘Scale’.</p>
+<p>Notice that a lot of the rig is hidden in the figure. You will want it to <em>seem</em> like it’s always in front of the figure:</p>
+<img alt="../_images/013ShowInFront.png" src="../_images/013ShowInFront.png" />
+<p>Now is a good time to save. Typically, I’ll start ‘versioning’ here, so I can go back if I need to:</p>
+<img alt="../_images/014SaveAsVers.png" src="../_images/014SaveAsVers.png" />
+<p>When you ‘Save As…’, Blender will display the current file name with a red background. Click on the plus [+] will increment your filename… then just click [Save As].</p>
+</div>
+<div class="section" id="adjust-the-armature">
+<h3>Adjust the Armature<a class="headerlink" href="#adjust-the-armature" title="Permalink to this headline"></a></h3>
+<p>With the rig selected, press [TAB] to enter edit mode. To cut your work in half, click on the ‘X’ above the Transform tool box:</p>
+<img alt="../_images/015RigMirror.png" src="../_images/015RigMirror.png" />
+<p>Note: <em>the ‘X’ is only visible - and tickable - in edit mode</em>. Mirror mode will move rig components on the right (I generally work on the left) on symmetrical figures. Of course, if your figure isn’t symmetrical, you may not wish to use this feature.</p>
+<p>This tutorial will not go into great detail on - or pretend to be a definitive source for - the finer points of rigging. What follows is just what I do. I try to keep things as “anatomically correct” in terms of having the rig sort-of play the role of the spine in order for deformations to look as natural as possible. I’m open to suggestions on improving this approach:</p>
+<img alt="../_images/016HeadSpine.png" src="../_images/016HeadSpine.png" />
+<img alt="../_images/017LegFront.png" src="../_images/017LegFront.png" />
+<img alt="../_images/018LegSide.png" src="../_images/018LegSide.png" />
+<img alt="../_images/019Shoulder.png" src="../_images/019Shoulder.png" />
+<p>Once you’re happy with the rig adjustments, [TAB] out of Edit Mode. Here, I would do an incremental Save (GShortsPose03.blend).</p>
+<p>In the Object Data Properties panel for the metarig, press the [Generate Rig] button:</p>
+<img alt="../_images/020GenerateRig.png" src="../_images/020GenerateRig.png" />
+<p>which results in:</p>
+<img alt="../_images/021NewRigHandles.png" src="../_images/021NewRigHandles.png" />
+</div>
+</div>
+<div class="section" id="prepping-for-parenting">
+<h2>Prepping for Parenting<a class="headerlink" href="#prepping-for-parenting" title="Permalink to this headline"></a></h2>
+<div class="section" id="declutter-view-new-bones">
+<h3>Declutter / View New Bones<a class="headerlink" href="#declutter-view-new-bones" title="Permalink to this headline"></a></h3>
+<p><strong>Hide the Original MetaRig</strong></p>
+<p>The scene is getting pretty busy. It’s real easy to click on things you don’t sort-of want to edit or do anything with, and one of those things is that original metarig. It’s time to hide it.</p>
+<p>In Object mode, select the metarig, press [M] and create a New Collection. I’ll name mine ‘SaveRig’:</p>
+<blockquote>
+<div><img alt="../_images/022SaveRig.png" src="../_images/022SaveRig.png" />
+</div></blockquote>
+<p>In the Outliner, untick this box:</p>
+<blockquote>
+<div><img alt="../_images/023HideMovedRig.png" src="../_images/023HideMovedRig.png" />
+</div></blockquote>
+<p>Your original metarig should no longer be visible.</p>
+<p><strong>Hiding That New Rig for Now</strong></p>
+<p>In the Outliner you will notice that what surrounds your figure has a name: ‘rig’. Selecting it in Outliner will select it in the viewport.  Our new rig isn’t doing anything for us except to get in the way - we’ll hide it. With that rig selected, go into <strong>Pose</strong> mode:</p>
+<blockquote>
+<div><img alt="../_images/024PoseMode.png" src="../_images/024PoseMode.png" />
+</div></blockquote>
+<p>The rig is now multi-coloured. Just to keep things easy, we will hide it. Press [A] to select all parts of the rig -all parts will go to one colour - and press [H] to hide them.</p>
+<p><strong>Introducing New Bones</strong></p>
+<p>We need to see the newly generated bone set. Go back to the Data Properties panel. What we’re after is the Layers section. The visible layers are light-blue (on my system - yours might be different) and the non-visible ones grey. Holding down the [Shift] key - <strong>the [Shift] key is important, here!</strong> - click on the indicated layer:</p>
+<blockquote>
+<div><img alt="../_images/025BonesLayer.png" src="../_images/025BonesLayer.png" />
+</div></blockquote>
+<p>Note: <em>if you forgot to hold down the [Shift] key, you will deselect the other layers. Press [Ctrl] [Z] to undo, and try again</em>.</p>
+<p>Press [Z] and select ‘Wireframe’:</p>
+<blockquote>
+<div><img alt="../_images/026ZWireFrame.png" src="../_images/026ZWireFrame.png" />
+</div></blockquote>
+<p>The new bones - called ‘deformation bones’ - are now clearly visible. According to Pixxo3D, these bones are actually weighted to the geometry of your figure.</p>
+</div>
+<div class="section" id="parenting-our-rig">
+<h3>Parenting our Rig<a class="headerlink" href="#parenting-our-rig" title="Permalink to this headline"></a></h3>
+<p><strong>Get Ready to Parent</strong></p>
+<p>To parent, selecting in the right sequence is important. Also, this is a multi-select action.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Go back to object mode.</p></li>
+<li><p>Still in wireframe mode, select the mesh of our figure <strong>FIRST</strong></p></li>
+<li><p>Holding down the [Shift] key, select the deformation bones <strong>SECOND</strong></p></li>
+<li><p>Press [Ctrl] [P] <em>([Cmd] [P] on the Mac)</em></p></li>
+<li><p>Select ‘With Automatic Weights’</p></li>
+</ul>
+<img alt="../_images/027ParentcAutoWeight.png" src="../_images/027ParentcAutoWeight.png" />
+</div></blockquote>
+<p>The script should run - nothing will seem to happen. If the script fails, a notification will appear briefly in the status bar. The error can be reviewed in the console.</p>
+<p><strong>Hiding the Deformation Bones</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Select the deformation bone set <strong>only</strong></p></li>
+<li><p>Go into Pose Mode</p></li>
+<li><p>In the Data Properties / Layers section, (with [Skift] key held down) deselect that previously added layer - the deformation bones are no longer visible.</p></li>
+<li><p>While still in Pose Mode, press [Alt] [H] to <strong>unhide</strong> your rig</p></li>
+<li><p>Press [Z] and select ‘Solid’</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="after-parenting-the-rig">
+<h3>After Parenting the Rig<a class="headerlink" href="#after-parenting-the-rig" title="Permalink to this headline"></a></h3>
+<p>In the case of our girl in shorts, parenting hair and clothing would be done with those same deformation bones we just hid. More importantly, before we endeavour to clothe our figure, checking our rigging by deforming our figure - moving bits about - is going to be hours and hours of:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>delete the current rig</p></li>
+<li><p>go back several versions (before Generate Rig)</p></li>
+<li><p>adjust bone positions</p></li>
+<li><p>Generate Rig, and all the steps above</p></li>
+<li><p>check deformations</p></li>
+<li><p>rinse and repeat</p></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="final-thoughts">
+<h2>Final Thoughts<a class="headerlink" href="#final-thoughts" title="Permalink to this headline"></a></h2>
+<p>I can strongly recommend <a class="reference external" href="https://www.youtube.com/c/PIXXO3D/videos">Pixxo3D’s channel on YouTube</a>: he’s got quite a few amazing videos on a number of Blender-related topics.</p>
+<p>Hope this document proves useful to someone.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to Projects Blender’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Robyn Hahn.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
